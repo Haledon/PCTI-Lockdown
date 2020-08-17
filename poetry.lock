@@ -4,11 +4,11 @@ description = "Simple library for color and formatting to terminal"
 name = "colored"
 optional = false
 python-versions = "*"
-version = "1.3.93"
+version = "1.4.2"
 
 [metadata]
-content-hash = "8dd00b0504d929bab2b2a069e07ecb8586d8d2bb4abd75a35fc950d0dc4cb645"
-python-versions = "^3.7"
+content-hash = "7ef8b72900f0b27b013650157e3effb467baad727dae9dc52e690b4fed5ddd86"
+python-versions = "^3.8"
 
 [metadata.hashes]
-colored = ["8296ea990e3f6b7822f44eec21408b126dfb9c1c031306b859e3f7d46cc27075"]
+colored = ["056fac09d9e39b34296e7618897ed1b8c274f98423770c2980d829fd670955ed"]
