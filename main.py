@@ -15,7 +15,7 @@ def getch():
   return ch
 #sgambino223@gmail.com
 #pcti123
-#Update Quen cleanse
+
 print(style.BOLD+"|"+style.RESET+"| |")
 
 class Player:
@@ -68,6 +68,16 @@ class Player:
       self.suppteam = []
       self.suppteamS = []
 
+  def att(self,pers):
+    pres = False
+    if pers in self.team:
+      pres = True
+    if pers in self.backteam:
+      pres = True
+    if pers in self.deadteam:
+      pres = True
+    return pres
+
 class Entity:
   def __init__(self,NAME,HP,MP,AT,DF,MAT,MDF,SP,AC,EV,CT,APN,MPN,MRG,ID,GEND): 
     self.NAME = NAME        #Variables that every fighting entity share 
@@ -101,8 +111,9 @@ class Entity:
     self.dmgreduct = 1
     self.isomode = False   #Indicates whether character has unlocked Iso-God Form
     self.ISOmode = False   #Indicates whether character is in Iso-God mode in battle
-    self.isopoints = 500  #The amount of points accumulated for Iso-Mode, need 100 to unleashe, every 100 is a turn, gained 1 for 1 for every mana point used. 
-    self.isoLevel = 5  #The level of your Iso-God Form, starts at 2. 
+    self.isopoints = 200  #The amount of points accumulated for Iso-Mode, need 100 to unleashe, every 100 is a turn, gained 1 for 1 for every mana point used. 
+    self.bisopoints = 0
+    self.isoLevel = 2  #The level of your Iso-God Form, starts at 2. 
     self.ID = ID
     self.XP = 0
     self.LV = 1
@@ -142,6 +153,7 @@ class Entity:
     self.CcHP = self.cHP
     self.CcMP = self.cMP
     self.Cisopoints = self.isopoints
+    self.Cbisopoints = self.bisopoints
     self.Cbattleinventory = self.battleinventory
     self.Cskills = []
     self.SHP = self.HP
@@ -177,7 +189,7 @@ class Entity:
     self.Sskills = []
     self.SXP = self.XP
     self.SLV = self.LV
-    self.Sisopoints = self.isopoints
+    self.Sbisopoints = self.bisopoints
     self.lastattack = ""
     self.coun = False
     self.counte = -1
@@ -310,6 +322,9 @@ class Entity:
     self.mimicm = 0
     self.mimit = 0
     self.revealed = 0
+    self.kusar = 0
+    self.sword = 0
+    self.wee = 0
     self.fear = 0      #Negative Effects
     self.confusion = 0
     self.charmed = 0
@@ -331,6 +346,9 @@ class Entity:
     self.revealed = 0
     self.ashamed = [0]
     self.tethered = []
+    self.grav = 0
+    self.skated = 0
+    self.yyrd = 0
     self.deturn = 0
     #Stuns
     self.stunned = False
@@ -346,6 +364,7 @@ class Entity:
     self.paralyzed = 0
     self.repulsed = 0
     self.confused = 0
+    self.mental = 0
     #Supports
     self.chilled = 0
     self.beared = 0
@@ -384,6 +403,8 @@ class Entity:
     self.seeker = 0
     self.mvolley = 0
     self.mgh = [0]
+    #Fence
+    self.locked = [0]
     #Dr.Graham
     self.scirc = 0
     self.inert = 0
@@ -462,7 +483,7 @@ class Entity:
     self.ScMRG = self.cMRG
     self.SLV = self.LV
     self.SXP = self.XP
-    self.Sisopoints = self.isopoints
+    self.Sbisopoints = self.isopoints
     self.Sskills = []
     for x in self.skills:
       self.Sskills.append(x)
@@ -486,6 +507,7 @@ class Entity:
       self.cHP = self.CcHP
       self.cMP = self.CcMP
       self.isopoints = self.Cisopoints
+      self.bisopoints = self.Cbisopoints
       self.battleinventory = []
       for x in self.Cbattleinventory:
         self.battleinventory.append(x)
@@ -496,6 +518,7 @@ class Entity:
       self.cHP = self.ScHP
       self.cMP = self.ScMP
       self.isopoints = self.Sisopoints
+      self.bisopoints = self.Sbisopoints
       self.battleinventory = []
       for x in self.Sbattleinventory:
         self.battleinventory.append(x)
@@ -532,6 +555,50 @@ class Entity:
     self.XP = self.SXP
     self.purge("Map Reset",al,en)
     self.purge("Death",al,en)
+
+  def ISOlevelup(self):
+    if self.bisopoints >= 1000 and self.isoLevel == 2:
+      self.isoLevel = 3
+      if self.NAME == "Ishraq":
+        print(fore.RED_1+style.BOLD+"Ishraq's ISO-Transformation upgrades to Level 2!"+style.RESET)
+      elif self.NAME == "Kelly":
+        print(fore.MAGENTA_1+style.BOLD+"Kelly's ISO-Transformation upgrades to Level 2!"+style.RESET)
+      elif self.NAME == "Julius":
+        print(fore.GREEN_1+style.BOLD+"Julius's ISO-Transformation upgrades to Level 2!"+style.RESET)
+      elif self.NAME == "Daniel":
+        print(fore.YELLOW_1+style.BOLD+"Daniel's ISO-Transformation upgrades to Level 2!"+style.RESET)
+      elif self.NAME  == "Tim":
+        print(fore.CYAN_1+style.BOLD+"Tim's ISO-Transformation upgrades to Level 2!"+style.RESET)
+      elif self.NAME == "Arwyn":
+        print(fore.DODGER_BLUE_1+style.BOLD+"Arwyn's ISO-Transformation upgrades to Level 2!"+style.RESET)
+    if self.bisopoints >= 3000 and self.isoLevel == 3:
+      self.isoLevel = 4
+      if self.NAME == "Ishraq":
+        print(fore.RED_1+style.BOLD+"Ishraq's ISO-Transformation upgrades to Level 3!"+style.RESET)
+      elif self.NAME == "Kelly":
+        print(fore.MAGENTA_1+style.BOLD+"Kelly's ISO-Transformation upgrades to Level 3!"+style.RESET)
+      elif self.NAME == "Julius":
+        print(fore.GREEN_1+style.BOLD+"Julius's ISO-Transformation upgrades to Level 3!"+style.RESET)
+      elif self.NAME == "Daniel":
+        print(fore.YELLOW_1+style.BOLD+"Daniel's ISO-Transformation upgrades to Level 3!"+style.RESET)
+      elif self.NAME  == "Tim":
+        print(fore.CYAN_1+style.BOLD+"Tim's ISO-Transformation upgrades to Level 3!"+style.RESET)
+      elif self.NAME == "Arwyn":
+        print(fore.DODGER_BLUE_1+style.BOLD+"Arwyn's ISO-Transformation upgrades to Level 3!"+style.RESET)
+    if self.bisopoints >= 6000 and self.isoLevel == 4:
+      self.isoLevel = 5
+      if self.NAME == "Ishraq":
+        print(fore.RED_1+style.BOLD+"Ishraq's ISO-Transformation upgrades to Level 4!"+style.RESET)
+      elif self.NAME == "Kelly":
+        print(fore.MAGENTA_1+style.BOLD+"Kelly's ISO-Transformation upgrades to Level 4!"+style.RESET)
+      elif self.NAME == "Julius":
+        print(fore.GREEN_1+style.BOLD+"Julius's ISO-Transformation upgrades to Level 4!"+style.RESET)
+      elif self.NAME == "Daniel":
+        print(fore.YELLOW_1+style.BOLD+"Daniel's ISO-Transformation upgrades to Level 4!"+style.RESET)
+      elif self.NAME  == "Tim":
+        print(fore.CYAN_1+style.BOLD+"Tim's ISO-Transformation upgrades to Level 4!"+style.RESET)
+      elif self.NAME == "Arwyn":
+        print(fore.DODGER_BLUE_1+style.BOLD+"Arwyn's ISO-Transformation upgrades to Level 4!"+style.RESET)
 
   def Ishraqlevelup(self,gain,Colis=False):
     xpl = [50,150,300,500,750,1050,1400,1800,2300,2900,3600,4400,5300,6300,7500,8900,10500,12300,14300,16550,19050,21800,24800,28050,31550,35300,39300,43550,48050,52800,57800,63050,68550,74300,80300,86550,93100,100000]
@@ -1104,6 +1171,7 @@ class Entity:
       self.LV = self.LV + 1 
       self.da = self.da + 1
       self.que = self.que + 1
+      teamskill()
       self.levelstatup(25,10,4,2,4,3,0,0,0,1,0,0,0)
     if self.XP >=2900 and self.LV == 10:
       self.LV = self.LV + 1 
@@ -1136,6 +1204,7 @@ class Entity:
       self.LV = self.LV + 1 
       self.da = self.da + 1
       self.que = self.que + 1
+      teamskill()
       self.levelstatup(50,10,4,2,4,2,0,0,0,1,0,0,1)
     if self.XP >=16550 and self.LV == 20:
       self.LV = self.LV + 1 
@@ -1168,6 +1237,7 @@ class Entity:
       self.LV = self.LV + 1 
       self.da = self.da + 1
       self.que = self.que + 1
+      teamskill()
       self.levelstatup(60,15,5,2,5,2,0,0,0,1,0,0,1)
     if self.XP >=52800 and self.LV == 30:
       self.LV = self.LV + 1 
@@ -1343,23 +1413,25 @@ class Entity:
     else:
       print(self.NAME,"gains",gain,"XP!",(xpl[((self.LV)-1)]-self.XP),"XP until level up!")
 
-  def Isopower(self,al,EW=False):
+  def Isopower(self,al,EW=False,sk=False):
     if EW == True:
       self.skills.insert(0,"Runner's High")
       self.shi = self.shi - 3
       self.ISOmode = False
     else:
       if self.ISOmode == True:
-        if self.cHP > 0:
-          if self.isopoints < 100:
-            self.isopoints = 0
-          else:
-            self.isopoints = self.isopoints - 100
-        if self.isopoints <= 0 or (self.cHP <= 0 and self.immortal <= 0):
-          self.isopoints = 0
-          time.sleep(1)
+        if sk == False:
           if self.cHP > 0:
-            print("\n"+self.NAME,"reverts back to their normal state, exiting ISO-mode!")
+            if self.isopoints < 100:
+              self.isopoints = 0
+            else:
+              self.isopoints = self.isopoints - 100
+        if self.isopoints <= 0 or (self.cHP <= 0 and self.immortal <= 0) or sk == True:
+          self.isopoints = 0
+          if sk == False:
+            time.sleep(1)
+            if self.cHP > 0:
+              print("\n"+self.NAME,"reverts back to their normal state, exiting ISO-mode!")
           if self.NAME == "Ishraq":
             self.skills.remove("Enrage")
             self.skills.insert(0,"Wild Instinct")
@@ -1461,6 +1533,7 @@ class Entity:
       self.da = self.da + 1
     if skillname == "Quen":
       self.que = self.que + 1
+      teamskill()
     if skillname == "Autosentry":
       self.auto = self.auto + 1
     if skillname == "Chronopower":
@@ -1548,6 +1621,7 @@ class Entity:
       if self.mgh[1] in enemy.team:
         if self.mgh[1].runhigh <= 0 or self.mgh[1].stunimmune[0] != 1:
           self.pSP = self.pSP * 0.7
+          self.pEV = self.pEV * 0.7
       else:
         if self.mgh[1] == self:
           self.fEV = self.fEV + 40
@@ -1663,7 +1737,7 @@ class Entity:
       self.fMPN = self.fMPN + (30+(self.onet*7.5))
 
     if self.marked[0] > 0:
-      self.dmgreduct = self.dmgreduct * (1.09+(0.04*self.marked[2].arri))
+      self.dmgreduct = self.dmgreduct * (1.09+((0.16/240)*self.supportscale()))
     
     if self.solitude[0] > 0:
       self.pAT = self.pAT * (1.1+(0.05*self.solitude[1].recl))
@@ -1751,7 +1825,8 @@ class Entity:
           if len(ally.team) > 2:
             self.pDF = self.pDF * (1.2 + (0.05*x.valo))
           if len(ally.team) > 3:
-            self.pSP = self.pSP * (1.2 + (0.05*x.valo))
+            if self.NAME != "Ishraq":
+              self.pSP = self.pSP * (1.2 + (0.05*x.valo))
           break
 
     if self.immortal > 0:   #On turn buff
@@ -1779,7 +1854,7 @@ class Entity:
       self.pAT = self.pAT * (1.5+(0.05*self.run))
       self.pDF = self.pDF * (1.5+(0.05*self.run))
       
-    if self.tremsl > 0:    #Global debuff
+    if self.tremsl > 0 or self.tremstun > 0:    #Global debuff
       if self.runhigh <= 0 or self.stunimmune[0] != 1:
         self.pSP = self.pSP * 0.5
 
@@ -1882,8 +1957,8 @@ class Entity:
 
     if len(self.bonded) > 0:
       self.dmgreduct = self.dmgreduct * (0.6-(0.05*self.bonded[1].knightv))
-      self.fAT = self.fAT + ((0.02+(0.005*self.bonded[1].knightv))*self.bonded[1].fHP)
-      self.fMAT = self.fMAT + ((0.02+(0.005*self.bonded[1].knightv))*self.bonded[1].fHP)
+      self.fAT = self.fAT + ((0.02+(0.005*self.bonded[1].knightv))*self.bonded[1].cHP)
+      self.fMAT = self.fMAT + ((0.02+(0.005*self.bonded[1].knightv))*self.bonded[1].cHP)
 
     if self.rested > 0:
       self.pAT = self.pAT * (1.3+(0.075*self.powres))
@@ -1995,6 +2070,24 @@ class Entity:
       self.pAT = self.pAT * 10
       self.pMAT = self.pMAT * 10
 
+    if self.grav > 0:
+      self.pSP = self.pSP * 0.7
+      self.pEV = self.pEV * 0.7
+
+    if self.yyrd > 0:
+      self.pSP = self.pSP * 0.75
+
+    if self.skated > 0:
+      self.pDF = self.pDF * 0.65
+
+    if self.kusar > 0:
+      self.pCT = self.pCT * 4
+      self.CTdmg = self.CTdmg + 0.25
+
+    if self.NAME == "The Fence" and self.cHP <= (0.5*self.fHP):
+      self.fCT = self.fCT + 80
+      
+
   def maptimers(self,ally,enemy): #Map effects, on no matter what, usually with global timers
     global sett
 
@@ -2051,6 +2144,18 @@ class Entity:
         for x in ally.deadteam:
           x.chilled = 0
 
+    if self.yyrd > 0:
+      self.yyrd = self.yyrd - 1
+      if self.yyrd == 0:
+        time.sleep(0.5)
+        print("\nThe Yrden trap dissipates from the battlefield!")
+        for x in ally.team:
+          x.yyrd = 0
+        for x in ally.backteam:
+          x.yyrd = 0
+        for x in ally.deadteam:
+          x.yyrd = 0
+
   def globaltimers(self):
     global sett
     global player1
@@ -2084,6 +2189,12 @@ class Entity:
         for x in player2.team:
           if x.NAME == "Mrs. Wells":
             x.missingnotes = x.missingnotes + 1
+
+    if self.grav > 0:
+      self.grav = self.grav - 1
+      if self.grav == 0:
+        time.sleep(0.5)
+        print("\n"+self.NAME,"is no longer pressured by increased gravity!")
 
     if self.statr == True:
       HPlist = []
@@ -2310,7 +2421,7 @@ class Entity:
         self.dmgstore = self.dmgstore + (sett-self.cHP)
         yik = 1
         if self.marked[0] > 0:
-          self.marked[1] = self.marked[1] + ((0.1+(0.05*self.marked[2].arri))*(sett-self.cHP))
+          self.marked[1] = self.marked[1] + ((0.1+((0.1/240)*self.supportscale()))*(sett-self.cHP))
           ari = 1
 
       if self.NAME == "Amira" and self.resil == 1 and self.ID !="11":
@@ -2458,7 +2569,7 @@ class Entity:
         if yik == 0:
           self.dmgstore = self.dmgstore + (sett-self.cHP)
         if ari == 0 and self.marked[0] > 0:
-          self.marked[1] = self.marked[1] + ((0.1+(0.05*self.marked[2].arri))*(sett-self.cHP))
+          self.marked[1] = self.marked[1] + ((0.1+((0.1/240)*self.supportscale()))*(sett-self.cHP))
         
   def prehiteffects(self,ene):
     global sett
@@ -2504,7 +2615,19 @@ class Entity:
     if (len(self.duel) >0 and ene not in self.duel) or (len(ene.duel)>0 and self not in ene.duel):
       self.cAT = 0
       self.cMAT = 0
-      
+
+    if self.sword == 1:
+      if "Monster" not in ene.GEND:
+        self.cAT = self.cAT * 1.5
+      else:
+        self.cAT = self.cAT * 0.5
+    
+    if self.sword == 2:
+      if "Monster" in ene.GEND:
+        self.cAT = self.cAT * 1.5
+      else:
+        self.cAT = self.cAT * 0.5
+ 
   def onhittimersoffense(self,ene,timer,mr=""):
     global sett
     global player1
@@ -2589,7 +2712,7 @@ class Entity:
           else:
             print("\nThe essence of time affects",ene.NAME+", reaping their speed to",self.NAME+", and dealing",fore.PURPLE_1B + str(sett-ene.cHP) + style.RESET,"damage!",ene.NAME,"has",ene.cHP,"health remaining!")
         else:
-          print("\nThe essence of time affects",ene.NAME+", reaping their speed to",self.NAME+", and dealing",fore.PURPLE_1B + str(sett-ene.cHP) + style.RESET,"damage!",ene.NAME,"has",ene.cHP,"falls...")
+          print("\nThe essence of time affects",ene.NAME+", reaping their speed to",self.NAME+", and dealing",fore.PURPLE_1B + str(sett-ene.cHP) + style.RESET,"damage!",ene.NAME,"falls...")
         ene.onhittimersdefense(self,0,dmg,"Magical")
 
     if self.darks == True and (self.invis > 0 or self.instant == True):
@@ -2705,6 +2828,12 @@ class Entity:
           print("\n"+ene.NAME,"is affected by the telpathic attack, taking", fore.PURPLE_1B + str(sett-ene.cHP) + style.RESET,"damage!",ene.NAME,"falls...")
         ene.onhittimersdefense(self,timer,dmg,"Magical")
 
+    if self.wee < 3 and self.NAME == "Geralt":
+      self.wee = self.wee + 3
+      if self.wee == 3:
+        self.spin(player2)
+        self.wee = 0
+
   def onturntimers(self,ally,enemy):
 
     if self.OB == True:
@@ -2728,8 +2857,9 @@ class Entity:
         print("\n"+self.NAME,"no longer feels the breeze!")
 
     if self.immortal > 0:
-      if self.immortal != 1 and self.ISOmode == False:
-        self.immortal = self.immortal - 1
+      self.immortal = self.immortal - 1
+      if self.ISOmode == True and self.immortal == 0:
+        self.immortal = 1
       if self.immortal == 0:
         time.sleep(0.5)
         print("\n" + self.NAME,"is mortal again!")
@@ -2918,6 +3048,14 @@ class Entity:
           print("\n" + self.NAME,"stops focusing",self.taunted[1].NAME+"!")
           self.taunted = []
 
+    if self.locked[0] > 0:
+      if self == self.locked[2]:
+        self.locked[0] = self.locked[0] - 1
+        if self.locked[0] == 0:
+          print("\n"+self.NAME,"is no longer pinning down",self.locked[1].NAME+"!")
+          self.locked[1].locked = [0]
+          self.locked = [0]
+
     if self.fear > 0:
       self.fear = self.fear - 1
       if self.fear == 0:
@@ -3087,11 +3225,16 @@ class Entity:
         time.sleep(0.2)
         print("\n"+self.NAME+"'s accuracy is no longer being reduced by the chocolate bar!")
 
+    if self.skated > 0:
+      self.skated = self.skated - 1
+      if self.skated == 0:
+        time.sleep(0.2)
+        print("\n"+self.NAME,"is no longer injured from the skateboard crash!")
+
   def stuns(self):
     global bad
     global player1
-    global player2
-    
+    global player2    
     self.stunned = False
     if self.prest > 0:
       time.sleep(0.5)
@@ -3153,6 +3296,11 @@ class Entity:
         self.repulsed = self.repulsed - 1
         self.stunned = True
         print("\n"+self.NAME,"is magnetically locked!")
+      elif self.mental > 0:
+        time.sleep(0.5)
+        self.mental = self.mental - 1
+        self.stunned = True
+        print("\n"+self.NAME,"is mentally incapacitated!")
       elif self.dance > 0:
         time.sleep(0.5)
         self.dance = self.dance - 1
@@ -3172,7 +3320,7 @@ class Entity:
             allf.remove(x)
         if len(allf) > 0:
           att = random.choice(allf)
-          print("\n"+self.NAME,"is dancing uncontrollably, attacking a random target!")
+          print("\n"+self.NAME,"is dancing uncontrollably, attacking an allied target!")
           self.attack(att)
         else:
           print("\n"+self.NAME,"dances uncontrollably!")
@@ -3193,6 +3341,11 @@ class Entity:
         att = random.choice(allf)
         print("\n"+self.NAME,"is confused, attacking a random target!")
         self.attack(att)
+      elif self.locked[0] > 0:
+        if self == self.locked[1]:
+          self.stunned = True
+          time.sleep(0.5)
+          print("\n"+self.NAME,"is chained to the ground!")
       elif self.zanc == 1:
         if self in bots.team:
           self.enemyattacksys(self.zanslash,"Zantetsuken")
@@ -3499,10 +3652,18 @@ class Entity:
           print(fore.LIGHT_CYAN_1+"\nIt's",self.NAME+"'s turn." + style.RESET)
         elif self.ID == "11":
           print(fore.SKY_BLUE_1+"\nIt's",self.NAME+"'s turn." + style.RESET)
+        elif self.ID == "12":
+          print(fore.PURPLE_1B+"\nIt's",self.NAME+"'s turn." + style.RESET)
+        elif self.ID == "13":
+          print(fore.ORANGE_1+"\nIt's",self.NAME+"'s turn." + style.RESET)
+        elif self.ID == "14":
+          print(fore.GREY_100 + style.BOLD+"\nIt's",self.NAME+"'s turn."+style.RESET)
         else:
           print(style.BOLD+"\nIt's",self.NAME+"'s turn."+style.RESET)
         if self.isomode == True and self.isopoints >= 100 and self.ISOmode == False:
           fight = input(fore.GREY_100 + "Attack, Skills, Items, Recover, Check, Support, or Transform? " + style.RESET)
+        elif self.NAME == "Geralt":
+          fight = input(fore.GREY_100 + "Attack, Skills, Items, Recover, Check, Support, or Switch? " + style.RESET)
         else:
           fight = input(fore.GREY_100 + "Attack, Skills, Items, Recover, Check, or Support? " + style.RESET)
         if fight == "1" or fight.lower() == "attack":
@@ -3548,6 +3709,7 @@ class Entity:
             self.isopoints = self.isopoints + (msett-self.cMP)
             if self.isopoints > (100*self.isoLevel):
               self.isopoints = (100*self.isoLevel)
+            self.bisopoints = self.bisopoints + (msett-self.cMP)
           seq = 1
         elif fight == "3" or fight.lower() == "items":
           bad = False
@@ -3561,7 +3723,7 @@ class Entity:
           self.cMP = self.cMP + (2*self.cMRG)
           if self.cMP > self.fMP:
             self.cMP = self.fMP 
-          print("\n" + self.NAME, "relaxes to recover their inner strength, recovering",(self.cMP-buttsss),"mana!",self.NAME,"now has",self.cMP,"mana!")
+          print("\n" + self.NAME, "relaxes to recover their inner strength, recovering",fore.DEEP_SKY_BLUE_1+str(self.cMP-buttsss)+style.RESET,"mana!",self.NAME,"now has",self.cMP,"mana!")
           seq = 1
         elif fight == "5" or fight.lower() == "check":
           pepe = input("\nAllies or Enemies? ")
@@ -3580,9 +3742,17 @@ class Entity:
           if len(enemy.team) == 1:
             if enemy.team[0].cHP <=0:
               seq = 1
-        elif fight == "7" or fight.lower() == "transform":
+        elif fight == "7" or (fight.lower() == "transform" and self.NAME != "Geralt") or (fight.lower() == "switch" and self.NAME == "Geralt"):
           if self.isomode == False or self.isopoints < 100 or self.ISOmode == True:
             continue
+          elif self.NAME == "Geralt":
+            time.sleep(1)
+            if self.sword == 1:
+              print("\nGeralt switches to his Silver Sword, increasing his physical attack against monsters!")
+              self.sword = 2
+            elif self.sword == 2:
+              print("\nGeralt switches to his Steel Sword, increasing his physical attack against humans!")
+              self.sword = 1
           else:
             time.sleep(1)
             self.isopoints = ((self.isopoints//100)*100)
@@ -3659,7 +3829,7 @@ class Entity:
             if self.NAME == "Julius":
               print("\n"+self.NAME,"heals for",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET+" health! He has",self.cHP,"health now!")
             if self.NAME == "Kelly":
-              print("\n"+self.NAME,"recovers",str(self.cMP-sett),"mana! She has",self.cMP,"mana now!")
+              print("\n"+self.NAME,"recovers",fore.DEEP_SKY_BLUE_1+str(self.cMP-sett)+style.RESET,"mana! She has",self.cMP,"mana now!")
             if self.NAME == "Taco Lord":
               print("\n"+self.NAME,"puts a quen shield on himself!")
             if self.NAME == "Daniel":
@@ -3674,8 +3844,8 @@ class Entity:
               
 
   def check(self,ally):
-    print("\n"+ally.NAME+"'s Current Stats:\nHP:",str(ally.cHP)+"/"+str(ally.fHP)+"\nMP:",str(ally.cMP)+"/"+str(ally.fMP)+"\nMRG:",str(ally.cMRG)+"\nAT:",str(ally.cAT)+"\nDF:",str(ally.cDF)+"\nMAT:",str(ally.cMAT)+"\nMDF:",str(ally.cMDF),"\nSP:",str(ally.cSP)+"\nAC:",str(ally.cAC)+"\nEV:",str(ally.cEV)+"\nCT:",str(ally.cCT)+"\nAPN:",str(ally.cAPN)+"\nMPN:",str(ally.cMPN))
-    if self.isomode == True:
+    print("\n"+ally.NAME+"'s Current Stats:",fore.MEDIUM_SPRING_GREEN+"\nHP"+style.RESET+":",str(ally.cHP)+"/"+str(ally.fHP)+fore.DEEP_SKY_BLUE_1+"\nMP"+style.RESET+":",str(ally.cMP)+"/"+str(ally.fMP)+"\nMRG:",str(ally.cMRG)+fore.ORANGE_1+"\nAT"+style.RESET+":",str(ally.cAT)+fore.GREEN_4+"\nDF"+style.RESET+":",str(ally.cDF)+fore.PURPLE_1B+"\nMAT"+style.RESET+":",str(ally.cMAT)+fore.LIGHT_MAGENTA+"\nMDF"+style.RESET+":",str(ally.cMDF),"\nSP:",str(ally.cSP)+fore.DARK_RED_2+"\nAC"+style.RESET+":",str(ally.cAC)+fore.DARK_SEA_GREEN_5B+"\nEV"+style.RESET+":",str(ally.cEV)+fore.YELLOW_1+"\nCT"+style.RESET+":",str(ally.cCT)+"\nAPN:",str(ally.cAPN)+"\nMPN:",str(ally.cMPN))
+    if ally.isomode == True:
       print("ISO:",str(ally.isopoints))
 
 
@@ -4374,6 +4544,89 @@ class Entity:
                 self.cripple(x)
       if bad != True:
         self.cMP = self.cMP - 5
+    elif skill == "Whirl":
+      self.allyskillscost("Whirl",15,"Basic")
+      if bad != True:
+        self.spin(enemy)
+    elif skill == "Gravity Gauntlet":
+      self.allyskillscost("Gravity Gauntlet",50,"Mega")
+      if bad != True:
+        if len(enemy.teamS) > 1:
+          print("")
+          print(enemy.teamS)
+          self.target(self.gravitygauntlet,enemy.team,enemy.teamID)
+        else:
+          if len(enemy.teamS) == 0:
+            print("\nThere is no one to lockdown!")
+            bad = True
+          else:
+            for x in enemy.team:
+              if x.ID in enemy.teamID and (x.invis <=0 or x.revealed > 0):
+                self.gravitygauntlet(x)
+    elif skill == "Skateboard Crash":
+      self.allyskillscost("Skateboard Crash",25,"Basic")
+      if bad != True:
+        if len(enemy.teamS) > 1:
+          print("")
+          print(enemy.teamS)
+          self.target(self.skateboardcrash,enemy.team,enemy.teamID)
+        else:
+          if len(enemy.teamS) == 0:
+            print("\nThere is no one to crash into!")
+            bad = True
+          else:
+            for x in enemy.team:
+              if x.ID in enemy.teamID and (x.invis <=0 or x.revealed > 0):
+                self.skateboardcrash(x)
+    elif skill == "Kusarigama":
+      self.allyskillscost("Kusarigama",100,"Ultra")
+      if bad != True:
+        self.kusarigama()
+    elif skill == "Shellshock":
+      self.allyskillscost("Shellshock",50,"Ultimate")
+      if bad != True:
+        for x in ally.team:
+          if x.NAME == "Michelangelo" and (x.cMP < 50 or x.cHP <= 0):
+            bad = True
+            if x.cHP <= 0:
+              print("\nDonatello cannot cast this skill without Michelagnelo!")
+            elif x.cMP <= 0:
+              print("\nMichelangelo does not have enough mana! He needs",fore.DEEP_SKY_BLUE_1+"50"+style.RESET,"mana to cast this with Donatello!")
+          if x.NAME == "Donatello" and (x.cMP < 50 or x.cHP <= 0):
+            bad = True
+            if x.cHP <= 0:
+              print("\nMichelangelo cannot cast this skill without Donatello!")
+            elif x.cMP <= 0:
+              print("\nDonatello does not have enough mana! He needs",fore.DEEP_SKY_BLUE_1+"50"+style.RESET,"mana to cast this with Michelangelo!")
+        if bad != True:
+          if len(enemy.teamS) > 1:
+            print("")
+            print(enemy.teamS)
+            self.target(self.shellshock,enemy.team,enemy.teamID,al=ally)
+          else:
+            if len(enemy.teamS) == 0:
+              print("\nThere is no one to cripple!")
+              bad = True
+            else:
+              for x in enemy.team:
+                if x.ID in enemy.teamID and (x.invis <=0 or x.revealed > 0):
+                  self.shellshock(x,ally)
+    elif skill == "Aard":
+      self.allyskillscost("Aard",100,"Mega")
+      if bad != True:
+        self.aard(enemy)
+    elif skill == "Igni":
+      self.allyskillscost("Igni",100,"Mega")
+      if bad != True:
+        self.igni(enemy)
+    elif skill == "Yrden":
+      self.allyskillscost("Yrden",100,"Mega")
+      if bad != True:
+        self.yrden(enemy)
+    elif skill == "Axii":
+      self.allyskillscost("Axii",100,"Mega")
+      if bad != True:
+        self.giant()
     elif skill == "Giant":
       self.allyskillscost("Giant",0,"Ultra")
       if bad != True:
@@ -4515,8 +4768,8 @@ class Entity:
       self.allyskillscost("Seeking Mine",0,"Mega")
       if bad != True:
         self.seekingmine()
-    else:
-      print("yes")
+    else: 
+      print("\nMISSING SKILL DATA")
       bad = True
     if bad != True:
       if skill != "Dab":
@@ -4546,33 +4799,33 @@ class Entity:
         if level == "Ultra":
           if cost > round(self.fMP*(0.5-(0.05*self.mimi))):
             if self.cMP < cost:
-              print("\n" + self.NAME, "does not have enough mana! She needs",cost,"mana to cast!")
+              print("\n" + self.NAME, "does not have enough mana! She needs",fore.DEEP_SKY_BLUE_1+str(cost)+style.RESET,"mana to cast!")
               bad = True
           elif cost < round(self.fMP*(0.5-(0.05*self.mimi))):
             if self.cMP < round(self.fMP*(0.5-(0.05*self.mimi))):
-              print("\n" + self.NAME, "does not have enough mana! She needs",round(self.fMP*(0.5-(0.05*self.mimi))),"mana to cast!")
+              print("\n" + self.NAME, "does not have enough mana! She needs",fore.DEEP_SKY_BLUE_1+str(round(self.fMP*(0.5-(0.05*self.mimi))))+style.RESET,"mana to cast!")
               bad = True
         elif level == "Mega":
           if cost > round(self.fMP*(0.4-(0.05*self.mimi))):
             if self.cMP < cost:
-              print("\n" + self.NAME, "does not have enough mana! She needs",cost,"mana to cast!")
+              print("\n" + self.NAME, "does not have enough mana! She needs",fore.DEEP_SKY_BLUE_1+str(cost)+style.RESET,"mana to cast!")
               bad = True
           elif cost < round(self.fMP*(0.4-(0.05*self.mimi))):
             if self.cMP < round(self.fMP*(0.4-(0.05*self.mimi))):
-              print("\n" + self.NAME, "does not have enough mana! She needs",round(self.fMP*(0.4-(0.05*self.mimi))),"mana to cast!")
+              print("\n" + self.NAME, "does not have enough mana! She needs",fore.DEEP_SKY_BLUE_1+str(round(self.fMP*(0.4-(0.05*self.mimi))))+style.RESET,"mana to cast!")
               bad = True
         elif level == "Basic":
           if cost > round(self.fMP*(0.3-(0.05*self.mimi))):
             if self.cMP < cost:
-              print("\n" + self.NAME, "does not have enough mana! She needs",cost,"mana to cast!")
+              print("\n" + self.NAME, "does not have enough mana! She needs",fore.DEEP_SKY_BLUE_1+str(cost)+style.RESET,"mana to cast!")
               bad = True
           elif cost < round(self.fMP*(0.3-(0.05*self.mimi))):
             if self.cMP < round(self.fMP*(0.3-(0.05*self.mimi))):
-              print("\n" + self.NAME, "does not have enough mana! She needs",round(self.fMP*(0.3-(0.05*self.mimi))),"mana to cast!")
+              print("\n" + self.NAME, "does not have enough mana! She needs",fore.DEEP_SKY_BLUE_1+str(round(self.fMP*(0.3-(0.05*self.mimi))))+style.RESET,"mana to cast!")
               bad = True
     else:
       if self.cMP < cost:
-        print("\n" + self.NAME, "does not have enough mana!",self.GEN[2].capitalize(),"needs",cost,"mana to cast!")
+        print("\n" + self.NAME, "does not have enough mana!",self.GEN[2].capitalize(),"needs",fore.DEEP_SKY_BLUE_1+str(cost)+style.RESET,"mana to cast!")
         bad = True
 
   def inventorysystem(self,tea,ene):
@@ -4859,9 +5112,6 @@ class Entity:
         no = 1
     
 
-  def addbattleitem(self,Item):
-    self.battleinventory.append(Item)
-
   def itemcatalog(self,item,tea,ene):
     global bad
     #[1] = AT
@@ -4878,7 +5128,7 @@ class Entity:
     if self.cHP > 0:
       if item == "Chips":
         sett = self.cHP
-        self.cHP = self.cHP + 10
+        self.cHP = self.cHP + 100
         if self.cHP > self.fHP:
           self.cHP = self.fHP
         time.sleep(1)
@@ -4896,71 +5146,229 @@ class Entity:
         self.cHP = self.cHP + (30+round(0.1*self.fHP))
         if self.cHP > self.fHP:
           self.cHP = self.fHP
+        if self.bleedt > 0:
+          self.bleedt = 0
+          self.bleedd = 0
         time.sleep(1)
-        print("\n"+self.NAME,"wraps themselves with bandages, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health!",self.NAME,"has",self.cHP,"health now!")
+        print("\n"+self.NAME,"wraps themselves with bandages, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and curing bleed!",self.NAME,"has",self.cHP,"health now!")
+      if item == "Antidote":
+        msett = self.cMP
+        self.cMP = self.cMP + (10+round(0.1*self.fMP))
+        if self.cMP > self.fMP:
+          self.cMP = self.fMP
+        if self.poisont > 0:
+          self.poisont = 0
+          self.poisond = 0
+        time.sleep(1)
+        print("\n"+self.NAME,"consumes an antidote, recovering",fore.DEEP_SKY_BLUE_1+str(self.cMP-msett)+style.RESET,"mana and curing poison!",self.NAME,"has",self.cHP,"health now!")
+      if item == "Burn Gel":
+        if self.isomode == True:
+          self.isopoints = self.isopoints + 50
+          if self.isopoints > (100*self.isoLevel):
+            self.isopoints = (100*self.isoLevel)
+        if self.burnt > 0:
+          self.burnt = 0
+          self.burnd = 0
+        time.sleep(1)
+        if self.isomode == True:
+          print("\n"+self.NAME,"applies burn gel to their skin, recovering 50 ISO-points and curing burn!")
+        else:
+          print("\n"+self.NAME,"applies burn gel to their skin, curing burn!")
+      if item == "Marijuana":
+        if self.isomode == True:
+          self.isopoints = self.isopoints + 200
+          if self.isopoints > (100*self.isoLevel):
+            self.isopoints = (100*self.isoLevel)
+        if self.food[0] < 2:
+          self.food[0] = 2
+        self.food[11] = self.food[11] + 20
+        time.sleep(1)
+        if self.isomode == True:
+          print("\n"+self.NAME,"smokes some weed, recovering 200 ISO-points and extremely increasing their mana regenration!")
+        else:
+          print("\n"+self.NAME,"smokes some weed, extremely increasing their mana regenration!")
       if item == "Med-Kit":
         sett = self.cHP
         self.cHP = self.cHP + (100+round(0.3*self.fHP))
         if self.cHP > self.fHP:
           self.cHP = self.fHP
+        if self.bleedt > 0:
+          self.bleedt = 0
+          self.bleedd = 0
+        if self.burnt > 0:
+          self.burnt = 0
+          self.burnd = 0
+        if self.bleedt > 0:
+          self.poisont = 0
+          self.poisond = 0
         time.sleep(1)
-        print("\n"+self.NAME,"uses a med-kit, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health!",self.NAME,"has",self.cHP,"health now!")
-      if item == "Scooby Snacks":
+        print("\n"+self.NAME,"uses a med-kit, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and curing bleed, burn, and poison!",self.NAME,"has",self.cHP,"health now!")
+      if item == "Water Bottle":
         sett = self.cHP
-        self.cHP = self.cHP + 24
+        msett = self.cMP
+        self.cHP = self.cHP + round(0.1*self.fHP)
         if self.cHP > self.fHP:
           self.cHP = self.fHP
-        if self.food[0] > 4:
+        self.cMP = self.cMP + round(0.1*self.fMP)
+        if self.cMP > self.fMP:
+          self.cHP = self.fMP
+        if self.food[0] < 6:
+          self.food[0] = 6
+        time.sleep(1)
+        print("\n"+self.NAME,"drinks a water bottle, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and",fore.DEEP_SKY_BLUE_1+str(self.cMP-msett)+style.RESET,"mana!",self.NAME,"has",self.cHP,"health and",self.cMP,"mana now!")
+      if item == "Honey":
+        if self.food[0] < 11:
+          self.food[0] = 11
+        time.sleep(1)
+        print("\n"+self.NAME,"consumes a spoonful of honey, saturating themselves!")
+      if item == "Orange Gatorade":
+        sett = self.cHP
+        msett = self.cMP
+        self.cHP = self.cHP + round(0.1*self.fHP)
+        if self.cHP > self.fHP:
+          self.cHP = self.fHP
+        self.cMP = self.cMP + round(0.15*self.fMP)
+        if self.cMP > self.fMP:
+          self.cHP = self.fMP
+        if self.food[0] < 4:
+          self.food[0] = 4
+        self.food[1] = self.food[1] + 8
+        self.food[11] = self.food[11] + 5
+        time.sleep(1)
+        print("\n"+self.NAME,"drinks an orange flavored Gatorade, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and",fore.DEEP_SKY_BLUE_1+str(self.cMP-msett)+style.RESET,"mana and increasing their physical attack and mana regeneration!",self.NAME,"has",self.cHP,"health and",self.cMP,"mana now!")
+      if item == "Red Gatorade":
+        sett = self.cHP
+        msett = self.cMP
+        self.cHP = self.cHP + round(0.1*self.fHP)
+        if self.cHP > self.fHP:
+          self.cHP = self.fHP
+        self.cMP = self.cMP + round(0.15*self.fMP)
+        if self.cMP > self.fMP:
+          self.cHP = self.fMP
+        if self.food[0] < 4:
+          self.food[0] = 4
+        self.food[6] = self.food[6] + 10
+        self.food[11] = self.food[11] + 5
+        time.sleep(1)
+        print("\n"+self.NAME,"drinks a fruit punch flavored Gatorade, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and",fore.DEEP_SKY_BLUE_1+str(self.cMP-msett)+style.RESET,"mana and increasing their accuracy and mana regeneration!",self.NAME,"has",self.cHP,"health and",self.cMP,"mana now!")
+      if item == "Lime Gatorade":
+        sett = self.cHP
+        msett = self.cMP
+        self.cHP = self.cHP + round(0.1*self.fHP)
+        if self.cHP > self.fHP:
+          self.cHP = self.fHP
+        self.cMP = self.cMP + round(0.15*self.fMP)
+        if self.cMP > self.fMP:
+          self.cHP = self.fMP
+        if self.food[0] < 4:
+          self.food[0] = 4
+        self.food[5] = self.food[5] + 5
+        self.food[11] = self.food[11] + 5
+        time.sleep(1)
+        print("\n"+self.NAME,"drinks a lemon-lime flavored Gatorade, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and",fore.DEEP_SKY_BLUE_1+str(self.cMP-msett)+style.RESET,"mana and increasing their speed and mana regeneration!",self.NAME,"has",self.cHP,"health and",self.cMP,"mana now!")
+      if item == "Red Bull":
+        sett = self.cHP
+        msett = self.cMP
+        self.cMP = self.cMP + round(0.35*self.fMP)
+        if self.cMP > self.fMP:
+          self.cHP = self.fMP
+        if self.food[0] < 5:
+          self.food[0] = 5
+        self.food[11] = self.food[11] + 10
+        self.food[6] = self.food[6] + 10
+        self.food[8] = self.food[8] + 10
+        time.sleep(1)
+        print("\n"+self.NAME,"drinks a Red Bull, recovering",fore.DEEP_SKY_BLUE_1+str(self.cMP-msett)+style.RESET,"mana and increasing their evasion, speed, and mana regeneration!",self.NAME,"has",self.cHP,"health and",self.cMP,"mana now!")
+      if item == "Monster Energy":
+        sett = self.cHP
+        msett = self.cMP
+        self.cMP = self.cMP + round(0.35*self.fMP)
+        if self.cMP > self.fMP:
+          self.cHP = self.fMP
+        if self.food[0] < 5:
+          self.food[0] = 5
+        self.food[11] = self.food[11] + 10
+        self.food[6] = self.food[6] + 10
+        self.food[8] = self.food[8] + 10
+        time.sleep(1)
+        print("\n"+self.NAME,"drinks a Monster Energy, recovering",fore.DEEP_SKY_BLUE_1+str(self.cMP-msett)+style.RESET,"mana and increasing their accuracy, critical chance, and mana regeneration!",self.NAME,"has",self.cHP,"health and",self.cMP,"mana now!")
+      if item == "Coffee":
+        sett = self.cHP
+        msett = self.cMP
+        self.cMP = self.cMP + round(0.35*self.fMP)
+        if self.cMP > self.fMP:
+          self.cHP = self.fMP
+        if self.food[0] < 3:
+          self.food[0] = 3
+        self.food[11] = self.food[11] + 15
+        time.sleep(1)
+        print("\n"+self.NAME,"drinks coffee, recovering",fore.DEEP_SKY_BLUE_1+str(self.cMP-msett)+style.RESET,"mana and drastically increasing their mana regeneration!",self.NAME,"has",self.cHP,"health and",self.cMP,"mana now!")
+      if item == "Scooby Snacks":
+        sett = self.cHP
+        self.cHP = self.cHP + (24+round(0.05*self.fHP))
+        if self.cHP > self.fHP:
+          self.cHP = self.fHP
+        if self.food[0] < 4:
           self.food[0] = 4
         self.food[2] = self.food[2] + 5
         time.sleep(1)
         print("\n"+self.NAME,"eats scooby snacks, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and slightly inreasing their physical defense!",self.NAME,"has",self.cHP,"health now!")
-      if item == "Blue Doritos":
+      if item == "Red Doritos":
         sett = self.cHP
-        self.cHP = self.cHP + 15
+        self.cHP = self.cHP + (15+round(0.02*self.fHP))
         if self.cHP > self.fHP:
           self.cHP = self.fHP
-        if self.food[0] > 3:
+        if self.food[0] < 3:
           self.food[0] = 3
-        self.food[3] = self.food[11] + 5
+        self.food[1] = self.food[1] + 5
+        time.sleep(1)
+        print("\n"+self.NAME,"eats nacho cheese doritos, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and inreasing their physical attack!",self.NAME,"has",self.cHP,"health now!")
+      if item == "Blue Doritos":
+        sett = self.cHP
+        self.cHP = self.cHP + (15+round(0.02*self.fHP))
+        if self.cHP > self.fHP:
+          self.cHP = self.fHP
+        if self.food[0] < 3:
+          self.food[0] = 3
+        self.food[3] = self.food[3] + 5
         time.sleep(1)
         print("\n"+self.NAME,"eats cool ranch doritos, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and inreasing their magic attack!",self.NAME,"has",self.cHP,"health now!")
       if item == "Fuze":
         sett = self.cHP
-        self.cHP = self.cHP + 35
+        self.cHP = self.cHP + (35+round(0.04*self.fHP))
         if self.cHP > self.fHP:
           self.cHP = self.fHP
-        if self.food[0] > 5:
+        if self.food[0] < 5:
           self.food[0] = 5
         self.food[6] = self.food[6] + 5
         time.sleep(1)
         print("\n"+self.NAME,"drinks Fuze, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and slightly inreasing their accuracy!",self.NAME,"has",self.cHP,"health now!")
       if item == "Daisy Cookie":
         sett = self.cHP
-        self.cHP = self.cHP + 22
+        self.cHP = self.cHP + (22+round(0.0225*self.fHP))
         if self.cHP > self.fHP:
           self.cHP = self.fHP
-        if self.food[0] > 5:
+        if self.food[0] < 5:
           self.food[0] = 5
         self.food[2] = self.food[2] + 9
         time.sleep(1)
         print("\n"+self.NAME,"eats a daisy cookie, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and inreasing their physical defense!",self.NAME,"has",self.cHP,"health now!")
       if item == "Cupcake":
         sett = self.cHP
-        self.cHP = self.cHP + 14
+        self.cHP = self.cHP + (14+round(0.015*self.fHP))
         if self.cHP > self.fHP:
           self.cHP = self.fHP
-        if self.food[0] > 3:
+        if self.food[0] < 3:
           self.food[0] = 3
         self.food[4] = self.food[4] + 9
         time.sleep(1)
         print("\n"+self.NAME,"eats a cupcake, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and inreasing their magical defense!",self.NAME,"has",self.cHP,"health now!")
       if item == "Cereal Bar":
         sett = self.cHP
-        self.cHP = self.cHP + 20
+        self.cHP = self.cHP + (20+round(0.03*self.fHP))
         if self.cHP > self.fHP:
           self.cHP = self.fHP
-        if self.food[0] > 3:
+        if self.food[0] < 3:
           self.food[0] = 3
         self.food[2] = self.food[2] + 4
         self.food[4] = self.food[4] + 4
@@ -5181,20 +5589,67 @@ class Entity:
             for x in enemy.team:
               if x.ID in enemy.teamID and (x.invis <=0 or x.revealed > 0):
                 self.awkwardtouch(x)
+
+      elif per.name == "Khalil":
+        if len(enemy.teamS) > 1:
+          print("")
+          print(enemy.teamS)
+          self.target(self.arrivederci,enemy.team,enemy.teamID)
+        else:
+          if len(enemy.teamS) == 0:
+            print("\nThere is no one to bid farwell!")
+            bad = True
+          else:
+            for x in enemy.team:
+              if x.ID in enemy.teamID and (x.invis <=0 or x.revealed > 0):
+                self.arrivederci(x)
           
     if bad != True:
       per.use()
   
   def supportscale(self):
-    global player1
-    TL = 0
-    for x in player1.team:
-      TL = TL + x.LV
-    for x in player1.backteam:
-      TL = TL + x.LV
-    for x in player1.deadteam:
-      TL = TL + x.LV
+    global Ishraq
+    global Kelly
+    global Julius
+    global Tim
+    global Daniel
+    global Arwyn
+    TL = Ishraq.LV + Kelly.LV + Julius.LV + Tim.LV + Daniel.LV + Arwyn.LV
     return TL
+
+  def superscale(self):
+    if self.NAME == "Donatello":
+      self.HP = self.HP + round((1805/240)*self.supportscale())
+      self.AT = self.AT + round((150/240)*self.supportscale())
+      self.DF = self.DF + round((100/240)*self.supportscale())
+      self.MAT = self.MAT + round((80/240)*self.supportscale())
+      self.MDF = self.MDF + round((100/240)*self.supportscale())
+    if self.NAME == "Michelangelo":
+      self.HP = self.HP + round((1530/240)*self.supportscale())
+      self.AT = self.AT + round((140/240)*self.supportscale())
+      self.DF = self.DF + round((95/240)*self.supportscale())
+      self.MAT = self.MAT + round((40/240)*self.supportscale())
+      self.MDF = self.MDF + round((60/240)*self.supportscale())
+    if self.NAME == "Geralt":
+      self.HP = self.HP + round((1900/240)*self.supportscale())
+      self.AT = self.AT + round((175/240)*self.supportscale())
+      self.DF = self.DF + round((80/240)*self.supportscale())
+      self.MAT = self.MAT + round((100/240)*self.supportscale())
+      self.MDF = self.MDF + round((80/240)*self.supportscale())
+    if "Ninja" in self.NAME: 
+      self.HP = self.HP + round((750/240)*self.supportscale())
+      self.AT = self.AT + round((60/240)*self.supportscale())
+      self.DF = self.DF + round((35/240)*self.supportscale())
+      self.MAT = self.MAT + round((60/240)*self.supportscale())
+      self.MDF = self.MDF + round((50/240)*self.supportscale())
+    if "Kraang" in self.NAME:
+      self.HP = self.HP + round((750/240)*self.supportscale())
+      self.AT = self.AT + round((60/240)*self.supportscale())
+      self.DF = self.DF + round((35/240)*self.supportscale())
+      self.MAT = self.MAT + round((60/240)*self.supportscale())
+      self.MDF = self.MDF + round((50/240)*self.supportscale())
+    self.cHP = self.HP
+    self.cMP = self.MP
   
   def grootroot(self,enemy):
     time.sleep(1)
@@ -5393,9 +5848,9 @@ class Entity:
     time.sleep(1)
     diff = enemy.cEV - 100
     if random.randint(1,100) <= diff:
-      print("\nAndrew vulgarly curses out",enemy.NAME,"poisoning them!")
+      print("\nAndrew vulgarly curses out",enemy.NAME+", but they remain unphased!")
     else:
-      print("\nAndrew vulgarly curses out",enemy.NAME,"but they remain unphased!")
+      print("\nAndrew vulgarly curses out",enemy.NAME+", poisoning them!")
       if enemy.poisont < 2:
         enemy.poisont = 2
       enemy.poisond = enemy.poisond + (20 + round((180/240)*self.supportscale()))
@@ -5478,9 +5933,9 @@ class Entity:
         self.cMP = self.fMP
       time.sleep(0.5)
       if self.NAME == "Lascelles":
-        print("\n"+self.NAME,"receives blessings and empowerment, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and",fore.MEDIUM_SPRING_GREEN+str(self.cMP-msett)+style.RESET,"mana!")
+        print("\n"+self.NAME,"receives blessings and empowerment, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and",fore.DEEP_SKY_BLUE_1+str(self.cMP-msett)+style.RESET,"mana!")
       else:
-        print("\n"+self.NAME,"receives Lacelles's blessings and empowerment, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and",fore.MEDIUM_SPRING_GREEN+str(self.cMP-msett)+style.RESET,"mana!")
+        print("\n"+self.NAME,"receives Lacelles's blessings and empowerment, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health and",fore.DEEP_SKY_BLUE_1+str(self.cMP-msett)+style.RESET,"mana!")
     else:
       print("\nLascelles calls upon the power of god and anime to support his allies in battle!")
       hps = []
@@ -5506,7 +5961,7 @@ class Entity:
           if x.NAME == "Lascelles":
             print("\n"+x.NAME,"receives empowerment, recovering",fore.MEDIUM_SPRING_GREEN+str(self.cHP-sett)+style.RESET,"health!")
           else:
-            print("\n"+x.NAME,"receives Lacelles's empowerment, recovering",fore.MEDIUM_SPRING_GREEN+str(x.cMP-msett)+style.RESET,"mana!")
+            print("\n"+x.NAME,"receives Lacelles's empowerment, recovering",fore.DEEP_SKY_BLUE_1+str(x.cMP-msett)+style.RESET,"mana!")
 
   def orangejustice(self,enemy):
     time.sleep(1)
@@ -5801,7 +6256,7 @@ class Entity:
           else:
             print("\n"+x.NAME,"is hit, taking",fore.ORANGE_1 + str(sett-x.cHP) + style.RESET,"damage!",x.NAME,"falls...")
           x.onhittimersdefense(self,0,dmg,"Physical Ranged") 
-    elif (a2 == "w" and a3 == "s"):
+    elif (a2 == "w" and a3 == "s") and self.sma >= 1:
       time.sleep(0.5)
       diff = enemy.cEV - self.cAC
       if random.randint(1,100) <= diff:
@@ -6071,7 +6526,7 @@ class Entity:
             self.cMP = self.cMP + (2*self.cMRG)
             if self.cMP > self.fMP:
               self.cMP = self.fMP 
-            print("\n" + self.NAME, "relaxes to recover their inner strength, recovering",(self.cMP-buttsss),"mana!",self.NAME,"now has",self.cMP,"mana!")
+            print("\n" + self.NAME, "relaxes to recover their inner strength, recovering",fore.DEEP_SKY_BLUE_1+str(self.cMP-buttsss)+style.RESET,"mana!",self.NAME,"now has",self.cMP,"mana!")
             seq = 1
           elif fight == "4" or fight.lower() == "check":
             pepe = input("\nAllies or Enemies? ")
@@ -6095,7 +6550,9 @@ class Entity:
   def calligraphy(self,enemy):  
     global sett
     self.cMP = self.cMP - 20
-    self.isopoints = self.isopoints + 60
+    if self.isomode == True and self.ISOmode == False:
+      self.isopoints = self.isopoints + 60
+      self.bisopoints = self.bisopoints + 60
     self.prehiteffects(enemy) 
     time.sleep(1) 
     spac = round((2+(0.5*self.callig))*self.cAC)
@@ -6272,7 +6729,7 @@ class Entity:
           time.sleep(1)
           print("\n"+self.NAME, "achieves stunning",self.GEN[0],"opponent.")
           time.sleep(1)
-          print(""+self.NAME+": The finale...")
+          print(""+self.NAME+": The Finale...")
           time.sleep(1)
           sett = enemy.cHP
           self.cMPN = round(self.cMPN*2)
@@ -6344,8 +6801,9 @@ class Entity:
       self.prehiteffects(x)
       sett = x.cHP
       diff = x.cEV - self.cAC 
+      time.sleep(0.1)
       if random.randint(1,100) <= diff:
-        print(x.NAME,"jumps off the ground before they can fall!")
+        print("\n"+x.NAME,"jumps off the ground before they can fall!")
         x.specialdodgecases(self,0.1,"Physical Ranged")
       else:
         dmg = (((0.7+(0.05*self.trem))*self.cAT)+((1.0+(0.2*self.trem))*self.cMAT))
@@ -6355,21 +6813,21 @@ class Entity:
           x.tremstun = 1
           if x.cHP > 0:
             if dmg1 == 0:
-              print(x.NAME,"topples over, but takes no damage!")
+              print("\n"+x.NAME,"topples over, but takes no damage!")
             else:
-              print(x.NAME,"topples over, taking",fore.ORANGE_1 + str(dmg1) + style.RESET,"damage!",x.NAME,"has",x.cHP,"health remaining!")
+              print("\n"+x.NAME,"topples over, taking",fore.ORANGE_1 + str(dmg1) + style.RESET,"damage!",x.NAME,"has",x.cHP,"health remaining!")
           else:
-            print(x.NAME,"topples over, taking",fore.ORANGE_1 + str(dmg1) + style.RESET,"damage!",x.NAME,"falls...")    
+            print("\n"+x.NAME,"topples over, taking",fore.ORANGE_1 + str(dmg1) + style.RESET,"damage!",x.NAME,"falls...")    
           x.onhittimersdefense(self,0.2,dmg,"Physical Ranged")
         else:
           x.tremsl = 2
           if x.cHP > 0:
             if dmg1 == 0:
-              print(x.NAME,"trembles, but takes no damage!")
+              print("\n"+x.NAME,"trembles, but takes no damage!")
             else:
-              print(x.NAME,"trembles, taking",fore.ORANGE_1 + str(dmg1) + style.RESET,"damage!",x.NAME,"has",x.cHP,"health remaining!")
+              print("\n"+x.NAME,"trembles, taking",fore.ORANGE_1 + str(dmg1) + style.RESET,"damage!",x.NAME,"has",x.cHP,"health remaining!")
           else:
-            print(x.NAME,"trembles, taking",fore.ORANGE_1 + str(dmg1) + style.RESET,"damage!",x.NAME,"falls...")
+            print("\n"+x.NAME,"trembles, taking",fore.ORANGE_1 + str(dmg1) + style.RESET,"damage!",x.NAME,"falls...")
           x.onhittimersdefense(self,0.2,dmg,"Physical Ranged")
        
  
@@ -6378,6 +6836,7 @@ class Entity:
     ally.isoboost = 6
     ally.isoboostL = 1
     ally.isopoints = ally.isopoints + (100+(50*self.isom))
+    ally.bisopoints = ally.bisopoints + (100+(50*self.isom))
     if ally.isopoints > (100*ally.isoLevel):
       ally.isopoints = (100*ally.isoLevel)
     time.sleep(1)
@@ -6563,6 +7022,7 @@ class Entity:
     time.sleep(1)
     if random.randint(1,100) <= diff:
       print("\n" + self.NAME, "tries to rub",self.GEN[0],"greasy hands on",enemy.NAME + ", but they push ",self.GEN[1],"back!")
+      enemy.specialdodgecases(self,0.5,"None")
     else:
       if enemy.poisont < 3:
         enemy.poisont = 3
@@ -6765,7 +7225,10 @@ class Entity:
       enemy.onhittimersdefense(self,0.5,dmg,"Magical Ranged")
 
   def quen(self,ally,tea,ene):
-    self.cMP = self.cMP - 80
+    if self.NAME == "Geralt":
+      self.cMP = self.cMP - 100
+    else:
+      self.cMP = self.cMP - 80
     ally.purge("Cleanse",tea,ene)
     ally.quenshield = True
     time.sleep(1)
@@ -6781,6 +7244,7 @@ class Entity:
       self.dark = 0
       self.glock = 0
       self.chilled = 0
+      self.yyrd = 0
     if types == "Purge":
       None
     if types == "Cleanse":
@@ -6818,6 +7282,7 @@ class Entity:
       self.paralyzed = 0
       self.repulsed = 0
       self.confused = 0
+      self.mental = 0
       self.taunted = []
       self.tauntt = 0
       if op == False:
@@ -6825,16 +7290,19 @@ class Entity:
           if len(x.taunted) > 0:
             if self == x.taunted[1]:
               x.taunted = []
+      self.skated = 0
+      self.grav = 0
       #Boss debuffs
       self.candyAC = 0
       self.blind = 0
       self.scirc = 0
+      if len(self.locked) > 1 and self == self.locked[1]:
+        self.locked[2].locked = [0]
+      self.locked = [0]     
       #Supports
       self.caressed = 0
     elif types == "Death": 
-      self.ISOmode = False
-      if self.NAME == "Taco Lord":
-        self.NAME == "Tim"
+      self.Isopower(you,sk=True)
       self.skills = []
       if mid == False:
         for x in self.Sskills:
@@ -6915,6 +7383,11 @@ class Entity:
       self.emmortal = 0
       self.solitude = [0]
       self.onethro = 0
+      self.grav = 0
+      self.kusar = 0
+      self.skated = 0
+      self.sword = 0
+      self.wee = 0
       self.fear = 0      #Negative Effects
       self.confusion = 0
       self.charmed = 0
@@ -6949,6 +7422,7 @@ class Entity:
       self.frozen = 0
       self.paralyzed = 0
       self.repulsed = 0
+      self.mental = 0
       self.deturn = 0
       self.taunted = []
       self.tauntt = 0
@@ -6987,6 +7461,10 @@ class Entity:
       self.notecount = 0
       #Mr.Pudup
       self.blind = 0
+      #Fence
+      if len(self.locked) > 1 and self == self.locked[1]:
+        self.locked[2].locked = [0]
+      self.locked = [0]
       #Terra
       self.zanc = 0
       #Aqua
@@ -7614,6 +8092,7 @@ class Entity:
         self.cMP = self.cMP + enemy.cMP
         enemy.cMP = 0
       self.isopoints = self.isopoints + (msett-enemy.cMP)
+      self.bisopoints = self.bisopoints + (msett-enemy.cMP)
       if self.isopoints > (100*self.isoLevel):
         self.isopoints = (100*self.isoLevel)
       if self.cMP > self.fMP:
@@ -7624,16 +8103,16 @@ class Entity:
         dmg = self.CTdmg*(((1+(0.25*self.engk))*self.cAT)+self.cMAT)
         enemy.defense(self,"Physical",dmg)
         if enemy.cHP >0:
-          print("\n"+self.NAME, "attacks",enemy.NAME,"with an energized kick at the cost of",str(selfsett-self.cHP),"health, dealing",fore.ORANGE_1 + style.BOLD + str(sett-enemy.cHP) + style.RESET,"critical damage, and stealing",str(msett-enemy.cMP),"mana!",enemy.NAME,"has",enemy.cHP,"health remaining!")
+          print("\n"+self.NAME, "attacks",enemy.NAME,"with an energized kick at the cost of",str(selfsett-self.cHP),"health, dealing",fore.ORANGE_1 + style.BOLD + str(sett-enemy.cHP) + style.RESET,"critical damage, and stealing",fore.DEEP_SKY_BLUE_1+str(msett-enemy.cMP)+style.RESET,"mana!",enemy.NAME,"has",enemy.cHP,"health remaining!")
         else:
-          print("\n"+self.NAME, "attacks",enemy.NAME,"with an energized kick at the cost of",str(selfsett-self.cHP),"health, dealing",fore.ORANGE_1 + style.BOLD + str(sett-enemy.cHP) + style.RESET,"critical damage, and stealing",str(msett-enemy.cMP),"mana!",enemy.NAME,"falls...")
+          print("\n"+self.NAME, "attacks",enemy.NAME,"with an energized kick at the cost of",str(selfsett-self.cHP),"health, dealing",fore.ORANGE_1 + style.BOLD + str(sett-enemy.cHP) + style.RESET,"critical damage, and stealing",fore.DEEP_SKY_BLUE_1+str(msett-enemy.cMP)+style.RESET,"mana!",enemy.NAME,"falls...")
       else:
         dmg = (((1+(0.25*self.engk))*self.cAT)+self.cMAT)
         enemy.defense(self,"Physical",dmg)
         if enemy.cHP >0:
-          print("\n"+self.NAME, "attacks",enemy.NAME,"with an energized kick at the cost of",str(selfsett-self.cHP),"health, dealing",fore.ORANGE_1 + str(sett-enemy.cHP) + style.RESET,"damage, and stealing",str(msett-enemy.cMP),"mana!",enemy.NAME,"has",enemy.cHP,"health remaining!")
+          print("\n"+self.NAME, "attacks",enemy.NAME,"with an energized kick at the cost of",str(selfsett-self.cHP),"health, dealing",fore.ORANGE_1 + str(sett-enemy.cHP) + style.RESET,"damage, and stealing",fore.DEEP_SKY_BLUE_1+str(msett-enemy.cMP)+style.RESET,"mana!",enemy.NAME,"has",enemy.cHP,"health remaining!")
         else:
-          print("\n"+self.NAME, "attacks",enemy.NAME,"with an energized kick at the cost of",str(selfsett-self.cHP),"health, dealing",fore.ORANGE_1 + str(sett-enemy.cHP) + style.RESET,"damage, and stealing",str(msett-enemy.cMP),"mana!",enemy.NAME,"falls...")
+          print("\n"+self.NAME, "attacks",enemy.NAME,"with an energized kick at the cost of",str(selfsett-self.cHP),"health, dealing",fore.ORANGE_1 + str(sett-enemy.cHP) + style.RESET,"damage, and stealing",fore.DEEP_SKY_BLUE_1+str(msett-enemy.cMP)+style.RESET,"mana!",enemy.NAME,"falls...")
       enemy.onhittimersdefense(self,0.5,dmg,"Physical Melee")
     if self.cHP <=0:
       time.sleep(1)
@@ -7648,7 +8127,7 @@ class Entity:
     CT = random.randint(1,100)
     if random.randint(1,100) <= diff:
       print("\n"+self.NAME, "tries to steal",enemy.NAME+"'s virginity, but they resist",self.GEN[1]+"!")
-      enemy.specialdodgecases(self,0.5,"Physical Magical Melee")
+      enemy.specialdodgecases(self,0.5,"Physical Magical Melee",CT)
     else:
       sett = enemy.cHP
       msett = enemy.cMP
@@ -7668,17 +8147,17 @@ class Entity:
         mdmg = self.CTdmg*(msett-enemy.cMP)*(3+(0.5*self.engk))
         enemy.defense(self,"Magical",mdmg)
         if enemy.cHP >0:
-          print("\n"+self.NAME, "steals",enemy.NAME+"'s virginity, dealing",fore.DEEP_PINK_3A + style.BOLD + str(sett-enemy.cHP) + style.RESET,"critical damage, and stealing",str(msett-enemy.cMP),"mana!",enemy.NAME,"has",enemy.cHP,"health remaining!")
+          print("\n"+self.NAME, "steals",enemy.NAME+"'s virginity, dealing",fore.DEEP_PINK_3A + style.BOLD + str(sett-enemy.cHP) + style.RESET,"critical damage, and stealing",fore.DEEP_SKY_BLUE_1+str(msett-enemy.cMP)+style.RESET,"mana!",enemy.NAME,"has",enemy.cHP,"health remaining!")
         else:
-          print("\n"+self.NAME, "steals",enemy.NAME+"'s virginity, dealing",fore.DEEP_PINK_3A + style.BOLD + str(sett-enemy.cHP) + style.RESET,"critical damage, and stealing",str(msett-enemy.cMP),"mana!",enemy.NAME,"falls...")
+          print("\n"+self.NAME, "steals",enemy.NAME+"'s virginity, dealing",fore.DEEP_PINK_3A + style.BOLD + str(sett-enemy.cHP) + style.RESET,"critical damage, and stealing",fore.DEEP_SKY_BLUE_1+str(msett-enemy.cMP)+style.RESET,"mana!",enemy.NAME,"falls...")
       else:
         pdmg = ((1+(0.25*self.engk))*self.cAT)+self.cMAT
         enemy.defense(self,"Physical",pdmg)
         mdmg = (msett-enemy.cMP)*(3+(0.5*self.engk))
         if enemy.cHP >0:
-          print("\n"+self.NAME, "steals",enemy.NAME+"'s virginity, dealing",fore.DEEP_PINK_3A + str(sett-enemy.cHP) + style.RESET,"damage, and stealing",str(msett-enemy.cMP),"mana!",enemy.NAME,"has",enemy.cHP,"health remaining!")
+          print("\n"+self.NAME, "steals",enemy.NAME+"'s virginity, dealing",fore.DEEP_PINK_3A + str(sett-enemy.cHP) + style.RESET,"damage, and stealing",fore.DEEP_SKY_BLUE_1+str(msett-enemy.cMP)+style.RESET,"mana!",enemy.NAME,"has",enemy.cHP,"health remaining!")
         else:
-          print("\n"+self.NAME, "steals",enemy.NAME+"'s virginity, dealing",fore.DEEP_PINK_3A + str(sett-enemy.cHP) + style.RESET,"damage, and stealing",str(msett-enemy.cMP),"mana!",enemy.NAME,"falls...")
+          print("\n"+self.NAME, "steals",enemy.NAME+"'s virginity, dealing",fore.DEEP_PINK_3A + str(sett-enemy.cHP) + style.RESET,"damage, and stealing",fore.DEEP_SKY_BLUE_1+str(msett-enemy.cMP)+style.RESET,"mana!",enemy.NAME,"falls...")
       tot = pdmg + mdmg
       enemy.onhittimersdefense(self,0.5,tot,"Physical Melee")
 
@@ -7775,17 +8254,11 @@ class Entity:
     self.dmgstore = 0
 
   def arrivederci(self,enemy):
-    self.cMP = self.cMP - 45
-    if len(enemy.marked) == 3:
-      if self not in enemy.marked:
-        enemy.marked[2] = self
-    else:
-      enemy.marked.append(self)
     enemy.marked[0] = 3
     time.sleep(1)
-    print("\n"+self.NAME+": Arrivederci...")
+    print("\nKhalil: Arrivederci...")
     time.sleep(0.5)
-    print("\n"+self.NAME,"bids farewell to",enemy.NAME+", exposing them and marking them for death!")
+    print("\nKhalil bids farewell to",enemy.NAME+", exposing them and marking them for death!")
 
   def recluse(self):
     self.cMP = self.cMP - 35
@@ -7913,7 +8386,158 @@ class Entity:
       if x.cHP > x.fHP:
         x.cHP = x.fHP
       print("\n"+x.NAME,"heals for",fore.MEDIUM_SPRING_GREEN+str(x.cHP-selfsett)+style.RESET,"health!",x.NAME,"has",x.cHP,"health now!")
+
+  def gravitygauntlet(self,enemy):
+    global sett
+    self.cMP = self.cMP - 50
+    self.prehiteffects(enemy)
+    diff = enemy.cEV - self.cAC
+    time.sleep(1)
+    if random.randint(1,100) <= diff:
+      print("\n"+self.NAME,"uses his gravity gauntlet on",enemy.NAME+", but it has no effect!")
+      enemy.specialdodgecases(self,0.5,"Magical Ranged")
+    else:
+      sett = enemy.cHP
+      dmg = self.cMAT*1.25
+      enemy.defense(self,"Magical",dmg)
+      enemy.grav = 16
+      if enemy.cHP > 0:
+        if (sett-enemy.cHP) == 0:
+          print("\n"+self.NAME,"uses his gravity gauntlet on",enemy.NAME+", dealing no damage, slowing them down, and making them easier to hit!")
+        else:
+          print("\n"+self.NAME,"uses his gravity gauntlet on",enemy.NAME+", dealing",fore.PURPLE_1B + str(sett-enemy.cHP) + style.RESET,"damage, slowing them down, and making them easier to hit!",enemy.NAME,"has",enemy.cHP,"health remaining!")
+      else:
+        print("\n"+self.NAME,"uses his gravity gauntlet on",enemy.NAME+", dealing",fore.PURPLE_1B + str(sett-enemy.cHP) + style.RESET,"damage, slowing them down, and making them easier to hit!",enemy.NAME,"falls...")
+      enemy.onhittimersdefense(self,0.5,dmg,"Magical Ranged")
     
+  def shellshock(self,enemy,ally):
+    global sett
+    self.cMP = self.cMP - 50
+    self.prehiteffects(enemy)
+    bro = ""
+    for x in ally.team:
+      if x.NAME == "Michelangelo" and self.NAME != "Michelangelo":
+        x.cMP = x.cMP - 50
+        bro = x
+      if x.NAME == "Donatello" and self.NAME != "Donatello":
+        x.cMP = x.cMP - 50
+        bro = x   
+    diff = enemy.cEV - (self.cAC + bro.cAC)
+    time.sleep(1)
+    if random.randint(1,100) <= diff:
+      print("\n"+self.NAME,"and",bro.NAME,"try to slam the back of their shells on",enemy.NAME+", but miss!")
+      enemy.specialdodgecases(self,0.5,"Physical Melee")
+    else:
+      sett = enemy.cHP
+      self.cAPN = self.cAPN + bro.cAPN
+      dmg = (2*(self.cAT + bro.cAT + self.cMAT + bro.cMAT))
+      enemy.confused = 3
+      enemy.defense(self,"Physical",dmg)
+      if enemy.cHP > 0:
+        if (sett-enemy.cHP) == 0:
+          print("\n"+self.NAME,"and",bro.NAME,"slam the back of their shells on",enemy.NAME+", confusing them but dealing no damage!")
+        else:
+          print("\n"+self.NAME,"and",bro.NAME,"slam the back of their shells on",enemy.NAME+", dealing",fore.ORANGE_1 + str(sett-enemy.cHP) + style.RESET,"damage and confusing them!",enemy.NAME,"has",enemy.cHP,"health remaining!")
+      else:
+        print("\n"+self.NAME,"and",bro.NAME,"slam the back of their shells on",enemy.NAME+", dealing",fore.ORANGE_1 + str(sett-enemy.cHP) + style.RESET,"damage and confusing them!",enemy.NAME,"falls...")
+      enemy.onhittimersdefense(self,0.5,dmg,"Physical Melee")
+
+  def skateboardcrash(self,enemy):
+    global sett
+    self.cMP = self.cMP - 25
+    self.prehiteffects(enemy)
+    diff = enemy.cEV - self.cAC
+    time.sleep(1)
+    if random.randint(1,100) <= diff:
+      print("\n"+self.NAME,"rides his skateboard and tries to crash into",enemy.NAME+", but they move out of the way!")
+      enemy.specialdodgecases(self,0.5,"Physical Melee")
+    else:
+      sett = enemy.cHP
+      dmg = 2*self.cAT
+      enemy.defense(self,"Physical",dmg)
+      enemy.skated = 4
+      if enemy.cHP > 0:
+        if (sett-enemy.cHP) == 0:
+          print("\n"+self.NAME,"rides his skateboard and crashes into",enemy.NAME+", reducing their defense but dealing no damage!")
+        else:
+          print("\n"+self.NAME,"rides his skateboard and crashes into",enemy.NAME+", dealing",fore.ORANGE_1 + str(sett-enemy.cHP) + style.RESET,"damage and reducing their defense!",enemy.NAME,"has",enemy.cHP,"health remaining!")
+      else:
+        print("\n"+self.NAME,"rides his skateboard and crashes into",enemy.NAME+", dealing",fore.ORANGE_1 + str(sett-enemy.cHP) + style.RESET,"damage and reducing their defense!",enemy.NAME,"falls...")
+      enemy.onhittimersdefense(self,0.5,dmg,"Physical Melee")
+  
+  def kusarigama(self):
+    self.cMP = self.cMP - 100
+    time.sleep(1)
+    print("\n"+self.NAME,"takes out the kusarigama hidden in their nunchucks, increasing their critical chance and critical damage permanently!")
+    self.kusar = 1
+
+  def aard(self,targ):
+    self.cMP = self.cMP - 100
+    print("\n"+self.NAME,"blasts a telekinetic-wave out of his palm!\n")
+    time.sleep(0.5)
+    for x in targ.team:
+      self.prehiteffects(x)
+      diff = x.cEV - self.cAC 
+      if random.randint(1,100) <= diff:
+        print(x.NAME,"jumps out of the way!")
+        x.specialdodgecases(self,0,"None")
+      else:
+        if random.randint(0,100) <= 50:
+          x.tremstun = 1
+          print(x.NAME,"topples over!")
+        else:
+          x.tremsl = 2
+          print(x.NAME,"is staggered!")
+
+  def igni(self,targ):
+    global sett
+    self.cMP = self.cMP - 100
+    time.sleep(1)
+    print("\n"+self.NAME,"bursts a wave of fire out of his palm!\n")
+    self.cCT = self.cCT * 2
+    for x in targ.team:
+      self.prehiteffects(x)
+      CT = random.randint(1,100)
+      diff = x.cEV - self.cAC
+      time.sleep(0.1)     
+      if random.randint(1,100) <= diff:
+        print("\n"+x.NAME,"avoids the wave!")
+        x.specialdodgecases(self,0,"Magical Ranged",CT)
+      else:        
+        sett = x.cHP
+        dmg = 1.5*self.cMAT
+        x.defense(self,"Magical",dmg)
+        if CT <= self.cCT:
+          if x.burnt < 2:
+            x.burnt = 2
+          x.burnd = x.burnd + (0.375*self.cMAT*self.CTdmg)          
+          if x.cHP >0:
+            if (sett-x.cHP) == 0:
+              print("\n" + x.NAME, "ignites in flame, but takes no damage!")
+            else:
+              print("\n" + x.NAME, "ignites in flame, taking",fore.PURPLE_1B + str(sett-x.cHP) + style.RESET,"damage!",x.NAME,"has",x.cHP,"health remaining!")
+          else:
+            print("\n" + x.NAME, "ignites in flame, taking",fore.PURPLE_1B + str(sett-x.cHP) + style.RESET,"damage!",x.NAME,"falls...")         
+        else:
+          if x.cHP >0:
+            if (sett-x.cHP) == 0:
+              print("\n" + x.NAME, "is seared by the flame, but takes no damage!")
+            else:
+              print("\n" + x.NAME, "is seared by the flame, taking",fore.PURPLE_1B + str(sett-x.cHP) + style.RESET,"damage!",x.NAME,"has",x.cHP,"health remaining!")
+          else:
+            print("\n" + x.NAME, "is seared by the flame, taking",fore.PURPLE_1B + str(sett-x.cHP) + style.RESET,"damage!",x.NAME,"falls...")        
+        x.onhittimersdefense(self,0,dmg,"Magical Ranged")
+
+  def yrden(self,targ):
+    self.cMP = self.cMP - 100
+    time.sleep(1)
+    print("\n"+self.NAME,"sets up a magical pentagon trap on the field, slowing down all enemies!")
+    for x in targ.team:
+      x.yyrd = 21
+
+  def axii(self,enemy):
+    None
+
   def AIdetector(self):
     if self.stunned == True and self.NAME != "Mr. Pudup":
       self.stunned = False
@@ -7968,6 +8592,8 @@ class Entity:
         self.MuskAI()
       elif self.NAME == "The Fence":
         self.FenceAI()
+      elif self.NAME == "Ninja":
+        self.NinjaAI()
       elif "Heal" in self.GEND:
         self.HealAI()
       else:
@@ -8174,7 +8800,9 @@ class Entity:
           attacks.append("Candy")
     for x in range(2):
       attacks.append("Auto-Attack")
-    attacks.append("Notebook Evaluation")
+      attacks.append("Notebook Evaluation")
+    if self.tw1 > 8:
+      self.tw1 = 8
     if self.tw1 > 0:
       for x in range(self.tw1):
         attacks.append("Notebook Evaluation")
@@ -8188,7 +8816,7 @@ class Entity:
       self.tw1 = self.tw1 + 1
     elif bruh == "Candy":
       for x in you.team:
-        if x.cHP < round(0.1*x.fHP) and (x.invis <=0 or x.revealed > 0):
+        if x.cHP < round(0.2*x.fHP) and (x.invis <=0 or x.revealed > 0):
           candyL = []
           candyL.append(x)
       if len(self.duel) > 0:
@@ -9320,9 +9948,17 @@ class Entity:
 
   def spin(self,targ):
     global sett
-    self.cMP = self.cMP - 5
+    if self.NAME == "Donatello":
+      self.cMP = self.cMP - 15
+    else:
+      self.cMP = self.cMP - 5
     time.sleep(0.5)
-    print("\n"+self.NAME,"spins around, attacking everyone!")
+    if self.NAME == "Donatello":
+      print("\n"+self.NAME,"whirls his staff around seamlessly, attacking everyone!")
+    elif self.NAME == "Geralt":
+      print("\n"+self.NAME,"performs a pirouette, attacking everyone!")
+    else:
+      print("\n"+self.NAME,"spins around, attacking everyone!")
     for x in targ.team:
       time.sleep(0.15)
       self.prehiteffects(x)
@@ -9445,31 +10081,130 @@ class Entity:
   def TrumpAI(self):
     global lastat
     self.turncount = self.turncount + 1
+    self.enemyattacksys(self.attack,"Auto")
   
   def LincolnAI(self):
     global lastat
     self.turncount = self.turncount + 1
+    self.enemyattacksys(self.attack,"Auto")
   
   def ObamaAI(self):
     global lastat
     self.turncount = self.turncount + 1
+    self.enemyattacksys(self.attack,"Auto")
   
   def KennedyAI(self):
     global lastat
     self.turncount = self.turncount + 1
+    self.enemyattacksys(self.attack,"Auto")
 
   def SandersAI(self):
     global lastat
     self.turncount = self.turncount + 1
+    self.enemyattacksys(self.attack,"Auto")
 
   def MuskAI(self):
     global lastat
     self.turncount = self.turncount + 1
+    self.enemyattacksys(self.attack,"Auto")
 
   def FenceAI(self):
     global lastat
     self.turncount = self.turncount + 1
+    attacks = []
+    for x in range(4):
+      attacks.append("Auto")
+    attacks.append("Pierce")
+    for x in range(self.tw1):
+      attacks.append("Pierce")
+    yo = random.choice(attacks)
+    if self.locked[0] <= 0 and self.cMP >= 50:
+      self.cMP = self.cMP - 50
+      self.enemyattacksys(self.lockdown,"Lockdown")      
+    elif yo == "Pierce":
+      if len(self.locked) > 1 and len(self.taunted) == 0:
+        self.pierce(self.locked[1])
+      else:
+        self.enemyattacksys(self.pierce,"Pierce")
+      self.tw1 = 0
+    else:
+      if len(self.locked) > 1 and len(self.taunted) == 0:
+        self.attack(self.locked[1])
+      else:
+        self.enemyattacksys(self.attack,"Auto")
+      self.tw1 = self.tw1 + 1
 
+  def lockdown(self,enemy):
+    self.prehiteffects(enemy)
+    diff = enemy.cEV - self.cAC
+    time.sleep(1)
+    if random.randint(1,100) <= diff:
+      print("\n" + self.NAME,"tries to latch onto",enemy.NAME+", but they dodge!")
+    else:
+      enemy.locked = [3,enemy,self]
+      self.locked = [3,enemy,self]
+      print("\n"+self.NAME,"latches onto",enemy.NAME+", chaining them down!")
+
+  def pierce(self,enemy):
+    global sett
+    self.prehiteffects(enemy)
+    CT = random.randint(1,100)
+    sett = enemy.cHP
+    diff = enemy.cEV - self.cAC 
+    self.cAPN = round(4*self.cAPN)
+    if random.randint(1,100) <= diff:
+      time.sleep(1)
+      print("\n" + self.NAME, "tries to pierce", enemy.NAME+", but they dodge!")
+      enemy.specialdodgecases(self,0.5,"Physical Melee",CT)
+    else:
+      time.sleep(1)
+      if enemy.coun == True:
+        enemy.counter(self,CT) 
+      if CT <= self.cCT:
+        dmg = self.CTdmg*self.cAT
+        enemy.defense(self,"Physical",dmg)
+        if enemy.cHP > 0:
+          if (sett-enemy.cHP) == 0:
+            print("\n" + self.NAME, "critically pierces", enemy.NAME +  ", but deals no damage!")
+          else:
+            print("\n" + self.NAME, "critically pierces", enemy.NAME + ", dealing",fore.ORANGE_1 + style.BOLD + str(sett-enemy.cHP) + style.RESET,"damage!",enemy.NAME,"has",enemy.cHP,"health remaining!")
+        else:
+          print("\n" + self.NAME, "critically pierces", enemy.NAME + ", dealing",fore.ORANGE_1 + style.BOLD + str(sett-enemy.cHP) + style.RESET,"damage!",enemy.NAME,"falls...")
+      else:
+        dmg = self.cAT
+        enemy.defense(self,"Physical",dmg)
+        if enemy.cHP > 0:
+          if (sett-enemy.cHP) == 0:
+            print("\n" + self.NAME, "pierces", enemy.NAME +  ", but deals no damage!")
+          else:
+            print("\n" + self.NAME, "pierces", enemy.NAME + ", dealing",fore.ORANGE_1 + str(sett-enemy.cHP) + style.RESET,"damage!",enemy.NAME,"has",enemy.cHP,"health remaining!")
+        else:
+          print("\n" + self.NAME, "pierces", enemy.NAME + ", dealing",fore.ORANGE_1 + str(sett-enemy.cHP) + style.RESET,"damage!",enemy.NAME,"falls...")
+      enemy.onhittimersdefense(self,0.4,dmg,"Physical Melee")
+      self.onhittimersoffense(enemy,0.5,"Physical Melee") 
+
+  def NinjaAI(self):
+    global lastat
+    self.turncount = self.turncount + 1
+    targs = []
+    for x in you.team:
+      targs.append(x)
+    if len(targs) > 1:
+      for x in targs:
+        if x.NAME == "Tim":
+          targs.remove(x)
+    kill = random.choice(targs)
+    self.attack(kill)
+
+  def ShahAI(self):
+    global lastat
+    self.turncount = self.turncount + 1
+    if self.duelt <= 0 and self.cMP >= 50:
+      self.enemyattacksys(self.armwrestling,"Arm Wrestling")
+    if self.tension < 3:
+      self.progressiveoverload()
+    else:
+      self.enemyattacksys(self.attack,"Auto")
 
   def HealAI(self):
     global lastat
@@ -9546,7 +10281,7 @@ class World:
     if self.ROOM == "H-Wing Complex Ground Floor":
       self.paths = ["H-Wing Complex 1st Floor","D-Wing Hallway Ground Floor","Automotive Building"]
     if self.ROOM == "C-Wing Hall Ground Floor":
-      self.paths = ["C-Wing Hall 1st Floor","B-Wing Hallway Ground Floor","D-Wing Hallway Ground Floor","C-Wing Nurse's Office","Cafe 1","Cafe 2",]
+      self.paths = ["C-Wing Hall 1st Floor","B-Wing Hallway Ground Floor","D-Wing Hallway Ground Floor","C-Wing Nurse's Office","Cafe 1","Cafe 2"]
     if self.ROOM == "B-Wing Hallway 1st Floor":
       self.paths = ["B-Wing Hallway Ground Floor","C-Wing Hall 1st Floor"]
     if self.ROOM == "Main Lobby":
@@ -9595,10 +10330,7 @@ class World:
               print("\nYou do not have the key to open up the storage closets.")
           boobs = 1
         elif choice.lower() == "upgrades" or choice == "2":
-          if len(you.isoinventory) == 0:
-            print("\nYou have no Isometric Drawings.")
-          else:
-            self.pltarg(self.upgrades)
+          self.pltarg(self.upgrades)
           boobs = 1
         elif choice.lower() == "party" or choice == "4":
           yikes = input("\n(1) Main Party  (2) Support Party\nAction: ")
@@ -9894,14 +10626,24 @@ class World:
 
   def eqs(self,pe,inven):
     print("")
-    print(inven)
     if inven == pe.battleinventory:
+      print(inven)
       poo = input("What do you want to de-equip? ")
+    elif inven == you.consumeinventory:
+      seen = {}
+      stack = [seen.setdefault(x, x) for x in inven if x not in seen]
+      for x in stack:
+        print("("+str(stack.index(x)+1)+")",x,"- x"+str(inven.count(x)))
+      poo = input("What do you want to equip? ")
     else:
+      print(inven)
       poo = input("What do you want to equip? ")
     if poo.isdigit() == True and poo != "0":
-      if len(inven) >= int(poo):
-        item = inven[(int(poo)-1)]
+      if (inven != you.consumeinventory and len(inven) >= int(poo)) or (inven == you.consumeinventory and len(stack) >= int(poo)):
+        if inven == you.consumeinventory:
+          item = stack[(int(poo)-1)]
+        else:
+          item = inven[(int(poo)-1)]
         if inven == you.weaponinventory:
           pe.equipcatalog(pe.weap,item,1)
         elif inven == you.helminventory:
@@ -9946,7 +10688,7 @@ class World:
   def changeequip(self,pe):
     nice = 0
     while nice == 0:
-      print("\n"+pe.NAME+"'s Stats:\nHP:",str(round(pe.fHP))+"\nMP:",str(round(pe.fMP))+"\nMRG:",str(round(pe.fMRG))+"\nAT:",str(round(pe.fAT))+"\nDF:",str(round(pe.fDF))+"\nMAT:",str(round(pe.fMAT))+"\nMDF:",str(round(pe.fMDF)),"\nSP:",str(round(pe.fSP))+"\nAC:",str(round(pe.fAC))+"\nEV:",str(round(pe.fEV))+"\nCT:",str(round(pe.fCT))+"\nAPN:",str(round(pe.fAPN))+"\nMPN:",str(round(pe.fMPN)))
+      print("\n"+pe.NAME+"'s Stats:",fore.MEDIUM_SPRING_GREEN+"\nHP"+style.RESET+":",str(round(pe.fHP))+fore.DEEP_SKY_BLUE_1+"\nMP"+style.RESET+":",str(round(pe.fMP))+"\nMRG:",str(round(pe.fMRG))+fore.ORANGE_1+"\nAT"+style.RESET+":",str(round(pe.fAT))+fore.GREEN_4+"\nDF"+style.RESET+":",str(round(pe.fDF))+fore.PURPLE_1B+"\nMAT"+style.RESET+":",str(round(pe.fMAT))+fore.LIGHT_MAGENTA+"\nMDF"+style.RESET+":",str(round(pe.fMDF)),"\nSP:",str(round(pe.fSP))+fore.DARK_RED_2+"\nAC"+style.RESET+":",str(round(pe.fAC))+fore.DARK_SEA_GREEN_5B+"\nEV"+style.RESET+":",str(round(pe.fEV))+fore.YELLOW_1+"\nCT"+style.RESET+":",str(round(pe.fCT))+"\nAPN:",str(round(pe.fAPN))+"\nMPN:",str(round(pe.fMPN)))
       if pe.isomode == True:
         print("ISO:",str(pe.isopoints))
       damn = input("\nWhat do you want to equip?\n(1) Headgear  (2) Bodygear  (3) Lowergear\n(4) Weapon  (5) Accessory  (6) Exit\nAction: ")
@@ -10035,7 +10777,7 @@ class World:
         if pe.isomode == False:
           print("\nCalligraphy - Kelly utilizes the power within her magic calligraphy pen to attack enemies with high accuracy magic damage with written spells. This ability costs 20 mana to cast, and can critically hit.")
         else:
-          print("\nCalligraphy - Kelly utilizes the power within her magic calligraphy pen to attack enemies with high accuracy magic damage with written spells. This ability costs 20 mana to cast, can critically hit, and generates triple the ISO-points.")
+          print("\nCalligraphy - Kelly utilizes the power within her magic calligraphy pen to attack enemies with high accuracy magic damage with written spells. This ability costs 20 mana to cast, can critically hit, and generates quadruple the ISO-points.")
         print("\nLevel 1 - 100% MAT ratio, 200% accuracy.\nLevel 2 - 125% MAT ratio, 250% accuracy.\nLevel 3 - 150% MAT ratio, 300% accuracy.\nLevel 4 - 175% MAT ratio, 350% accuracy.\nLevel 5 - 200% MAT ratio, 400% accuracy.")
         sa = 1
       elif check.lower() == "asmr":
@@ -10213,6 +10955,7 @@ class World:
       if good == 1:
         pe.learnskill(skil.title())
         print("\nYou have upgraded",skil.title()+".")
+        
         you.isoinventory.remove(ite)
 
 
@@ -10222,18 +10965,6 @@ class World:
     sad = 0
     if self.RID == 6 or self.RID == 25:
       ro = rd(2)
-    if self.RID == 27:
-      ro = rd(8)
-    if self.RID == 17:
-      nah = 0
-      while nah == 0:
-        yi = input("\nExit where?\n(1) C-Wing Hall Ground Floor  (2) D-Wing Hallway Ground Floor\nAction: ")
-        if yi == "1":
-          ro = rd(12)
-          nah = 1
-        if yi == "2":
-          ro = rd(10)
-          nah = 1
     if self.RID == 4:
       nah = 0
       while nah == 0:
@@ -10244,12 +10975,26 @@ class World:
         if yi == "2":
           ro = rd(5)
           nah = 1
+    if self.RID == 13:
+      ro = rd(9)
     if self.RID == 14:
       ro = rd(9)
+    if self.RID == 17:
+      nah = 0
+      while nah == 0:
+        yi = input("\nExit where?\n(1) C-Wing Hall Ground Floor  (2) D-Wing Hallway Ground Floor\nAction: ")
+        if yi == "1":
+          ro = rd(12)
+          nah = 1
+        if yi == "2":
+          ro = rd(10)
+          nah = 1
     if self.RID == 18:
       ro = rd(11)
     if self.RID == 23:
       ro = rd(16)
+    if self.RID == 27:
+      ro = rd(8)
     if self.RID == 28:
       ro = rd(3)
     if self.RID == 29:
@@ -10401,7 +11146,89 @@ class World:
             text("Ishraq: Who?","Kelly, hurting again: GuGHHH! I c-can't explain right NOW!","Ishraq, really confused as he helps Kelly up: Okaay..I guess we have to go to the auditorium.")
           revival(Ishraq,o=True)
           self.people.remove("Ishraq")
-
+          self.RLV = 4
+      
+      if "Awakening" in quests:
+        if subject == "Mrs. Wells":
+          if data[30] == 0:
+            text("\n*Ishraq approaches Mrs. Wells*","Ishraq, unnecessarily yelling: HI MRS. WELLS!","Mrs. Wells, smiling: Hi honey! So, what's that story I'm supposed to hear about.","Kelly, taking a seat by her: Here, I'll explain it to you with Ishraq.","*Kelly and Ishraq catch Mrs. Wells up*","Mrs. Wells, a little confused: Well...this is quite...unreal?","Ishraq, reaching a solution: I want you to stay here for now until we make create more safe places for all of us to stay.","Mrs. Wells, feeling left out: Well, I wanna do something! What can I do?","Ishraq, shrugging: I dunno...teach some calc..","Mrs. Wells, grinning: Brilliant idea! I can continue class so we don't fall behind!","Ishraq, in his head: (Fuck.)","Mrs. Wells, devilishy: You better not be coming late either.","Ishraq, planning on never coming: Yeah, I won't be late.")
+            data[30] = 1
+          elif data[30] == 1:
+            text("\n*Ishraq approaches Mrs. Wells*","Ishraq, greeting: Hi Mrs. Wells.","Mrs. Wells, smiling: Hey honey! Anything you need from me?","Ishraq: Nah, just saying hi.")
+        if subject == "Daniel":
+          if data[27] == 3:          
+            text("\n*Ishraq approaches Daniel*","Ishraq, offering: You can stay here if you like and start working on the comms system.","Daniel, refusing: No. I need to first be sure of Kelly's safety. Then I'll start.","Ishraq: Alright.")
+          if data[27] == 6:
+             text("\n*Ishraq approaches Daniel*","Ishraq, staring at the radios: So how does this stuff even work?","Daniel, explaining: Radios aren't that complicated. Basically you can broadcast sound waves from a certain frequency, and any receiver set to pick up that frequency can hear it.","Ishraq: Makes sense. Is Tim gonna help you?","Daniel, shaking his head: He doesn't know how to set up a radio broadcast network. I'll just do it myself.")
+          if data[27] == 7:
+            text("\n*Ishraq approaches Daniel*","Ishraq, staring at the radios: So how does this stuff even work?")
+            if data[31] == 1 or data[31] == 3:
+              text("Daniel, angry: Don't talk to me.","Ishraq, confused: What's wrong?","Daniel, with contempt: You embarrassed me back there.","Ishraq, raising an eyebrow: Embarrassed? I didn't do anything?","Daniel, turning around: Pitying me back at the bridge? Throwing me so I could make it? You know Kelly almost didn't make it right? SHE ALMOST COULD'VE DIED BECAUSE OF YOU! AND THEN...SHE BLAMES ME FOR BEING TOO SLOW!!!","Ishraq, huddling him to a corner so less people could hear him: Woaw, woaw, woaw. You gotta understand that she's in a very stressful situation right now. She's gonna get angry, alright? It's not your fault, it's just her problem. If she gets mad and vents on you, just deal with it.","Daniel, spewing out: BUT WHY ME!? WHY NOT YOU!? YOU'RE THE ONE THAT DIDN'T SAVE HER!")
+              if data[31] == 3:
+                input("\nIshraq, being as real as he can: Look man. Yes, I just talked to her, and she's upset that she almost died, but don't say she didn't get mad at me. She yelled at ME first! Don't be delusional.")
+              else:
+                input("\nIshraq, being as real as he can: Look man. Yes, she could've been upset that she almost died, I agree. It's possible that's why she was angry, but don't say she didn't get mad at me. She yelled at ME first! Don't be delusional.")
+              text("Daniel, emanating jealousy: Yeah, yeah, whatever. It's clear she thinks I'm weak and you're strong. She looked so worried about you...","Ishraq, starting to get mad: Get the fuck over yourself kid. I saved your fucking life, ya know? And your one and only is perfectly fine right now, so just fucking get over it!","Daniel, fueling: Mad.","Ishraq, walking away: I'm not gonna start. Peace.")
+              if data[31] != 3:
+                data[31] = 2
+              self.people.remove("Daniel")
+            else:
+              text("Daniel, explaining: Radios aren't that complicated. Basically you can broadcast sound waves from a certain frequency, and any receiver set to pick up that frequency can hear it.","Ishraq: Makes sense. Is Tim gonna help you?","Daniel, shaking his head: He doesn't know how to set up a radio broadcast network. I'll just do it myself.")
+        if subject == "Kelly":
+          if data[28] == 0:
+            if data[27] == 8:
+              text("\n*Ishraq approaches Kelly*","Ishraq, concerned: You wanted to talk, right? I forgot to speak to you earlier.","Kelly, shy: Yeah, its' fine...I just don't wanna be near Daniel any longer.")
+            else:               
+              text("\n*Ishraq approaches Kelly*","Ishraq, concerned: You wanted to talk, right?","Kelly, shy: Yeah...I just didn't wanna be near Daniel any longer.")
+            text("Ishraq, laughing: Hehaha! Don't mind him. He's just..Daniel.","Kelly, traumatized: No...I just can't..I don't wanna be near him ever..","Ishraq, getting a bit serious: Woaw, Woaw, that little thing he did bothered you that much?","Kelly, wide-eyed: YES! He was speaking like...HIM! 'FORGIVE ME!' 'FORGIVE ME!' UGH!! I JUST WANNA KILLL--!","Ishraq, huddling her to a corner so less people can hear her: Holy shit! Relax! You're saying he was talking like the Fedora Man?","Kelly, tearing up: Yes...","Ishraq, honestly: Hey. Don't cry. Daniel was really sorry. He's not the Fedora Man. So just calm down, we're gonna stop the Fedora Man. You're waaayy stronger than that ugly ass fucker.","Kelly, collecting herself together: Yeah...yeah. I am strong. I will beat the Fedora Man.")
+            if data[27] == 3:
+              input("\nIshraq, proud: Good. Get ready, we're gonna go to the Main Office to find my friend Khalil soon.")
+            elif data[27] == 6 or data[27] == 7:
+              input("\nIshraq, proud: Good. I want you up and ready before we debrief what to do next. I'll come talk to you we're ready to move forward okay?","Kelly: Okay!")
+            data[28] = 4
+          elif data[28] == 1 and (data[31] != 1 and data[31] != 2):
+            text("\n*Ishraq approaches Kelly*","Ishraq, smiling: Hey!","Kelly, smiling: Hiii~!","Ishraq, curious: That whole thing that happened with Daniel, how'd you feel about it?","Kelly, being honesty: Ya know, I actually feel good. It's nice knowing that someone is protecting you.","Ishraq: Definitely. It's always good knowing someone has your back.","Kelly, nodding: Yeah...even if he was acting a bit weird, it's still nice that he wants to.")
+            if data[27] == 3:
+              input("\nIshraq, ready to move: Word. Get ready, we're gonna go to the Main Office to find my friend Khalil soon.")
+            elif data[27] == 6 or data[27] == 7:
+              input("\nIshraq, ready to move: Word. Anyways, I want you up and ready before we debrief what to do next. I'll come talk to you when we're ready to move forward, okay?","Kelly: Okay!")
+            data[28] = 5
+          elif data[28] == 2 and (data[31] != 1 and data[31] != 2):
+            text("\n*Ishraq approaches Kelly*","Ishraq, laughing: Hehaha! What was that all about?","Kelly, smiling: What was 'what' about?","Ishraq, pointing at the entrance: That whole knighting with Daniel. You seemed to enjoy yourself.","Kelly, prancing around: You know...I like having fun. And I thought it was cute.")
+            if data[15] == 1:
+              text("Ishraq, crossing his arms: Oh really? Makes sense. You probably had fun back when you thought Daniel and the Fedora Man were acting a skit out for you.","Kelly, spinning: I like to play along~...I guess I'm into roleplay.")
+            else:
+              text("Ishraq, crossing his arms: Oh really? That was the most weirdest and saddest shit I've seen in a while","Kelly, crossing her arms: Hey! It wasn't that bad. I like chivalry.","Ishraq, straight up: That's beyond chivalry. He worships you.","Kelly, spinning: Fine by me.")
+            if data[27] == 3:
+              input("\nIshraq, weirded out: Bruh. Anyways, get ready. We're gonna go to the Main Office to find my friend Khalil soon.")
+            elif data[27] == 6 or data[27] == 7:
+              input("\nIshraq, weirded out: Bruh. Anways, I want you up and ready before we debrief what to do next. I'll come talk to you when we're gonna move forward, okay?","Kelly: Yeah!")
+            data[28] = 6
+          elif data[31] == 1 or data[31] == 2:
+            text("Ishraq, making sure: You're not still mad at Daniel for what happened at the bridge, right?","Kelly, calm: Noo..I was just frustrated at the moment...and I don't really like him so...","Ishraq, bursting out: HAHAGHA! Damn, you're funny.","Kelly, making a case: I mean, if he really was faster, we would've all made it outta there safely, and you wouldn't have got hurt!")
+            if data[31] == 2:
+              text("Ishraq, digging deeply: True...but are you really mad about that?","Kelly, squinting: What do you mean?","Ishraq, unsure: I spoke to Daniel and he was very upset. He thinks you got mad because you almost died, and that you blamed him instead of me.","Kelly, shocked: NOT! TRUE! NO, NO, and NO! YOU did your best! It was not your fault!","Ishraq, uncomfortable: Ehh...I could've played it better maybe. But yeah, it wasn't anyone's fault though. So you shouldn't blame Daniel.","Kelly, still blaming him but admitting: Look...yeah I did get angry that I almost died, but like he said he would protect me! Right?! Instead, he was almost the reason I died cuz' you had to save him!","Ishraq, realizing the greyness of the situation: ...Look. We're all alive and fine right now. That's what matters, right?","Kelly, looking past it: Indeed. That's what I told Daniel in the moment back at the bridge...afterwards when we were safe, I got angry...and scared after I realized I almost died..","Ishraq, finished: It's fine, it's fine. Anways, I want you up and ready before we debrief what to do next. I'll come talk to you when we're ready to move forward, okay?","Kelly: Okay!")
+              data[31] = 4
+            else:
+              text("Ishraq, admitting: True. But like he's not that fast. You can't blame him.","Kelly, blaming him: Yes I can. It totally wasn't your fault! You literally had to slow down to help him!","Ishraq, uncomfortable: Ehh...I could've played it better maybe. But yeah, it wasn't anyone's fault though. Shit just happens, and it won't always be perfect.","Kelly, looking past it: I guess...but you know...that was really scary. I almost fell down there with you.","Ishraq, figuring it out: ...Yeah. Almost scary enough to piss you off, right?","Kelly, squinting: What do you mean?","Ishraq, inferring: You got upset cuz' you almost died.","Kelly, still blaming Daniel but admitting: Look...yeah I did get angry that I almost died, but like Daniel said he would protect me! Right?! Insted, he was almost the reason I died cuz' you had to save him!","Ishraq, realizing the greyness of the situation: ...Look. We're all alive and fine right now. That's what matters, right?","Kelly, nodding: Indeed. That's what I told Daniel in the moment back at the bridge...I guess I am getting worked up for no reason..","Ishraq, finished: It's fine, it's fine. Anways, I want you up and ready before we debrief what to do next. I'll come talk to you when we're ready to move forward, okay?","Kelly: Okay!")
+              data[31] = 3
+          elif data[28] == 4 or data[28] == 5 or data[28] == 6:
+            text("\n*Ishraq approaches Kelly","Kelly, spinning her chair towards Ishraq: You ready to move on?")
+            talk = "1"
+            while talk == "1":
+              print(fore.YELLOW_1+style.BOLD+"\nContinuing forward will fail certain unfinished side quests!"+style.RESET)
+              boop = input("\n(1) Not done with everything yet.  (2) Let's continue forward.\nResponse: ")
+              if boop == "1":
+                text("\nIshraq, checking things off in his head: Hmm..not done with everything yet.","Kelly, understanding: Take your time. I'll be following you.")
+                talk = "2"
+              elif boop =="2":
+                text("\nIshraq, checking things off in his head: Hmm..everything seems finished. Let's continue forward.","Kelly, getting up: Alrighty! I'll gather everyone up for a meeting.")
+                questsys("Awakening","Finish")
+                teamrevival(op=True)
+                xpg(500)
+                questsys("The Asylum","StartM")
+                
+                
       if subject == "David":
         if self.RLV == 1:
           if data[12] == 0:
@@ -10412,12 +11239,12 @@ class World:
         
         elif self.RLV == 2:
           text("\n*Kelly approaches David*","Kelly: Maybe it's for you?","*David takes the screwdriver...nothing happens*","David, sad: Damn...I thought it was gonna turn into a diamond sword.","Kelly, inviting: Well, you can always still join the fight. Team. Team. Team. Haha!","David, excited: TEAM! TEAM! TEAM!")
-          supu("David",21)
+          supu("David",26)
           self.people.remove("David")
         
         else:
           text("\n*Kelly approaches David*","Kelly, inviting: Team. Team. Team. Haha!","David, excited: TEAM! TEAM! TEAM!")
-          supu("David",21)
+          supu("David",26)
           self.people.remove("David")
 
       if subject == "Metin":
@@ -10517,31 +11344,46 @@ class World:
           supu("Dylan",16)
           self.people.remove("Dylan")
         
-        else:
+        elif self.RLV == 3 or self.RLV == 6:
           text("\n*Kelly approaches Dylan*","Kelly: You can still help out without an ISO. You wrestle, right?","Dylan: Yeah, I do.")
+          supu("Dylan",16)
+          self.people.remove("Dylan")
+        
+        else:
+          text("\n*Ishraq approaches Dylan*","Ishraq: Could use your help.","Dylan: Yeah, I know.")
           supu("Dylan",16)
           self.people.remove("Dylan")
 
       if subject == "Jahir":
         if self.RLV == 2:
           text("\n*Kelly approaches Jahir*","Kelly: Maybe...","*Jahir takes the screwdriver...nothing happens*","Jahir: I ain't think so either.","Kelly: You can always fight with us still.","Jahir: Sure thing.")
-          supu("Jahir",14)
+          supu("Jahir",16)
+          self.people.remove("Jahir")
+        
+        elif self.RLV == 3 or self.RLV == 6:
+          text("\n*Kelly approaches Jahir*","Kelly: Do you want to help us fight?","Jahir: Sure thing.")
+          supu("Jahir",16)
           self.people.remove("Jahir")
         
         else:
-          text("\n*Kelly approaches Jahir*","Kelly: Do you want to help us fight?","Jahir: Sure thing.")
-          supu("Jahir",14)
+          text("\n*Ishraq approaches Jahir*","Ishraq: Come. You can help us fight.","Jahir: Sure thing.")
+          supu("Jahir",16)
           self.people.remove("Jahir")
 
       if subject == "Andrew":
         if self.RLV == 2:
           text("\n*Kelly approaches Andrew*","Kelly: Who knows...","*Andrew takes the screwdriver...nothing happens*","Andrew: Fuck this.","Kelly, careful: Well...you can still help.","Andrew: Fuck everythin'. I'll help alright. Help beat these niggas assses.")
-          supu("Andrew",15)
+          supu("Andrew",14)
           self.people.remove("Andrew")
       
-        else:
+        elif self.RLV == 3 or self.RLV == 6:
           text("\n*Kelly approaches Andrew*","Kelly, careful: You can still help out.","Andrew: I'll help alright. Help beat these niggas assses.")
-          supu("Andrew",15)
+          supu("Andrew",14)
+          self.people.remove("Andrew")
+        
+        else:
+          text("\n*Ishraq approaches Andrew*","Ishraq: You can help us fight.","Andrew: I'll help alright. Help beat these niggas assses.")
+          supu("Andrew",14)
           self.people.remove("Andrew")
     
       if subject == "Shannae":
@@ -10550,25 +11392,33 @@ class World:
           supu("Shannae",21)
           self.people.remove("Shannae")
         
-        else:
+        elif self.RLV == 3 or self.RLV == 6:
           text("\n*Kelly approaches Shannae*","Shannae, shaking her head: No, no, no.","Kelly, confused: What?","Shannae: I don't like fighting.","Kelly, laughing: Hahaha! You can still help us in other ways.","Shannae: Of course.")
+          supu("Shannae",21)
+          self.people.remove("Shannae")
+        
+        else:
+          text("\n*Ishraq approaches Shannae*","Shannae, shaking her head: No, no, no.","Ishraq, understanding: Not the fighting type?","Shannae: Yeah..","Ishraq, smiling: There's still more you can do.","Shannae: Of course.")
           supu("Shannae",21)
           self.people.remove("Shannae")
       
       if "Transmission" in quests:
-        if subject == "Metin" or subject == "Brandond" or subject == "Noah" or subject == "Edmond":
+        if subject == "Metin" or subject == "Brandon" or subject == "Noah" or subject == "Edmond":
           if subject == "Metin":
-            text("\n*Kelly approaches Metin*","Kelly, planning to link up: Where did the ISOs go?","Metin, turning his head left and right: Where'd you come from?","Kelly, pointing: A rift opened up near the shelves...didn't you notice?","Metin, confirming: Yeah, I thought I did hear something. Didn't think it was you and this other guy..Arwyn?","Arwyn, depressed: Yeah...it's me.","Metin, focusing: Anyways, they went to the technology room in the H-Wing. We're gonna set up reliable comms around the school.","Kelly, praising the course of action: Huh. That's a good thing to do. I guess we'll be heading there now.")
+            text("\n*Kelly approaches Metin*","Kelly, planning to link up: Where did the ISOs go?","Metin, turning his head left and right: Where'd you come from?","Kelly, pointing: A rift opened up near the shelves...didn't you notice?","Metin, confirming: Yeah, I thought I did hear something. Didn't think it was you and this other guy..Arwyn?","Arwyn, depressed: Yeah...it's me.","Metin, focusing: Anyways, they went to the technology room in the H-Wing. We're gonna set up reliable comms around the school.","Kelly, praising the course of action: Huh. That's a good thing to do. I guess we'll be heading there now.","Metin, warning: Be careful. Those four guys over there had a run in with the Fedora Man, but they were able to escape though. He has to be looking for you, so watch out.","Kelly, appreciating: Thank you for the information.")
           if subject == "Brandon":
-            text("\n*Kelly approaches Brandon*","Kelly, planning to link up: Where did the ISOs go?","Brandon, looking up from Pudup's desk: You're back. When'd you get here?","Kelly, pointing: A rift opened up near the shelves...didn't you notice?","Brandon, turning around: More teleporting, huh? You got Arwyn with you too..","Arwyn, depressed: Yeah...unfortunately.","Brandon, pointing out the door: They're in technology room right now in the H-Wing. We're settin' up comms around the school.","Kelly, praising the course of action: Huh. That's a good thing to do. I guess we'll be heading there now.")
+            text("\n*Kelly approaches Brandon*","Kelly, planning to link up: Where did the ISOs go?","Brandon, looking up from Pudup's desk: You're back. When'd you get here?","Kelly, pointing: A rift opened up near the shelves...didn't you notice?","Brandon, turning around: More teleporting, huh? You got Arwyn with you too..","Arwyn, depressed: Yeah...unfortunately.","Brandon, pointing out the door: They're in technology room right now in the H-Wing. We're settin' up comms around the school.","Kelly, praising the course of action: Huh. That's a good thing to do. I guess we'll be heading there now.","Brandon, warning: You might not want to. Those four goons over there came running in, saying they had a run in with the Fedora Man. They somehow got away, but now that you're here...he might be looking for you.","Kelly, appreciating: Thank you for the information.")
           if subject == "Noah":
-            text("\n*Kelly approaches Noah*","Kelly, planning to link up: Where did the ISOs go?","Noah, getting up from excercising: ..Oh shit, you're back. When did you come?","Kelly, pointing: A rift opened up near the shelves...didn't you notice?","Noah, shaking his head: Nah, I was working out. Ay, it's Arwyn. He came with you?","Arwyn, depressed: Yeah...it's me...she dragged me along.","Noah, guiding: Anyways, the guys went to the technology room in the H-Wing. We're setting up a communication system around the school.","Kelly, praising the course of action: Huh. That is a good thing to do. I guess we'll be heading there now.")
+            text("\n*Kelly approaches Noah*","Kelly, planning to link up: Where did the ISOs go?","Noah, getting up from excercising: ..Oh shit, you're back. When did you come?","Kelly, pointing: A rift opened up near the shelves...didn't you notice?","Noah, shaking his head: Nah, I was working out. Ay, it's Arwyn. He came with you?","Arwyn, depressed: Yeah...it's me...she dragged me along.","Noah, guiding: Anyways, the guys went to the technology room in the H-Wing. We're setting up a communication system around the school.","Kelly, praising the course of action: Huh. That is a good thing to do. I guess we'll be heading there now.","Noah, warning: Don't be too quick. Those four guys just came in, and they had were getting chased by the Fedora Man. They got away...but that Fedora guy has to be looking for you.","Kelly, appreciating: Thank you for the information.")
           if subject == "Edmond":
-            text("\n*Kelly approaches Edmond*","Kelly, planning to link up: Where did the ISOs go?","Edmond, looking up from his chromebook: Ayo, Kelly is back guys. But like, she just came outta nowhere.","Kelly, pointing: A rift opened up near the shelves...didn't you notice?","Edmond, looking back at his chromebook: Nah, I was type busy making these beats...ayo, Arwyn is here too.","Arwyn, depressed: Yeah...it's me.","Edmond, answering: The ISOs went to the tech room in the H-Wing. We gonna set up comms around the school.","Kelly, praising the course of action: Huh. That is a good thing to do. I guess we'll be heading there now.")
-          text("\n~Some time earlier back in the technology room...\n","*The room telephone starts to ring...everyone stares at it*","Julius: It's not gonna be me.","Ishraq, joking around for fun: I ain't pickin' that shit up!","Tim, no fear: I will do it.","*Tim picks up the phone.*","Tim, deeply: #Hello~.#","???, seemingly exhilerated: Finally! Someone picks up!","Tim, fucking around: I could never decline a call from you.","???, bullying: GAY! GAY! GAY!","Ishraq, ears darting forward: Wait a minute...that's--! *Ishraq rushes towards the phone and snatches it from Tim!*","Ishraq, earraping: KHALIL!!","Khalil, also earraping: HELLO ISHRAQ. HOW ARE YOU?","Ishraq, yelling: I AM GOOD, YOU?","Khalil, continuing: I AM GOOD, THANK YOU. LISTEN FRIEND. I NEED HELP.","Ishraq, getting a bit serious: Help?","Khalil, struggling: I AM FIGHTING. FIGHTING DR. PARENT. IT IS TIME.","Ishraq, completely understanding: The Fence.","Khalil, boldy: YES. MAIN OFFICE. NOW.","*Khalil hangs up*\n","Ishraq, long awaited: It is time...","Julius, weirded out: Time? Time for what?","Ishraq, preaching: It's time to take down PCTI's most notorious silent killer...ripping holes into kids' sweaters since it was built...The Fence.","Tim, realizing what's going on: OOH! That Fence! The one outside the F-Wing. But like, why take it down now? We're sort of busy dealing with real issues...","Ishraq, believing: Khalil said it's time. It must be done now.","Tim, sidetracking: Well before we go to the main office, let's go drop off these radios at shop.")
+            text("\n*Kelly approaches Edmond*","Kelly, planning to link up: Where did the ISOs go?","Edmond, looking up from his chromebook: Ayo, Kelly is back guys. But like, she just came outta nowhere.","Kelly, pointing: A rift opened up near the shelves...didn't you notice?","Edmond, looking back at his chromebook: Nah, I was type busy making these beats...ayo, Arwyn is here too.","Arwyn, depressed: Yeah...it's me.","Edmond, answering: The ISOs went to the tech room in the H-Wing. We gonna set up comms around the school.","Kelly, praising the course of action: Huh. That is a good thing to do. I guess we'll be heading there now.","Edmond, warning: I don't know about that. These four dudes just came in running from the Fedora Man. They got away, but that nigga was definitely looking for you.","Kelly, appreciating: Thank you for the information.")
+          self.people.remove(subject)
+          text("\n~Some time earlier back in the technology room...\n","*The room telephone starts to ring...everyone stares at it*","Julius: It's not gonna be me.","Ishraq, joking around for fun: I ain't pickin' that shit up!","Tim, no fear: I will do it.","*Tim picks up the phone.*","Tim, deeply: #Hello~.#","???, seemingly exhilerated: Finally! Someone picks up!","Tim, fucking around: I could never decline a call from you.","???, bullying: GAY! GAY! GAY!","Ishraq, ears darting forward: Wait a minute...that's--! *Ishraq rushes towards the phone and snatches it from Tim!*","Ishraq, earraping: KHALIL!!","Khalil, also earraping: HELLO ISHRAQ. HOW ARE YOU?","Ishraq, yelling: I AM GOOD, YOU?","Khalil, continuing: I AM GOOD, THANK YOU. LISTEN FRIEND. I NEED HELP.","Ishraq, getting a bit serious: Help?","Khalil, struggling: I AM FIGHTING. FIGHTING DR. PARENT. IT IS TIME.","Ishraq, completely understanding: The Fence.","Khalil, boldy: YES. MAIN OFFICE. NOW.","*Khalil hangs up*\n","Ishraq, long awaited: It is time...")
+          text("Julius, weirded out: Time? Time for what?","Ishraq, preaching: It's time to take down PCTI's most notorious silent killer...ripping holes into kids' sweaters since it was built...The Fence.","Daniel, realizing what's going on: OOH! That Fence! The one outside the F-Wing. But like, why take it down now? We're sort of busy dealing with real issues...","Ishraq, believing: Khalil said it's time. It must be done now.","Daniel, sidetracking: Well before we go to the main office, let's go drop off these radios at shop.")
           ro = rd(6)
           croom.remove(ro)
           world.append(ro)
+          ro.RLV = 7
           ro = rd(30)
           world.remove(ro)
           croom.append(ro)
@@ -10577,12 +11427,146 @@ class World:
             you.suppteam.append(x)
             you.suppteamS.append(x.name)
           you.ph1 = []
+          questsys("Transmission","Finish")
+          revival(Kelly,o=True)
+          revival(Arwyn,o=True)
+          xpg(350)
           you.reset("Team")
           revival(Ishraq,o=True)
           revival(Julius,o=True)
           revival(Tim,o=True)
           revival(Daniel,o=True)
+          xpg(350)
+          questsys("Awakening","StartM")
+          questsys("The C-Wing Nurse","StartS")
           worldfunction()
+
+      if subject == "Lascelles":
+        if self.RLV == 6:
+          if data[26] == 0:
+            text("\n*Kelly approaches Lascelles*","Lascelles, reciting under his breath: Deliver us from all sins which assail us...","Kelly, waving her hand in his face: Hello?","Lascelles, looking up: The time has come. Jesus is returning.","Kelly, open: Yes...it is quite possible.","Lascelles, in full faith: In coming times, Jesus will protect all devout followers from harm. We will make it out of this Kelly.")
+            talk = "1"
+            while talk == "1":
+              boop = input("\n(1) Yeah...  (2) No, Jesus won't protect us.\nResponse: ")
+              if boop == "1":
+                text("Kelly, a little reluctant: Yeah...","Lascelles, brightly: Keep faith. It's the only thing that matters in the end.")
+                data[26] = 1
+                talk = "2"
+              elif boop == "2":
+                text("Kelly, a little bothered: No, Jesus won't protect us. He hasn't done anything for anyone in the last 2018 years.","Lascelles, shocked: Listen to yourself, and observe what's going on around us. NOW, is the the time! He was not needed the last 2018 years! But NOW?!...Don't keep your faith in question. That is the first step to damnation.","Kelly, questioning her faith even more: Okay...if you say so.")
+                data[26] = 2
+                talk = "2"
+          elif data[26] == 1:
+            text("\n*Kelly approaches Lascelles*","Lascelles, thinking about: I could hold a few sermons myself, you know?","Kelly, didn't ask: That's great..")
+          elif data[26] == 2:
+            text("\n*Kelly approaches Lascelles*","Lascelles, in good faith: God forgives. There is always time to repent.","Kelly, even more put off: Yeah, yeah..")
+        else:
+          text("\n*Ishraq approaches Lascelles*","Ishraq, vibing: YEOO~! Big man Lascell'!","Lascelles, whippin' it with a lil' goofy dance: Ws' good~!","Ishraq, looking at his build: You've gotten bigger...what they feed you at home? Next thing ya know, you're actually gonna be the big man.","Lascelles, playing around: A little this and that' and some good ol' grits.","Ishraq, surprised: I didn't expect that your family to still eat grits...I thought they were complete whities.","Lascelles, with one finger up assertively: We may live in a white neigborhood, but we haven't forgotten the roots.","Ishraq, dabbing Lascelles up and offering: Hey, you gonna fight with us or what?")
+          if data[26] != 2:
+            text("Lascelles, reluctant: You see...I kind of wanted to hold religious sermons here. In a situation like this, we need God.","Ishraq, shrugging: God. Graham. Same thing, come on, join us.","Lascelles, laughing but not really: Hehe...nah.")
+            talk = "1"
+            while talk == "1":
+              boop = input("\n(1) It's fine.  (2) Only the unstoppable tide of Islam can save us.\n(3) Religion is a hoax.\nResponse: ")
+              if boop == "1":
+                text("\nIshraq, accepting: It's fine bro. You do you.","Lascelles, grinning: Ayo~! That's cool that you understand.","Ishraq, wishing well: Stay safe.")
+                self.subject.remove("Lascelles")
+                talk = "2"
+              elif boop == "2":
+                text("\nIshraq, devout: Only the unstoppable tide of Islam can save us.","Lascelles, getting technical: Well, that's true because God and A-Allah are supposed to be the same per-","Ishraq, cutting him off: NO. NO. NO.","Lascelles, trying to squeeze through Ishraq: Both religions share most parts of the Old--","Ishraq, uncaring: That's crazy. All in all, Allah or God won't protect us. They don't interfere with what happens here. That's why the tide of Islam will sweep the world one day so that we can unite to conquer all the obstacles of humanity.","Lascelles, in disagreement: I don't know man...it looks like Jesus will return soon in my eyes, considering everything that's going on.","Ishraq, not throwing the idea aside: Isa might return...you're not wrong. The Fedora Man is pretty Anti-Christ material.","Lascelles, packing a bag and getting ready to head out: So you agree with me. Jesus will return. All we need now is a proven Christian to fight for him. Once he sees that I'm in danger, he will enter the Realm Between and save us all.","Ishraq, stupefied: W-what the hell just came out of your mouth? NIGGA JUST COME WITH US.","Lascelles, rushing to find Jesus: No. I will never be in danger with you guys around. Don't worry, I'll find the savior and save us all!!","*Lascelles sprints out the room*","Ishraq, facepalming: Fucking idiot.")
+                questsys("In God We Trust","StartS")
+                talk = "2"
+              elif boop == "3":
+                text("\nIshraq, cynically: Religion is a hoax. It was used back in the day to launder money off of people like you.","Lascelles, offended but not trying to show it: God is real man...","Ishraq, agreeing: Yeah, he is. It's just that religion isn't. Religion is literally just to control people. Why do you think it was connected to the state for so long? Hell, Christianity is so ingrained in the U.S. that almost all literature in school is related to it. They make you fucking swear on something when you either become president, or you're being interrogated by cops. Crazy parallel, right?","Lascelles, packing a bag and getting ready to head out: Jesus will return. All non-believers will be damned to hell. Especially atheists.","Ishraq, correcting him: Eh, I'm not atheist. I'm a theist.","Lascelles, at the door: Agnosticism is honestly worst than atheism. It just means you're afraid to choose the right answer.","Ishraq, hit hard: Hmm...if so, I would easily choose Islam.","Lascelles, facing away from Ishraq: Good for you. Anyways, I will find Jesus. Once he sees a proven Christian like me in danger, he will enter the Realm Between and save us all...I will find the savior and save us all.","*Lascelles sprints out the room*","Ishraq, questioning himself: Afraid to choose, huh?")
+                data[26] = 3
+                questsys("In God We Trust","StartS")
+                talk = "2"
+          else:
+            text("Lascelles, packing a bag and getting ready to head out: Nah. I'm on a quest to find Jesus.","Ishraq, bruh face: Nigga what?","Lascelles, tight: I spoke to Kelly earlier...and I came to the realization that God is lost in the youth of our society. Now is the time that Jesus will return to the lands and save humanity from the Anti-Christ...and people still don't have faith in God.","Ishraq, not in total disagreement: You tryna say the Fedora Man is the Anti-Christ? It's not a far-fetched idea. Isa could come.","Lascelles, at the door: So you agree with me. Jesus will return. All we need now is a proven Christian to fight for him. Once he sees that I'm in danger, he will enter the Realm Between and save us all.","Ishraq, stupefied: W-what the hell just came out of your mouth? NIGGA JUST COME WITH US.","Lascelles, rushing to find Jesus: No. I will never be in danger with you guys around. Don't worry, I'll find the savior and save us all!!","*Lascelles sprints out the room*","Ishraq, facepalming: Fucking idiot.")
+            questsys("In God We Trust","StartS")
+
+      if subject == "Matvey":
+        if self.RLV == 6:
+          text("\n*Kelly approaches Matvey*","Kelly, greeting: Hey Matvey.","Matvey, looking agitated: Oh, hey.","Kelly, concerned: Anything wrong?","Matvey, tracing back and forth: I don't have my golf clubs...and I can't remember where I was before I was taking a dump...","Kelly, giggling: Hehehe, sucks.")
+        else:
+          if data[32] == 0:
+            text("\n*Ishraq approaches Matvey*","Ishraq, slapping Matvey's back: YO~! Wuz' good Matt!?","Matvey, cool: Yo~..you doing good out there?","Ishraq, mad happy: Hell ye'. I'm just glad that you're not dead. You're legit cooler Arwyn.","Matvey, laughing: Haha, really? Arwyn's pretty cool.","Ishraq, admitting: Of course but like...you sound like a whole grown ass man with that deep ass voice.")
+            if data[27] == 3:
+              text("Matvey, going with the flow: Word, thanks. Yo, I got a favor to ask you. But it can wait. You guys are going to the Main Office right now, right?","Ishraq, willing: Yeah, we are. I'll help you out right after, no problem.","Matvey: Alright, thanks.")
+              data[32] = 1
+            else:
+              text("Matvey, going with the flow: Word, thanks. Yo, I got a favor to ask you.","Ishraq, listening: Whatchu' need?","Matvey, getting up: Hold up, I'm gonna get Tim here...*Matvey brings Tim over*...Yo, we were in ASL before the Wiring happened, right?","Tim, confirming: Yeah. That's where I remember being.","Matvey, sure: I left my golf clubs in there I think. Can you come with me so I can get em'?","Ishraq: Of course.","Tim, butting in: Hold up. Only one of us needs to go. You don't need to round up all the ISOs.","Ishraq: I mean all of us can go, it ain't a problem.","Tim, pointing out: Well look. I have nothing to do right now. Everybody else is doing...something I guess.","Ishraq, stretching his arms behind his head: So what? Weren't you gonna help Daniel with the radios?","Tim, admitting: I don't really know how to help with setting up a broadcast system...but I can make myself useful by helping Matt.","Ishraq, picking his nose: I mean I can come too. I ain't doin' shit.","Tim, stepping up: Nah man. You can relax and chill with the dudes. We're just gonna go get something and come back.")
+              talk = "1"
+              input(fore.YELLOW_1+style.BOLD+"\nYou are about to start an Event Quest. During an event quest, you will be set on a fixed path or be in an entirely different place where you must complete the quest before doing anything else."+style.RESET)
+              while talk == "1":
+                boop = input("\nBegin Event Quest?\n(1) Yes  (2) No\nResponse: ")
+                if boop == "1" or boop.lower() == "yes":
+                  text("Ishraq, trusting: Alright. Stay safe guys.","Tim, cocky: There's nothing out there that'll harm me and Matvey.")
+                  questsys("Silent Operators","StartM")
+                  talk = "2"
+                if boop == "2" or boop.lower() == "no":
+                  text("Ishraq, not ready: We still got other work to do Tim. When we're done, you can go help Matt.","Tim: Alright.")
+                  talk = "2"
+              data[32] = 2
+          elif data[32] == 1 or data[32] == 2: 
+            if data[27] == 3:
+              text("\n*Ishraq approaches Matvey*","Ishraq, greeting: Yo~!","Matvey, helping him stay on task: Hey! Go to the Main Office already, you can help me later!","Ishraq: Aww man.")
+            else:
+              text("\n*Ishraq approaches Matvey*","Ishraq, greeting: Yo~!")
+              if data[31] == 1:
+                text("Matvey, now sharing: Yo! That favor I had to ask you--","Ishraq, listening: Whatchu' need?","Matvey, getting up: Hold up, I'm gonna get Tim here...*Matvey brings Tim over*...Yo, we were in ASL before the Wiring happened, right?","Tim, confirming: Yeah. That's where I remember being.","Matvey, sure: I left my golf clubs in there I think. Can you come with me so I can get em'?","Ishraq: Of course.","Tim, butting in: Hold up. Only one of us needs to go. You don't need to round up all the ISOs.","Ishraq: I mean all of us can go, it ain't a problem.","Tim, pointing out: Well look. I have nothing to do right now. Everybody else is doing...something I guess.","Ishraq, stretching his arms behind his head: So what? Weren't you gonna help Daniel with the radios?","Tim, admitting: I don't really know how to help with setting up a broadcast system...but I can make myself useful by helping Matt.","Ishraq, picking his nose: I mean I can come too. I ain't doin' shit.","Tim, stepping up: Nah man. You can relax and chill with the dudes. We're just gonna go get something and come back.")
+                talk = "1"
+                input(fore.YELLOW_1+style.BOLD+"\nYou are about to start an Event Quest. During an event quest, you will be set on a fixed path or be in an entirely different place where you must complete the quest before doing anything else."+style.RESET)
+                while talk == "1":
+                  boop = input("\nBegin Event Quest?\n(1) Yes  (2) No\nResponse: ")
+                  if boop == "1" or boop.lower() == "yes":
+                    text("Ishraq, trusting: Alright. Stay safe guys.","Tim, cocky: There's nothing out there that'll harm me and Matvey.")
+                    questsys("Silent Operators","StartM")
+                    talk = "2"
+                  if boop == "2" or boop.lower() == "no":
+                    text("Ishraq, not ready: We still got other work to do. When we're done, I'll come back to you.","Matvey: Alright.")
+                    talk = "2"
+                data[32] = 2
+              else:
+                input("\nMatvey, asking: You don't need Tim anymore?")
+                talk = "1"
+                while talk == "1":
+                  boop = input("\nBegin Event Quest?\n(1) Yes  (2) No\nResponse: ")
+                  if boop == "1" or boop.lower() == "yes":
+                    text("Ishraq, finished: Yeah, he's good to go help you. Stay safe guys.")
+                    questsys("Silent Operators","StartM")                   
+                    talk = "2"
+                  if boop == "2" or boop.lower() == "no":
+                    text("Ishraq, not ready: We still got other work to do Tim. When we're done, you can go help Matt.","Tim: Alright.")
+                    talk = "2"
+        if "Silent Operators" in quests:
+          you.reset("Team")
+          revival(Tim,o=True)
+          nig = Support("Matvey",21)
+          forceguest(nig)
+          text("*Tim and Matvey exit the F-Wing Engineering Shop Room.*","Tim, signing: (To our ASL classroom we go.)","Matvey, also signing: (I'll follow behind you.)") 
+          ro = rd(6)
+          croom.remove(ro)
+          world.append(ro)
+          ro = rd(2)
+          world.remove(ro)
+          croom.append(ro)   
+          worldfunction()          
+
+      if subject == "Dereck":
+        if self.RLV == 6:
+          text("\n*Kelly approaches Dereck...he notices her coming*","Dereck: OH...Hi Kelly..","Kelly, unsure: Hi...?","Dereck: So, what are you doing talking to me?","Kelly, really unsure: I really don't know. You know what? Make yourself useful and join the fight.","Dereck, submissively: Yes m'aam.")
+        else:
+          text("\n*Kelly approaches Lascelles*","Lascelles, reciting under his breath: Deliver us from all sins which assail us...","Kelly, waving her hand in his face: Hello?","Lascelles, looking up: The time has come. Jesus is returning.","Kelly, open: Yes...it is quite possible.","Lascelles, in full faith: In coming times, Jesus will protect all devout followers from harm. We will make it out of this Kelly.","Kelly, a little reluctant: Yeah...")
+        supu("Dereck",15)
+        self.people.remove("Dereck")
+      
+      if subject == "Kenny":
+        if self.RLV == 6:
+          text("\n*Kelly approaches Kenny*","Kelly, giddy: Hiiii Kenny!","Kenny, happy: Oh, wuz good Kelly! You're looking great today.","Kelly, looking at herself: But I'm all beat up...","Kenny, egging on: So? You still look amazing.","Kelly, shyly: Thank you..","Kenny: You need anything?","Kelly, requesting: We need as much as help as we can get on the frontline. You'll help, won't you?","Kenny, gladly: Of course I will, especially for you.")
+        else:
+          text("\n*Kelly approaches Lascelles*","Lascelles, reciting under his breath: Deliver us from all sins which assail us...","Kelly, waving her hand in his face: Hello?","Lascelles, looking up: The time has come. Jesus is returning.","Kelly, open: Yes...it is quite possible.","Lascelles, in full faith: In coming times, Jesus will protect all devout followers from harm. We will make it out of this Kelly.","Kelly, a little reluctant: Yeah...")
+        supu("Kenny",21)
+        self.people.remove("Kenny")
         
       
     if self.RID == 14:
@@ -10611,13 +11595,12 @@ class World:
           elif boop == "2" and data[15] == 0:
             text("\nIshraq: Remember anything about your kidnapper?","Kelly, still slightly flustered: Yeah...I do. I guess I'll just tell you now.","Ishraq, raising a brow: Huh?","Kelly, explaining: Basically, I was walking with Daniel. Daniel saw the guy in the trench coat, and started acting all weird. I couldn't tell if Daniel was acting or not. At first, I thought they were friends acting a skit out together for me or something. But this Fedora guy just charged at me, and Daniel got a little serious for a second. Next thing you know, they were fighting!","Ishraq, amused at the weird situation: HaHAHA! What the hell?","Kelly, continuing: So Daniel lost, and then the guy took me.","Ishraq, getting information: Remember how he looks?","Kelly, recalling: Umm...he had a trenchcoat, long and black...and a fedora on his head.")
             if data[9] != 1:
-              text("Ishraq, dying: HAHA? A fedora neckbeard!? What is this!?","Kelly, slightly embarrased: Yeah...it was very strange.","Ishraq, giving her a high five: Hey, at least we know what we're up against. A joke, HA!")
+              text("Ishraq, dying: HAHA? A fedora neckbeard!? What is this!?","Kelly, slightly embarrassed: Yeah...it was very strange.","Ishraq, giving her a high five: Hey, at least we know what we're up against. A joke, HA!")
             else:
-              text("Ishraq, excited: Hey! Richard mentioned that guy! A fedora neckbeard!? He's behind all this?!","Kelly, slightly embarrased: Yeah...it was very strange.","Ishraq, giving her a high five: Hey, at least we know what we're up against. A joke, HA!")
+              text("Ishraq, excited: Hey! Richard mentioned that guy! A fedora neckbeard!? He's behind all this?!","Kelly, slightly embarrassed: Yeah...it was very strange.","Ishraq, giving her a high five: Hey, at least we know what we're up against. A joke, HA!")
             data[15] = 1
         if subject == "The Librarian":
-          text("\nIshraq, thinking to himself: (She's out cold...she'll wake up soon.)")
-      
+          text("\nIshraq, thinking to himself: (She's out cold...she'll wake up soon.)")    
       if subject == "Bookcase A-D":
           text("\nIshraq, reading a book title: Computer Integrated Manufacturing by Marianne Albarez...I swear I know this name.")
       if subject == "Bookcase E-H":
@@ -10637,7 +11620,7 @@ class World:
                 text("Ishraq, skeptical: Nah, I don't think he's causing all this...has to be the Fedora Man.")
               else:
                 text("Ishraq, taking it into consideration: Maybe, but I doubt it. Graham would never do this.")
-              text("\n*Julius tries to pick up the book, but it starts shaking violently*\n","Julius, confused: What gives?","Ishraq, mentioning: Kelly also said when she picked up my Iso, it shook violently in her hands...","Julius, disappointed: Damn.","Ishraq, shouting across the room.: Kelly!","\n*Kelly walks over to Ishraq*\n","Kelly, responding: What?","Ishraq, pointing at the book at the floor: Look...it's inching towards you.","Kelly, curious: Wow, that's so cool!..It's also called Isometric Drawings by Wycliffe A. Graham...as in Dr. Graham?","\n*Kelly picks up the book*\n","Ishraq, confirming: Yeah, it's weird. Me and Julius think he's involved in some way","Kelly, agreeing: Definitely...now let's see what this book is so excited for.","\n*Kelly opens the book, and a magenta light radiates from it. The book drags Kelly into it, enveloping her! The book turns through all of its pages quickly and finally closes. A holographic light shines from the book, and Kelly's body reconstructs in the shape of magenta outlined geometric planes.*\n","Ishraq, not surprised: Well well well, look who's an Iso-wielder now.",fore.MAGENTA_1 + style.BOLD + "Kelly, feeling the power: Oh my god, I feel so alive right now!" + style.RESET,"\n*Kelly's calligraphy pen appears before her inside the book*\n",fore.MAGENTA_1 + style.BOLD + "Kelly, astonished: Hey! This was just in my bookbag!"+ style.RESET,"\n*Kelly touches the pen and feels its energy*\n",fore.MAGENTA_1 + style.BOLD + "Kelly, feeling comfort: It's filled with some type of power. I feel it."+style.RESET,style.BOLD + fore.MAGENTA_1 + back.GREY_100+"\n~Kelly has gained a new ability, Calligraphy! She utilizes the power within her magic calligraphy pen to attack enemies with high accuracy magic damage with written spells!\n" + style.RESET)
+              text("\n*Julius tries to pick up the book, but it starts shaking violently*\n","Julius, confused: What gives?","Ishraq, mentioning: Kelly also said when she picked up my Iso, it shook violently in her hands...","Julius, disappointed: Damn.","Ishraq, shouting across the room.: Kelly!","\n*Kelly walks over to Ishraq*\n","Kelly, responding: What?","Ishraq, pointing at the book at the floor: Look...it's inching towards you.","Kelly, curious: Wow, that's so cool!..It's also called Isometric Drawings by Wycliffe A. Graham...as in Dr. Graham?","\n*Kelly picks up the book*\n","Ishraq, confirming: Yeah, it's weird. Me and Julius think he's involved in some way","Kelly, agreeing: Definitely...now let's see what this book is so excited for.","\n*Kelly opens the book, and a magenta light radiates from it. The book drags Kelly into it, enveloping her! The book turns through all of its pages quickly and finally closes. A holographic light shines from the book, and Kelly's body reconstructs in the shape of magenta outlined geometric planes.*\n","Ishraq, not surprised: Well well well, look who's an Iso-wielder now.",fore.MAGENTA_1  + "Kelly, feeling the power: Oh my god, I feel so alive right now!" + style.RESET,"\n*Kelly's calligraphy pen appears before her inside the book*\n",fore.MAGENTA_1 +  "Kelly, astonished: Hey! This was just in my bookbag!"+ style.RESET,"\n*Kelly touches the pen and feels its energy*\n",fore.MAGENTA_1 + "Kelly, feeling comfort: It's filled with some type of power. I feel it."+style.RESET,style.BOLD + fore.MAGENTA_1 + "\n~Kelly has gained a new ability, Calligraphy! She utilizes the power within her magic calligraphy pen to attack enemies with high accuracy magic damage with written spells!\n" + style.RESET)
               talk = "2"
               data[1] = data[1] + 3
           Kelly.learnskill("Calligraphy")
@@ -10673,13 +11656,13 @@ class World:
         self.objects.remove("Snacks Crate")
       
       if subject == "Fuze Crate":
-        if "Daily Checkup" not in quests and "Medical Attention" not in quests:
-          if "The FX-Wing Nurse" not in quests:
+        if you.att(Ishraq) == True:
+          if you.att(Kelly) == True:
             text("\nKelly, shouting: Guys! I found Ice Tea!","Ishraq, coming over: Aaah. Fuze.","Julius: Brisk is better.","Ishraq, sharing: You know, our school used to give out Brisk. It was too unhealthy or something, so they switched over to Fuze.")
           else:
             text("Noah, stumbling upon: Yo! There's some Ice Tea here!","Ishraq, coming over: Aaah. Fuze.","Julius: Brisk is better.","Ishraq, sharing: You know, our school used to give out Brisk. It was too unhealthy or something, so they switched over to Fuze.")
         else:
-          if "The FX-Wing Nurse" not in quests:
+          if you.att(Kelly) == True:
             text("\nKelly, shouting: Guys! I found Ice Tea!","Julius, coming over: Nice.")
           else:
             text("Noah, stumbling upon: Yo! There's some Ice Tea here!","Julius, coming over: Nice.")
@@ -10687,9 +11670,9 @@ class World:
         self.objects.remove("Fuze Crate")
       
       if subject == "Dead Bodies":
-        if "Daily Checkup" not in quests and "Medical Attention" not in quests:
+        if you.att(Ishraq) == True:
           input("\nIshraq, curious: I'm gonna look at the dead bodies...")
-          if "The FX-Wing Nurse" not in quests:
+          if you.att(Kelly) == True:
             input("Kelly, gagging: Yeah#! You can do that yourself.")
           text("Metin, joining Ishraq: I wanna see them too...I'm wondering if anyone I know died.","Ishraq, ready: Alright, let's go check them out.","\n*Ishraq and Metin walk over to some corpses*\n","Ishraq, observing closely: Hmm...it seems like they were impaled by something, ya heard?","Metin, crouching down: Yeah...look at this girl tho'.","Ishraq, taking a look: What?","Metin, staring back at a boy's corpse: There's no blood surrounding the girl. She's not fully impaled either. And look! There's no blood where she got impaled! What?!","Ishraq, shook: Holy shit...you're right!","Metin, standing back up: I don't think I know any of these people...wait, I think that's Daniella.","Ishraq: Who's that?","Metin: That's Nicole's best friend.","Ishraq: Espinoza?","Metin: Yeah.","Ishraq: Unforunate.")
         else:
@@ -10697,7 +11680,7 @@ class World:
         self.objects.remove("Dead Bodies")
       
       if subject == "Note":
-        if "Daily Checkup" not in quests and "Medical Attention" not in quests:
+        if you.att(Ishraq) == True:
           text("\nIshraq, noticing a slip of paper on the lunch counter: What's that?","Julius: A paper.","Ishraq, opening it up: Hmm...the ink smells fresh.","\n*Ishraq begins to read the paper aloud*\n",'"I am at school right now. I don’t know if I will survive. My phone is not working. I am being chased by other students. I am hiding here all alone. Everyone is trying to kill me. I tried to approach my friends, but they seemed off. I was scared at first, but I tried to speak to them anyway. As soon as I spoke, they all turned and chased me. I ran for my life. A girl caught up to me. She tackled me to the ground. I thought I was dead. But then, something happened. I felt my back explode full of life...and then suddently the girl on top of me stopped moving. Blood came out of her mouth and all over my face. I was horrified at first. But then this thing pulled the girl off of me. I slowly stood up. I observed the life going away from this girl rapidly. I do not know why, but...I felt good."',"\nJulius: Creeeepyyy.","Ishraq, unsettled: This is something else. I think we should get out of here.","Julius: Word.")
         else:
           text("\nJulius, noticing a slip of paper on the lunch counter: Hmm?","*Julius picks up the note*","Julius, opening it up: This smells fresh.","\n*Julius begins to read the paper aloud*\n",'"I am at school right now. I don’t know if I will survive. My phone is not working. I am being chased by other students. I am hiding here all alone. Everyone is trying to kill me. I tried to approach my friends, but they seemed off. I was scared at first, but I tried to speak to them anyway. As soon as I spoke, they all turned and chased me. I ran for my life. A girl caught up to me. She tackled me to the ground. I thought I was dead. But then, something happened. I felt my back explode full of life...and then suddently the girl on top of me stopped moving. Blood came out of her mouth and all over my face. I was horrified at first. But then this thing pulled the girl off of me. I slowly stood up. I observed the life going away from this girl rapidly. I do not know why, but...I felt good."',"\nJulius: Creeeepyyy.")
@@ -10716,13 +11699,13 @@ class World:
           if data[15] == 1:
             text("Kelly: Probably the Fedora Man.","Ishraq, further confused: Is he giving us the Isometric Drawings then? Does he know about your pen? Is he wiring us right now using these powers?","Kelly, scared: Ishraq, I don't know. Those are some scary thoughts that we should keep in mind.","Ishraq: Yeah...")
         if subject == "Ominous Car":
-          text("\n*Julius approaches the car*\n","Julius, opening the door and entering the car: Unlocked...nice!","Ishraq, signaling Julius: Find anything?","Julius, just as he opens the glovebox: Nah not yet, hold up...!","\n*Ishraq observes a green flash emitting from all the car's windows*\n","Ishraq, smirking: Ahh shit, that's another one. Julius, you're an ISO!","*Julius does not reply*","Ishraq, calling from a distance: Julius? You still there?","\n*Ishraq approaches the vehicle. Before he could get to close, the car transforms!*\n","Ishraq, jumping back: HOLY SHIT! IT'S A TRANSFORMER! JULIUS!!","\n*Julius stays quiet as he reads something...*","Ishraq, shouting: GET OUT OF THERE ALREADY!","Kelly, running to Ishraq: Hey, we have to fight this thing!","Ishraq, blood pumping suddenly: Right.","\n*Julius is ejected out of the cockpit of the transformer*\n","Julius, plummeting to the ground: ...!!..Hey...that didn't even hurt?","Ishraq, signaling to Julius: Hey, you alright?","Julius,  visibly frustrated: ...Yeeeaaa.....sssss..MAN...LET'S DESTROY THIS SHIT!")
+          text("\n*Julius approaches the car*\n","Julius, opening the door and entering the car: Unlocked...nice!","Ishraq, signaling Julius: Find anything?","Julius, just as he opens the glovebox: Nah not yet, hold up...!","\n*Ishraq observes a green flash emitting from all the car's windows*\n","Ishraq, smirking: Ahh shit, that's another one. Julius, you're an ISO!","*Julius does not reply*","Ishraq, calling from a distance: Julius? You still there?","\n*Ishraq approaches the vehicle. Before he could get to close, the car transforms!*\n","Ishraq, jumping back: HOLY SHIT! IT'S A TRANSFORMER! JULIUS!!","\n*Julius stays quiet as he reads something...*","Ishraq, shouting: GET OUT OF THERE ALREADY!","Kelly, running to Ishraq: Hey, we have to fight this thing!","Ishraq, blood pumping suddenly: Right.","\n*Julius is ejected out of the cockpit of the transformer*\n",fore.GREEN_1+"Julius, plummeting to the ground: ...!!..Hey...that didn't even hurt?"+style.RESET,"Ishraq, signaling to Julius: Hey, you alright?",fore.GREEN_1+"Julius,  visibly frustrated: ...Yeeeaaa.....sssss..MAN...LET'S DESTROY THIS SHIT!"+style.RESET)
           input(style.BOLD + fore.GREEN_1 +"\n~Julius has gained a new ability, Shield! It recovers a percentage of his maximum health and reduces the damage he takes until it's his turn again!" + style.RESET)
           bots.team = [Entity("Transformer",1000,30,30,60,0,10,60,100,75,0,15,0,3,"17","Boss")] 
           fightid = 5
           battle(you,bots,Cont=False)
           if victory == 1:
-            text("\n*The transformer looms over Julius as it is about to collapse*\n","Ishraq, battle buzzed: JULIUS, MOVE!","Julius, activating his shield: I'm chillin'","Ishraq, unsure of Julius's safety: NO CHILL!!","\n*Ishraq power leaps into the air*\n","Ishraq, thinking to himself: These powers in me...I don't know what they are and what they do...I don't know their limits or mine...but they seem to be connected to me. They're materializing around me...and right now, I need to destroy this thing about to fall on my friend.","\n*A red-holographic casing encloses Ishraq's entire body...the Transformer rapidly falls over!!*\n","Ishraq, believing: BOWERS SMASH!","\n*Ishraq strikes the Transfomer with his right arm, immensely pushing it back! He lands on the ground swiftly, only to rebound immediately into the air again to punch the Transfomer with his left arm! The Transformer smashes against the concrete wall of the spacious garage. Ishraq does one last leap into the air, and smashes both his clenched fist through the Transformer!","Kelly, in awe: Woooow, that was sick.","Julius, just standing there: That was type extra. I wasn't gonna get hurt regardless.","Ishraq, getting out of the destroyed Transformer: Not only am I sweating to death, I'm covered in oil now.","Kelly, laughing: Good thing we have showers in the AC!","Ishraq, laughing: Hehehe, I feel like shit no cap. Can't wait to get home.")
+            text("\n*The transformer looms over Julius as it is about to collapse*\n","Ishraq, battle buzzed: JULIUS, MOVE!","Julius, activating his shield: I'm chillin'","Ishraq, unsure of Julius's safety: NO CHILL!!","\n*Ishraq power leaps into the air*\n","Ishraq, thinking to himself: (These powers in me...I don't know what they are and what they do...I don't know their limits or mine...but they seem to be connected to me. They're materializing around me...and right now, I need to destroy this thing about to fall on my friend.)","\n*A red-holographic casing encloses Ishraq's entire body...the Transformer rapidly falls over!!*\n","Ishraq, believing: BOWERS SMASH!","\n*Ishraq strikes the Transfomer with his right arm, immensely pushing it back! He lands on the ground swiftly, only to rebound immediately into the air again to punch the Transfomer with his left arm! The Transformer smashes against the concrete wall of the spacious garage. Ishraq does one last leap into the air, and smashes both his clenched fist through the Transformer!","Kelly, in awe: Woooow, that was sick.","Julius, just standing there: That was type extra. I wasn't gonna get hurt regardless.","Ishraq, getting out of the destroyed Transformer: Not only am I sweating to death, I'm covered in oil now.","Kelly, laughing: Good thing we have showers in the AC!","Ishraq, laughing: Hehehe, I feel like shit no cap. Can't wait to get home.")
             if you.suppteamS[0] == "Brandon":
               text("Brandon, slightly concerned: Yo. Thing are startin' to type heat up in this place. I think we needa get out of here and get some help.")
             elif you.suppteamS[0] == "Edmond":
@@ -10747,7 +11730,7 @@ class World:
             revival(Kelly)
             if "Shield" not in Julius.skills:
               Julius.skills.insert(1,"Shield")
-            input(style.BOLD+"\nUpon exiting this room, you will begin a deathmarch. A deathmarch is a series of random encounters, sometimes with a boss battle at the end. In main story-based deathmarches, you are healed before embarking, and given a shop to prepare, as you usually have to go through the deathmarch before proceeding any further."+style.RESET)
+            input(style.BOLD+fore.YELLOW_1+"\nUpon exiting this room, you will begin a deathmarch. A deathmarch is a series of random encounters, sometimes with a boss battle at the end. In main story-based deathmarches, you are healed before embarking, and given a shop to prepare, as you usually have to go through the deathmarch before proceeding any further."+style.RESET)
 
     if self.RID == 25:
 
@@ -10887,16 +11870,16 @@ class World:
 
         if subject == "Box #1":
           text("\nIshraq: A chromebook repair kit? Useless to be honest. Still takin' it.")
-          additem("Repair Kit",you.accessinventory)
+          additem("Repair Kit",1,you.accessinventory)
           self.objects.remove("Box #1")
         
         if subject == "Box #2":
           text("\nIshraq: Well, would ya' look at that.")
-          additem("T2 Yellow Isometric Drawing",you.isoinventory)
+          additem("T2 Green Isometric Drawing",1,you.isoinventory)
           self.objects.remove("Box #2")
 
         if subject == "Box #3":
-          text("\nIshraq, finding something: This looks like a radio kit...*Ishraq walks over to Daniel with the box*","Ishraq, giving the box to Daniel: I think this might be a box.","Daniel, glancing at the contents: Mmm, yeah! I can defintely work with this.","\nTim, thinking it over: It's great we found this kit and all, but we really only need one solid way of communicating. We got three ideas on it. The first was to set up a radio broadcast with receivers in safe havens where students are. We got the kit for that. The second was walkie-talkies, which I'm not sure we will find here. I perosnally think they're more robust and simpler. The third was to get control of the announcement speakers in each room, which would make the radio broadcast we're gonna set up useless.\n","Daniel, really wanting to set up the broadcast: But we can set the radio where we want it to be and use it from where we want. The announcement speakers are in the main office! That's too far from shop!","Ishraq: The announcement speakers are convenient though...and not at the same time.","Tim, accepting Daniel's idea: Eh, the announcement speakers are in a far spot to use safely. I guess we should set up our own system. But, walkie-talkies are just completely better than all this.","Ishraq: Well, if we find them, we'll use them, but in the mean time this is our plan.","\n~The team goes on and on discussing their ideas on setting up a reliable way of communication...meanwhile, in a dark room only lit by a vast amount of bright monitors...\n")
+          text("\nIshraq, finding something: This looks like a radio kit...*Ishraq walks over to Daniel with the box*","Daniel, glancing at the contents: Mmm, yeah! I can defintely work with this.","\nTim, thinking it over: It's great we found this kit and all, but we really only need one solid way of communicating. We got three ideas on it. The first was to set up a radio broadcast with receivers in safe havens where students are. We got the kit for that. The second was walkie-talkies, which I'm not sure we will find here. I perosnally think they're more robust and simple. The third was to get control of the announcement speakers in each room, which would make the radio broadcast we're gonna set up useless.\n","Daniel, really wanting to set up the broadcast: But we can set the radio where we want it to be and use it from where we want. The announcement speakers are in the main office! That's too far from shop!","Ishraq: The announcement speakers are convenient though...and not at the same time.","Tim, accepting Daniel's idea: Eh, the announcement speakers are in a far spot to use safely. I guess we should set up our own system. But, walkie-talkies are just completely better than all this.","Ishraq: Well, if we find them, we'll use them, but in the mean time this is our plan.","\n~The team goes on and on discussing their ideas on setting up a reliable way of communication...meanwhile, in a dark room only lit by a vast amount of bright monitors...\n")
           self.objects.remove("Box #3")
           ro = rd(30)
           croom.remove(ro)
@@ -10907,7 +11890,7 @@ class World:
           eventcheck()
         
         if subject == "Julius":
-          text("\nJulius, idle: Need anything from me?")
+          text("\n*Ishraq approaches Julius*","Julius, idle: Need anything from me?")
           if data[23] != "":
             boop = input("\n(1) Find anything?  (2) The Fedora Man... \nResponse: ")
             if boop == "1":
@@ -10915,67 +11898,86 @@ class World:
             if boop == "2":
               text("\nIshraq: The Fedora Man...he talks as if he knew you.","Julius, pausing: ...Strange. I'm not even sure myself if I know him or not.","Ishraq, gaslighting: He called you a pussy, whatchu' gonna do about it?","Julius, abnormally serious: I don't know..")
           else:
-            text("\nIshraq: Find anything?","Julius, slowly turning to Ishraq: Do it look like I even know what we're doing here, HaHAA~!")
+            text("Ishraq: Find anything?","Julius, slowly turning to Ishraq: Do it look like I even know what we're doing here, HaHAA~!")
           
         if subject == "Tim":
-          text("\nTim, ripping through boxes: Ishraaaq.")
+          text("\n*Ishraq approaches Tim*","Tim, ripping through boxes: Ishraaaq.")
           if data[23] == "":
-            text("\nIshraq, wondering if Tim saw: Did you see Arwyn at the auditorium?","Tim: Yeah...he was with the Fedora Man.","Ishraq, worried: He was wired too...")
+            text("Ishraq, wondering if Tim saw: Did you see Arwyn at the auditorium?","Tim: Yeah...he was with the Fedora Man.","Ishraq, worried: He was wired too...")
           else:
-            text("\nIshraq, relieved: You had me convinced you were dead back at the auditorium.","Tim, feeling complimented: I always knew I was good at acting. By the way, you saw Arwyn at the auditorium?","Ishraq, excited to hear about: No? He was there?!","Tim: Yeah, he came in with the Fedora Man and left with him...I think he was wired.")
+            text("Ishraq, relieved: You had me convinced you were dead back at the auditorium.","Tim, feeling complimented: I always knew I was good at acting. By the way, you saw Arwyn at the auditorium?","Ishraq, excited to hear about: No? He was there?!","Tim: Yeah, he came in with the Fedora Man and left with him...I think he was wired.")
         
         if subject == "Daniel":
-          text("\nDaniel, searching: Yo.")
+          text("\n*Ishraq approaches Daniel*","Daniel, searching: Yo.")
           if data[23] == "":
             if data[24] == 1:
               text("Ishraq, feeling bad: Yo. Sorry.","Daniel, understanding what he was apologizing for: What are you saying sorry to me for? You better beg Kelly for forgiveness.","Ishraq, not taking him seriously: Yeah, I sure will.")
             else:
               text("Ishraq, feeling bad: Yo. Sorry.","Daniel: Why are you saying sorry to me?","Ishraq: I didn't save your queen.","Daniel, taking the opportunity: That's alright. Only me, her true knight in shining armor, can save her.")
           else:
-            text("\nIshraq, skeptical: It's nothing, huh?","Daniel: What?","Ishraq: That's what you told me in the auditorium. What bothered you back there?","Daniel, not trusting himself: I don't know. I just had a memory. A good one too, hehe...but I don't know if it actually happened, that's all.","Ishraq, willing to believe: Maybe something from when you were wired? You clearly remembered me failing to save Kelly, haha.","Daniel, eyes widening: Yeah...YES!","Ishraq: What?","Daniel: Aaah. I'll tell you later.")
+            text("Ishraq, skeptical: It's nothing, huh?","Daniel: What?","Ishraq: That's what you told me in the auditorium. What bothered you back there?","Daniel, not trusting himself: I don't know. I just had a memory. A good one too, hehe...but I don't know if it actually happened, that's all.","Ishraq, willing to believe: Maybe something from when you were wired? You clearly remembered me failing to save Kelly, haha.","Daniel, eyes widening: Yeah...YES!","Ishraq: What?","Daniel: Aaah. I'll tell you later.")
+
+      if "Awakening" in quests:
+        if subject == "Julius":
+          text("\n*Ishraq approaches Julius*","Julius, standing by: Wazzup sir~?","Ishraq, indecisive: Whad'you think? Should we go to Khalil or shop first?","Julius, shrugging: I dunno and I don't care. I'm with whatever you do.")
+          
+        if subject == "Tim":
+          text("\n*Ishraq approaches Tim*","Tim, closed: Yeah?","Ishraq, assuming: You wanna go to shop right?","Tim, hands full: I mean, yeah. My hands are kinda full and I wanna dump this crap back at shop.","Ishraq, a little concerned: But what about Khalil? We can't just leave im' by himself. He ain't gonna survive for long.","Tim, accepting: True. We can't just ditch him...")
+       
+        if subject == "Daniel":
+          text("\n*Ishraq approaches Daniel*","Daniel, scrambling: ....yeah I can do that...--oh, what do you want?","Ishraq, trying to convince: You can go make out with your radios later. Khalil is kinda in trouble right no--","Daniel, laughing at Ishraq's comment but still hugging his radios: HAHGHHGHAA!--And? That sounds like a him problem.","Ishraq, shrugging: You're gonna follow me around anyways, so I don't even needa convince you to be honest.","Daniel, rebutting: Nah, you follow me.","Ishraq, sarcastic: Sure, sure.")
 
     if self.RID == 31:
       if "Transmission" in quests:
         
         if subject == "???":
-          text("\nKelly, calling out: Hello-?","*The person doesn't say anything*","Kelly, noticing their eyes: You're...not wired.","???, bluntly: Don't talk to me.","Kelly, confused: What are you doing here?...*The person does not respond*...Come on! Say something!","???, sighing: Aaah. Why did it have do be you here.","Kelly, somewhat insulted: Excuse me?","???: Nevermind. Just shut up.","Kelly, getting a better look: You're...you're Arwyn. From shop!","Arwyn, depressed: And now she recognizes me, great. Just leave me alone.","Kelly, irritated: Why are you being like this?","Arwyn, dryly: What am I supposed to be like?","Kelly, annoyed: I don't know, maybe like a normal person? You're acting very wired for someone who isn't.","Arwyn, confused: What does that even mean?","Kelly, explaining: We call the people who are mind-controlled by the Fedora guy 'Wired'.","Arwyn, understanding: Oh. That's what you mean.","Kelly, repeating herself: So like, what are you doing here?! Why are you here?!","Arwyn, painfully: I just wanna go home and play League.","Kelly, stomping: Answer me!","Arwyn, remembering: Aaaah--The Fedora guy. He doesn't know I'm not wired.","Kelly, shocked: How?!","Arwyn, shrugging: I don't know. He just assumed I was.","Kelly, kind of excited: B-but the earrape attack from the loudspeakers! It was supposed to wire you!","Arwyn, cool: I guess it didn't.","Kelly, really happy: This is great! Come on, let's get out of here together!","Arwyn, refusing: No. Screw you.","Kelly, taken aback: W-what?","Arwyn, insulting: You're annoying.","Kelly, astonished: Is this a joke or something?!","Arwyn, plainly: Nah.","Kelly, really frustrated: Why did it have do be you here.","Arwyn, looking around: There's no exit out of this cellar anyways.","\n*Kelly takes out her calligraphy pen...she cuts the bars of her cell using its laser!...a cut-out piece of the bar starts to emit a Blue Isometric Drawing...*","Kelly, getting out of the closet-sized cell: Well. At least that maniac up there won't be cumming all over me...hey, wait a second.. *Kelly picks up the bar*, Arwyn..this has to be for you!","Arwyn, curious: What is it?","Kelly, rushing over to him and handing it over: It's an ISO! Dr. Graham wants you to have it!","\n*The bar instantly starts to wrap around Arwyn as soon as Kelly hands it to him, locking him up before shrinking him into a small shining blue light! His body begins to reconstruct plane by plane until he is completed to be the next ISO!*\n",fore.DODGER_BLUE_1+style.BOLD +"Arwyn, gaining some happiness: That was...quite interesting. I feel better.."+style.RESET,fore.DODGER_BLUE_1+"\nArwyn has gained a passive ability! When silenced, his normal attacks deal true damage plus bonus true damage based on his physical and magical attack.")
-          text("\n*A rift opens up before Kelly and Arwyn!*\n","Kelly, hopeful: An exit?","Arwyn, curious: One way to find out. *Arwyn jumps in, vanishing!*","Kelly, jumping in as well: Whatever!","\n*Kelly and Arwyn find themselves in unknown territory...*\n","Kelly, taking a look around: Wait. This is Times Square. In New York! YES! WE MADE IT OUT!! But how? I thought only PCTI was in the Realm Between...","Arwyn, trying to catch up: What are you talking about?","Kelly, explaining quickly: We were stuck in PCTI when we were there...there was no way out of the campus..but now we're here.","Arwyn, gravely: So you're saying...there was no way of going home?","Kelly, vigorously: Yes! There was no way of going home!","Arwyn, dying inside: T-that means...no League.","Kelly, a little confused but going with it: Yeah...no League.","\n*Six prominent figures suddenly surround Kelly and Arwyn out of the blue...*\n","Obama, gloriously: Let's get this show on the road fellas'.","Kennedy, rubbing his forehead: We must stay open minded, my fellow Americans. But we will fight if we must.","Lincoln, towering over everyone with his hat: The party war ENDS here.","Trump, with great presense: When the looting starts, the shooting starts.","Sanders, about to die anyways: I will keep fighting--*cough*--for the weak.","Musk, scratching his head: I just wanna live on the Moon.","Kelly, turning 360: What..the fuck.","All Prominent Figures: Join us! Together we will destroy all opposition!")
+          text("\nKelly, calling out: Hello-?","*The person doesn't say anything*","Kelly, noticing their eyes: You're...not wired.","???, bluntly: Don't talk to me.","Kelly, confused: What are you doing here?...*The person does not respond*...Come on! Say something!","???, sighing: Aaah. Why did it have do be you here.","Kelly, somewhat insulted: Excuse me?","???: Nevermind. Just shut up.","Kelly, getting a better look: You're...you're Arwyn. From shop!","Arwyn, depressed: And now she recognizes me, great. Just leave me alone.","\n~Arwyn is a Filipino 10th grade engineering student at the highschool of PCTI. A member alongside Ishraq in a VEX team in 9th grade and one of his childhood friends, he displays mechanical mastery with his long and slender fingers. However, he began to stop caring about everything and became obsessed with the game League of Legends. Despite that, he is extremely loyal to his individual friend groups with his multiple personas even though he may not show it.\n")
+          text("Kelly, irritated: Why are you being like this?","Arwyn, dryly: What am I supposed to be like?","Kelly, annoyed: I don't know, maybe like a normal person? You're acting very wired for someone who isn't.","Arwyn, confused: What does that even mean?","Kelly, explaining: We call the people who are mind-controlled by the Fedora guy 'Wired'.","Arwyn, understanding: Oh. That's what you mean.","Kelly, repeating herself: So like, what are you doing here?! Why are you here?!","Arwyn, painfully: I just wanna go home and play League.","Kelly, stomping: Answer me!","Arwyn, remembering: Aaaah--The Fedora guy. He doesn't know I'm not wired.","Kelly, shocked: How?!","Arwyn, shrugging: I don't know. He just assumed I was.","Kelly, kind of excited: B-but the earrape attack from the loudspeakers! It was supposed to wire you!","Arwyn, cool: I guess it didn't.","Kelly, really happy: This is great! Come on, let's get out of here together!","Arwyn, refusing: No. Screw you.","Kelly, taken aback: W-what?","Arwyn, insulting: You're annoying.","Kelly, astonished: Is this a joke or something?!")
+          text("Arwyn, plainly: Nah.","Kelly, really frustrated: Why did it have do be you here.","Arwyn, looking around: There's no exit out of this cellar anyways.","\n*Kelly takes out her calligraphy pen...she cuts the bars of her cell using its laser!...a cut-out piece of the bar starts to emit a Blue Isometric Drawing...*","Kelly, getting out of the closet-sized cell: Well. At least that maniac up there won't be cumming all over me...hey, wait a second.. *Kelly picks up the bar*, Arwyn..this has to be for you!","Arwyn, curious: What is it?","Kelly, rushing over to him and handing it over: It's an ISO! Dr. Graham wants you to have it!","\n*The bar instantly starts to wrap around Arwyn as soon as Kelly hands it to him, locking him up before shrinking him into a small shining blue light! His body begins to reconstruct plane by plane until he is completed to be the next ISO!*\n",fore.DODGER_BLUE_1 +"Arwyn, gaining some happiness: That was...quite interesting. I feel better.."+style.RESET,style.BOLD + fore.DODGER_BLUE_1+"\nArwyn has gained a passive ability! When silenced, his normal attacks deal true damage plus bonus true damage based on his physical attack(AT) and magical attack(MAT)."+style.RESET)
+          text("\n*A rift opens up before Kelly and Arwyn!*\n","Kelly, hopeful: An exit?","Arwyn, curious: One way to find out. *Arwyn jumps in, vanishing!*","Kelly, jumping in as well: Whatever!","\n*Kelly and Arwyn find themselves in unknown territory...*\n","Kelly, taking a look around: Wait. This is Times Square. In New York! YES! WE MADE IT OUT!! But how? I thought only PCTI was in the Realm Between...","Arwyn, trying to catch up: What are you talking about?","Kelly, explaining quickly: We were stuck in PCTI when we were there...there was no way out of the campus..but now we're here.","Arwyn, gravely: So you're saying...there was no way of going home?","Kelly, vigorously: Yes! There was no way of going home!","Arwyn, dying inside: T-that means...no League.","Kelly, a little confused but going with it: Yeah...no League.","\n*Six prominent figures suddenly surround Kelly and Arwyn out of the blue...*\n","Obama, gloriously: Let's get this show on the road fellas'.","Kennedy, rubbing his forehead: We must stay open minded, my fellow Americans. But we will fight if we must.","Lincoln, towering over everyone with his hat: The party war ENDS here.","Trump, with great presense: When the looting starts, the shooting starts.","Sanders, about to die anyways: I will keep fighting--*cough*--for the weak.","Musk, scratching his head: I just wanna live on Mars.","Kelly, turning 360: What..the fuck.","All Prominent Figures: Join us! Together we will destroy all opposition!")
           start = time.time()        
           elapsed = 0               
-          while elapsed < 6:
-            print("\nYou have",round(6-elapsed),"seconds to make a decision")
+          while elapsed < 7:
+            print(fore.YELLOW_1+"\nYou have",style.BOLD+str(round(7-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET)
             boop = input("(1) Democrats  (2) Republicans  (3) Independent\nResponse: ")
             elapsed = time.time() - start
             if boop == "1" or boop == "2" or boop == "3":
               break
-          if boop != "1" and boop != "2" and boop != "3":
+          if (boop != "1" and boop != "2" and boop != "3") or elapsed >= 7:
             boop = str(random.randint(1,3))
           if boop == "1":
             input("\nObama, getting ready to dunk: You made the right choice.")
-            bots.team = [Entity("Trump",300,30,20,40,30,40,50,100,100,5,0,10,3,"17","Male Boss"),Entity("Lincoln",400,30,30,50,0,20,55,100,100,5,10,0,3,"18","Male Boss"),Entity("Sanders",400,30,30,50,0,20,55,100,100,5,10,0,3,"18","Male Boss"),Entity("Musk",400,30,30,50,0,20,55,100,100,5,10,0,3,"18","Male Boss")] 
-          if boop == "2":
+            bots.team = [Entity("Trump",500,30,25,50,30,30,45,110,100,5,0,10,3,"17","Male Boss"),Entity("Lincoln",400,30,30,40,30,50,50,120,100,5,10,0,3,"18","Male Boss"),Entity("Sanders",250,30,15,20,50,100,50,100,110,5,0,0,3,"19","Male Boss"),Entity("Musk",350,30,20,40,40,80,55,110,100,5,0,20,3,"20","Male Boss")] 
+            fightmod = 1
+          elif boop == "2":
             input("\nTrump, rising: We will make America great again!")
-            bots.team = [Entity("Obama",300,30,20,40,30,40,50,100,100,5,0,10,3,"17","Male Boss"),Entity("Kennedy",400,30,30,50,0,20,55,100,100,5,10,0,3,"18","Male Boss"),Entity("Sanders",400,30,30,50,0,20,55,100,100,5,10,0,3,"18","Male Boss"),Entity("Musk",400,30,30,50,0,20,55,100,100,5,10,0,3,"18","Male Boss")] 
-          if boop == "3":
+            bots.team = [Entity("Obama",425,30,25,40,30,55,55,100,100,5,0,0,3,"17","Male Boss"),Entity("Kennedy",450,30,30,50,0,30,60,100,100,5,0,0,3,"18","Male Boss"),Entity("Sanders",250,30,15,20,50,100,50,100,110,5,0,0,3,"19","Male Boss"),Entity("Musk",350,30,20,40,40,80,55,110,100,5,0,20,3,"20","Male Boss")] 
+            fightmod = 2
+          elif boop == "3":
             input(style.BOLD+"\nSanders, reviving with surreal strength: I will fight on forever."+style.RESET)
-            bots.team = [Entity("Obama",300,30,20,40,30,40,50,100,100,5,0,10,3,"17","Male Boss"),Entity("Kennedy",400,30,30,50,0,20,55,100,100,5,10,0,3,"18","Male Boss"),Entity("Trump",400,30,30,50,0,20,55,100,100,5,10,0,3,"18","Male Boss"),Entity("Lincoln",400,30,30,50,0,20,55,100,100,5,10,0,3,"18","Male Boss")] 
+            bots.team = [Entity("Obama",425,30,25,40,30,55,55,100,100,5,0,0,3,"17","Male Boss"),Entity("Kennedy",450,30,30,50,0,30,60,100,100,5,0,0,3,"18","Male Boss"),Entity("Trump",500,30,25,50,30,30,45,110,100,5,0,10,3,"19","Male Boss"),Entity("Lincoln",400,30,30,40,30,50,50,120,100,5,10,0,3,"20","Male Boss")] 
+            fightmod = 3
           fightid = 9
           battle(you,bots,Cont=False)
           if victory == 1:
-            text("Kelly, totally lost: Okay, seriously, where are we?")
+            text("Kelly, darting towards the portal: Let's go Arwyn!")
             if boop == "1":
-              text("Obama, wondering: What? Is this not your universe?","Arwyn: Not our universe?","Kennedy, figuring it out: Aaah. Their universe isn't technologically advanced yet.","*Another rift opens up!*","Obama, guiding: Seems like a tear to your universe is fluctuating here. You should take it now before you're stuck here.")
-            if boop == "2":
-              text("Trump, swearing he figured it out: You guys are defintely from China!","Kelly, offended: Umm...","Lincoln, figuring it out: No, they're not from here at all. As in, this universe.","Arwyn: This universe?","Trump, understanding: Ah, they're from a slow universe. How'd they even get here then?","*Another rift opens up!*","Lincoln, guiding: Seems like a tear to your universe is fluctuating here. You should take it now before you're stuck here.")
-            if boop == "3":
+              text("Obama, grabbing her: Wait!","Kelly: Huh?","Obama, smiling: A token. For helping me eliminate my political enemies. Although, they'll probably be alive again soon. Now go!") 
+            elif boop == "2":
+              text("Lincoln, bonking her with his hat: Just a moment.","Kelly: Huh?","Lincoln, smiling: Just a gift for you assistance in this month's fight. Farewell.")
+            elif boop == "3":
               text("Musk, confirming his suspisions: I knew it. You guys seem foreign.","Kelly, a little offended: Foreign?","Musk, explaining: As in, not from this universe.","Arwyn: Not this universe?","*Another rift opens up!*","Musk, guiding: Seems like a tear to your universe is fluctuating here. You should take it now before you're stuck here.")
-            text("Arwyn, not caring: Does League exist in this universe?","Kelly, grabbing Arwyn and jumping through the rift: Goodbye!","Arwyn, struggling: WAIT!","\n*Arwyn and Kelly land in the Engineering Shop room.*\n","Arwyn, visibly frustrated: Why are you so strong?","Kelly, sticking her tongue out: Cuz' I have an ISO! You do too, but you haven't used it much.","Arwyn, sour: Why is somone like you an ISO.","Kelly, ignoring: The other ISOs aren't here...let's find out where they went.")
+            text("Arwyn, suddenly realizing: Wait! Does League exist in this universe?","Kelly, grabbing Arwyn and jumping through the rift: Goodbye!","Arwyn, struggling: WAIT!","\n*Arwyn and Kelly land in the Engineering Shop room.*\n","Arwyn, visibly frustrated: Why are you so strong?","Kelly, sticking her tongue out: Cuz' I have an ISO! You do too, but you haven't used it much.","Arwyn, sour: Why is someone like you an ISO.","Kelly, ignoring: The other ISOs aren't here...let's find out where they went.")
+            you.reset("Team")
+            revival(Kelly)
+            revival(Arwyn)
             ro = rd(31)
             croom.remove(ro)
             world.append(ro)
             ro = rd(6)
             world.remove(ro)
-            croom.append(ro)
+            croom.append(ro)            
+            ro.RLV = 6
             wee = ""
             for x in you.ph1:
               if x.name == "Metin":
@@ -10994,10 +11996,137 @@ class World:
               ro.people.append("Noah")
             elif "4" not in wee:
               ro.people.append("Edmond")
+            peep = ["Kenny","Lascelles","Matvey","Dereck"]
+            ro.people.extend(peep)
             worldfunction()
 
+    if self.RID == 32:
+      if "Apprenticeship" in quests:
+        if subject == "Shah":
+          mah = 0
+          if you.att(Ishraq) == True:
+            mah = 1
+          elif you.att(Kelly) == True:
+            mah = 2
+          if mah == 1:
+            text("*\nIshraq approaches Shah*","Ishraq, not sure who was there: Dr. Graham?","Shah, mouth breathing: Nope. It's just me, Graham's disciple.","Ishraq, slapping Shah's ass: Well, well, well...you gonna test us, right?","Shah, channeling Graham's power: Yeah, yeah, yeah, you ready kid?")
+          elif mah == 2:
+            text("*\nKelly approaches Shah*","Kelly, not sure who was there: Dr. Graham?","Shah, mouth breathing: Nope. It's just me, Graham's disciple.","Kelly, inquiring: You're ready to give us the test, right","Shah, channeling Graham's power: Yeah, yeah, yeah, you ready?")
+          talk = "1"
+          while talk == "1":
+            boop = input("\nBegin Test?\n(1) Yes  (2) No\nResponse: ")
+            if boop == "1" or boop.lower() == "yes":
+              if mah == 1:
+                text("\nIshraq, cracking his neck: Bring it.","Shah, muscles expanding: Unlucky for you cool guy, I just got back from the gym.")
+              elif mah == 2:
+                text("\nKelly, cracking her fingers: Let's see what you got.","Shah, muscles expanding: Unlucky for you cool guy, I just got back from the gym.")
+              teamrevival(op=True)
+              bots.team = [Entity("Shah",5000,250,100,100,50,80,55,100,100,5,0,0,5,"17","Male")]             
+              battle(you,bots,Cont=True)
+              teamrevival()
+              if victory == 1:
+                if mah == 1:
+                  text("\nIshraq, flexing: Easiest test ever.","Shah, indifferent: Nice job. You passed. Now all you have to do is beat the Fedora Man.","Ishraq, cocky: So lightwork?","Shah, getting on with it: Yeah, yeah, but don't forget about the true test. You're not ready for this.","Ishraq, curious: Hmmm...?","Shah, smirking: You're in for a surprise. Come again sometime, and you'll see.")
+                elif mah == 2:
+                  text("\nKelly, flexing: Easiest test ever.","Shah, indifferent: Nice job. You passed. Now all you have to do is beat the Fedora Man.","Kelly, shivering: Yeah...that creep.","Shah, getting on with it: However, don't forget about the true test. You're not gonna ready for this.","Kelly, curious: Hmmm...?","Shah, smirking: You're in for a surprise. Come again sometime, and you'll see.")
+                questsys("Apprenticeship","Finish")                
+                xpg(500)
+                additem("AP Physics C Equation Sheet",1,you.accessinventory)
+                additem("T3 Red Isometric Drawing",1,you.isoinventory)
+                additem("T3 Magenta Isometric Drawing",1,you.isoinventory)
+                additem("T3 Green Isometric Drawing",1,you.isoinventory)
+                additem("T3 Cyan Isometric Drawing",1,you.isoinventory)
+                additem("T3 Yellow Isometric Drawing",1,you.isoinventory)
+                additem("T3 Blue Isometric Drawing",1,you.isoinventory)
+                questsys("Beyond Three Dimensions","StartS")
+              else:
+                if mah == 1:
+                  text("\nIshraq, defeated: Shit--!","Shah, laughing: HAHAHA! I BEAT YOU!","Ishraq, brushing it aside: Yeah...first time for everything.")
+                elif mah == 2:
+                  text("\nKelly, defeated: Damn it--!","Shah, laughing: HAHAHA! YOU LOSE! NICE TRY THOUGH!","Kelly, brushing it aside: Thanks...don't worry Dr. Graham, I'll get stronger in no time.")
+              talk = "2"
+            if boop == "2" or boop.lower() == "no":
+              if mah == 1:
+                text("\nIshraq, holding off: Relax. We're not ready yet.","Shah, blatantly: Whatever. I know you're just scared.")
+              elif mah == 2:
+                text("\nKelly, holding off: We're not ready yet","Shah, blatantly: Whatever. I know you're just scared.")
+              talk = "2"
+      if "Beyond Three Dimensions" in quests:
+        if subject == "Shah":
+          if you.att(Ishraq) == False:
+            if data[33] == 0:
+              text("*\nKelly approaches Shah*","Kelly, eager: I want the real test!","Shah, offended: I get it, I get it, I wasn't enough to satisfy your needs.","Kelly, agreeing: Yeah, so come on!","Shah, pointing to the door: Go get that nigger Ishraq first and then come. Maybe then we can get something goin'.")
+          else:
+            if data[33] == 0:
+              text("*\nIshraq approaches Shah*","Ishraq, curious but confident: Real test, huh? I wanna see it lil bruh'","Shah, ignoring: Yeah, yeah, trust me you're not passing this time.","*Shah begins to glow! His body transforms into a bright energy, and transforms his body to another outline! Color returns to his body but another figure appears...*","Dr. Graham, smiling: Are you ready for the test?")
+              if you.att(Kelly) == True:
+                input("\nKelly, jaw dropping: Dr. Graham!!")
+              if you.att(Julius) == True:
+                input("\nJulius, uncontrollably laughing and smiling: HaHAA~! NO WAY!")
+              if you.att(Daniel) == True:
+                input("\nDaniel, gassed: Graham boolin'.")
+              if you.att(Tim) == True:
+                input("\nTim, smirking: The big man himself.")
+              if you.att(Arwyn) == True:
+                input("\nArwyn, arms crossed: So this is Dr. Graham.")
+              text("Ishraq, wanting to know: How are you even here Dr. Graham?","Dr. Graham, flexing: I simply projected more of my power onto Mr. Rahman. A small percentage, but enough for him to be able to transform his being with the properties of mine.","Ishraq, dabbing him up: YO~! YOU'RE ANOTHER LEVEL! SO!? What's the test?","Dr. Graham, hand over mouth: This is going to be new for all of you...but you are ISOs. You guys are of equal dimensions. This also means you can potentially exist in every one. And if you are all able to tap into the next dimension...we can spar by projecting our 3D perceptions in a 4D space.","Ishraq, brain hurting: Woordd...","Dr. Graham, explaining: This way we have an entire new axis to fight in. This would allow us to not damage the frozen 3D space you guys exist in.","Ishraq, really wanting to know what 4D is: So how do we tap into it?","Dr. Graham, forming a hand-to-hand circle with the ISOs: It takes lifetimes to learn. So I'll do it for you.","\n*The ISOs is transported to 4D space!!!*","Ishraq, realizizng it now: WOAAW...--! WAIT! YOU SAID SPAR WITH YOU?!! WE'RE GONE!")
+              if you.att(Kelly) == True:
+                input("\nKelly, slapping Ishraq's shoulder: Hey! We'll be fine!")
+              if you.att(Julius) == True:
+                input("\nJulius, dying on the inside: AYO~! THIS AIN'T RIGHT!")
+              if you.att(Daniel) == True:
+                input("\nDaniel, mega gassed: GRAHAM STRAIGHT WILLIN'!!")
+              if you.att(Tim) == True:
+                input("\nTim, cocky: Dr. Graham hasn't fought the Tim yet.")
+              text("Dr. Graham, making everything in the 4D room float weightlessly: Haha! The gravity of this situation is pretty dire, am I right or am I right?")
+              teamrevival(op=True)
+              bots.team = [Entity("Dr. Graham",100000,100,800,400,800,400,60,200,200,0,0,0,0,"17","Male")] 
+              battle(you,bots,Cont=True)
+              teamrevival()
+              if victory == 1:
+                text("\nIshraq, in shock: No way...","Dr. Graham, slowly getting off the ground: Haha...you guys managed to make me fall...expected from the most brilliant students in the school.","Kelly, trying to process what just happened: ")
+                questsys("Beyond Three Dimensions","Finish")
+                xpg(10000)
+                additem("Dr. Graham's Equation Sheet",1,you.accessinventory)
+                additem("T6 Red Isometric Drawing",1,you.isoinventory)
+                additem("T6 Magenta Isometric Drawing",1,you.isoinventory)
+                additem("T6 Green Isometric Drawing",1,you.isoinventory)
+                additem("T6 Cyan Isometric Drawing",1,you.isoinventory)
+                additem("T6 Yellow Isometric Drawing",1,you.isoinventory)
+                additem("T6 Blue Isometric Drawing",1,you.isoinventory)
+              else:
+                text("\nIshraq, defeated: Shit--!","Shah, laughing: HAHAHA! I BEAT YOU!","Ishraq, brushing it aside: Yeah...first time for everything.")
+              data[33] = 1
+            else:
+              text("")
+              talk = "1"
+              while talk == "1":
+                boop = input("\nBegin Test?\n(1) Yes  (2) No\nResponse: ")
+                if boop == "1" or boop.lower() == "yes":
+                  text("\nIshraq, cracking his neck: Bring it.","Shah, muscles expanding: Unlucky for you cool guy, I just got back from the gym.")
+                  teamrevival(op=True)
+                  bots.team = [Entity("Dr. Graham",100000,100,800,400,800,400,60,200,200,0,0,0,0,"17","Male")] 
+                  battle(you,bots,Cont=True)
+                  teamrevival()
+                  if victory == 1:
+                    text("\nIshraq, flexing: Easiest test ever.","Shah, indifferent: Nice job. You passed. Now all you have to do is beat the Fedora Man.","Ishraq, cocky: So lightwork?","Shah, getting on with it: Yeah, yeah, but don't forget about the true test. You're not ready for this.","Ishraq, curious: Hmmm...?","Shah, smirking: You're in for a surprise. Come again sometime, and you'll see.")
+                    questsys("Beyond Three Dimensions","Finish")
+                    xpg(10000)
+                    additem("Dr. Graham's Equation Sheet",1,you.accessinventory)
+                    additem("T6 Red Isometric Drawing",1,you.isoinventory)
+                    additem("T6 Magenta Isometric Drawing",1,you.isoinventory)
+                    additem("T6 Green Isometric Drawing",1,you.isoinventory)
+                    additem("T6 Cyan Isometric Drawing",1,you.isoinventory)
+                    additem("T6 Yellow Isometric Drawing",1,you.isoinventory)
+                    additem("T6 Blue Isometric Drawing",1,you.isoinventory)
+                  else:
+                    text("\nIshraq, defeated: Shit--!","Shah, laughing: HAHAHA! I BEAT YOU!","Ishraq, brushing it aside: Yeah...first time for everything.")
+                  talk = "2"
+                if boop == "2" or boop.lower() == "no":
+                  text("\nIshraq, holding off: Relax. We're not ready yet.","Shah, blatantly: Whatever. I know you're just scared.")
+                  talk = "2"
 
-  
+          
   def randomencounter(self):
     global weight
     global fightid
@@ -11006,7 +12135,11 @@ class World:
     if tis <= self.ENC:
       ag = random.randint(1,100)
       print("!!!")
-      dam = input("\nEnemies approach!\n(1) Fight  (2) Run\nAction: ")
+      fuck = 0
+      while fuck == 0:
+        dam = input("\nEnemies approach!\n(1) Fight  (2) Run\nAction: ")
+        if dam == "1" or dam.lower() == "fight" or dam == "2" or dam.lower() == "run":
+          fuck = 1
       wee = 0
       while wee == 0:
         if dam == "1" or dam.lower() == "fight":
@@ -11098,10 +12231,10 @@ def teamskill():
   global Arwyn
   for x in you.team:
     x.wild = Ishraq.wild
-    x.sma = Ishraq.wild
-    x.valo = Ishraq.wild
-    x.immort = Ishraq.wild
-    x.barr = Ishraq.wild
+    x.sma = Ishraq.sma
+    x.valo = Ishraq.valo
+    x.immort = Ishraq.immort
+    x.barr = Ishraq.barr
     x.fromthes = Arwyn.fromthes
     x.run = Julius.run
     x.res = Julius.res
@@ -11133,10 +12266,45 @@ def teamskill():
     x.rub = Tim.rub
   for x in you.backteam:
     x.wild = Ishraq.wild
-    x.sma = Ishraq.wild
-    x.valo = Ishraq.wild
-    x.immort = Ishraq.wild
-    x.barr = Ishraq.wild
+    x.sma = Ishraq.sma
+    x.valo = Ishraq.valo
+    x.immort = Ishraq.immort
+    x.barr = Ishraq.barr
+    x.fromthes = Arwyn.fromthes
+    x.run = Julius.run
+    x.res = Julius.res
+    x.shi = Julius.shi
+    x.trem = Julius.trem
+    x.isom = Julius.isom
+    x.comb = Julius.comb
+    x.callig = Kelly.callig
+    x.asm = Kelly.asm
+    x.pinp = Kelly.pinp
+    x.bake = Kelly.bake
+    x.perfectr = Kelly.perfectr
+    x.rev = Kelly.rev
+    x.grub = Daniel.grub
+    x.taun = Daniel.taun
+    x.knightv = Daniel.knightv
+    x.obese = Daniel.obese
+    x.jabb = Daniel.jabb  
+    x.electr = Daniel.electr
+    x.silen = Arwyn.silen
+    x.cutm = Arwyn.cutm
+    x.gunb = Arwyn.gunb
+    x.spark = Arwyn.spark
+    x.dar = Arwyn.dar
+    x.da = Tim.da
+    x.que = Tim.que
+    x.chrono = Tim.chrono
+    x.proto = Tim.proto
+    x.rub = Tim.rub
+  for x in you.deadteam:
+    x.wild = Ishraq.wild
+    x.sma = Ishraq.sma
+    x.valo = Ishraq.valo
+    x.immort = Ishraq.immort
+    x.barr = Ishraq.barr
     x.fromthes = Arwyn.fromthes
     x.run = Julius.run
     x.res = Julius.res
@@ -11202,6 +12370,8 @@ def guestswitch(bat=False):
   wop = 0
   if len(you.suppteam) < 3 and len(you.suppback) > 0:
     while len(you.suppteam) < 3:
+      if len(you.suppback) == 0:
+        break
       print("\nSupport Team:")
       print(you.suppteamS)
       print("\nReserve Team:")
@@ -11235,7 +12405,7 @@ def guestswitch(bat=False):
         continue
       else:
         nudes = 1
-    while nudes == 1: #~
+    while nudes == 1:
       wop = 0
       print("\nSupport Team:")
       print(you.suppteamS)
@@ -11257,6 +12427,37 @@ def guestswitch(bat=False):
     print(you.suppteamS)
     print("\nYou do not have enough members to switch anyone out.")
 
+def forceguest(ally,bat=False):
+  global sad
+  sad = 0
+  wop = 0
+  if len(you.suppteam) == 3 and ally not in you.suppteam:
+    nudes = 0
+    while nudes == 0:
+      print("\nSupport Team:")
+      print(you.suppteamS)
+      wow = input("\nChoose someone from the support team to put in reserves: ") 
+      if wow.isdigit() == True and wow != "0":
+        if len(you.suppteam) >= int(wow):
+          wimple((int(wow)-1),"Res",bat)
+          wop = 1
+      for x in you.suppteam:
+        if wow.lower() == x.name.lower() and x.name in you.suppteamS:
+          quickswitch(x,"Res",bat)
+          wop = 1
+      if wop != 1:
+        continue
+      else:
+        nudes = 1
+    if ally in you.suppback:
+      quickswitch(ally,"Supp Team",bat)
+    else:
+      quickswitch(ally,"In",bat)
+  elif len(you.suppteam) < 3:
+    if ally in you.suppback:
+      quickswitch(ally,"Supp Team",bat)
+    else:
+      quickswitch(ally,"In",bat)
 
 def teamswitch(bat=False):
   global sad
@@ -11353,9 +12554,9 @@ def quickswitch(pers,direction,bat=False):
       you.teamID.remove(pers.ID)
     print("\n"+pers.NAME,"is unavailable!")
   if direction == "In":
-    you.team.append(pers)
-    you.teamS.append(pers.NAME)
-    print("\n"+pers.NAME,"is placed in the party!")
+    you.suppteam.append(pers)
+    you.suppteamS.append(pers.name)
+    print("\n"+pers.name,"is placed in the party!")
   if direction == "Supp Team":
     you.suppback.remove(pers)
     you.suppbackS.remove(pers.name)
@@ -11369,6 +12570,13 @@ def quickswitch(pers,direction,bat=False):
     you.suppteamS.remove(pers.name)
     print("\n"+pers.name,"is removed from the party!")
 
+def teamrevival(op=False):
+  for x in you.team:
+    revival(x,o=op)
+  for x in you.backteam:
+    revival(x,o=op)
+  for x in you.deadteam:
+    revival(x,o=op)
 
 def revival(ally,MID=False,o=False):
   ally.cHP = ally.fHP
@@ -11447,8 +12655,18 @@ def questcatalog(): #print(style.BOLD+"\n"+x+":\n"+style.RESET,"")
       if "Technology Room" not in ro.paths:
         print(style.BOLD+"\n"+x+":\n"+style.RESET,"After a great loss, regroup at Shop and decide the next course of action.")
       elif "Technology Room" in ro.paths:
-        print(style.BOLD+"\n"+x+":\n"+style.RESET,"Scavenge the Technology Room in the H-Wing Ground Floor to find radios.")
-      #print(style.BOLD+"\n"+x+":\n"+style.RESET,"Link up with Khalil in the Main Office located in the C-Wing, or go to Shop and drop off the scavenged radio-tech.")
+        print(style.BOLD+"\n"+x+":\n"+style.RESET,"Scavenge the Technology Room in the H-Wing Ground Floor to find radios.")      
+    if x == "Awakening":
+      if data[27] == 0:
+        print(style.BOLD+"\n"+x+":\n"+style.RESET,"Link up with Khalil in the Main Office located in the C-Wing, or go to Shop and drop off the scavenged radio-tech.")
+      if data[27] == 1 or data[27] == 5:
+        print(style.BOLD+"\n"+x+":\n"+style.RESET,"Investigate what was done to The Fence outside the F-Wing.")
+      if data[27] == 3:
+        print(style.BOLD+"\n"+x+":\n"+style.RESET,"Link up with Khalil in the Main Office located in the C-Wing.")
+      if data[27] == 4 or data[27] == 2:
+        print(style.BOLD+"\n"+x+":\n"+style.RESET,"Head to the F-Wing Engineering Shop Room to drop off the radio-tech.")
+      if data[27] == 6 or data[27] == 7:
+        print(style.BOLD+"\n"+x+":\n"+style.RESET,"Talk to Kelly in Shop when you are ready to proceed.")
     if x == "The Asylum":
       print(style.BOLD+"\n"+x+":\n"+style.RESET,"")
     if x == "Ghosts of the Future":
@@ -11469,10 +12687,25 @@ def questcatalog(): #print(style.BOLD+"\n"+x+":\n"+style.RESET,"")
       print(style.BOLD+"\n"+x+":\n"+style.RESET,"")
     if x == "Feeling Alone":
       print(style.BOLD+"\n"+x+":\n"+style.RESET,"Scavenge food from the cafeterias.")
-    if x == "The Teacher and The Student":
+    if x == "Apprenticeship":
       print(style.BOLD+"\n"+x+":\n"+style.RESET,"Visit Dr. Graham's room in the F-Wing Hallway 2nd floor.")
-
-
+    if x == "Beyond Three Dimensions":
+      if data[33] == 0:
+        print(style.BOLD+"\n"+x+":\n"+style.RESET,"Talk to Shah in Dr. Graham's room in the F-Wing Hallway 2nd floor.")
+      elif data[33] == 1:
+        print(style.BOLD+"\n"+x+":\n"+style.RESET,"Test your skill against Dr. Graham.")
+    if x == "Pursuits of a Gentleman - I":
+      print(style.BOLD+"\n"+x+":\n"+style.RESET,"Visit the Medical Shop and talk to Ryca.")
+    if x == "The C-Wing Nurse":
+      print(style.BOLD+"\n"+x+":\n"+style.RESET,"Go to the C-Wing Nurse's Office on the Ground Floor to gain access to it.")   
+    if x == "Silent Operators":
+      ro = rd(29)
+      if ro.RLV  == 1:
+        print(style.BOLD+"\n"+x+":\n"+style.RESET,"Go to Tim and Matvey's ASL classroom in the C-Wing to find Matvey's golf clubs.")
+      if ro.RLV  == 2:
+        print(style.BOLD+"\n"+x+":\n"+style.RESET,"Follow Donatello to the B-Wing Hallway Ground Floor.")
+    if x == "In God We Trust":
+      print(style.BOLD+"\n"+x+":\n"+style.RESET,"Find where Lascelles ran off to.")
 
 
 def text(yes1,yes2="",yes3="",yes4="",yes5="",yes6="",yes7="",yes8="",yes9="",yes10="",yes11="",yes12="",yes13="",yes14="",yes15="",yes16="",yes17="",yes18="",yes19="",yes20="",yes21="",yes22=""):
@@ -11742,7 +12975,7 @@ def battle(p1,p2,Cont=None,Mid=None):
             x.stuns()
             x.AIdetector()
     if len(player2.team) == 0 and len(player1.team) > 0:
-      rewards("Battle")
+      rewards()
       winc = True
       victory = 1
       bots = Player()
@@ -11772,7 +13005,9 @@ def battle(p1,p2,Cont=None,Mid=None):
         if redux == "1":
           continue
       if Cont == True:
+        rewards()
         winc = True
+        bots = Player()
     fightid = 0
 
 def battleinit():
@@ -11788,6 +13023,19 @@ def battleinit():
 def prebattleevent(p1,p2):
   global fightmod
   global fightid
+  for x in p1.team:
+    if x.NAME == "Geralt":
+      mc = 0
+      hc = 0
+      for y in p2.team:
+        if "Monster" in y.GEND:
+          mc = mc + 1
+        else:
+          hc = hc + 1
+      if mc > hc:
+        x.sword = 2
+      else:
+        x.sword = 1      
   if fightid == 2:
     Ishraq.learnskill("Wild Instinct")
     Ishraq.WI = True
@@ -11809,6 +13057,81 @@ def prebattleevent(p1,p2):
   if fightid == 7:
     Kelly.learnskill("ASMR")
     Kelly.asm = 0
+  if fightid == 9:
+    if fightmod == 1:
+      nig = Entity("Obama",425,30,25,40,30,55,55,100,100,5,0,0,3,"50","Male Boss")
+      p1.team.append(nig)
+      p1.teamS.append(nig.NAME)
+      p1.teamID.append(nig.ID)
+      allfighters.append(nig)
+      nig.genderset()
+      nig = Entity("Kennedy",450,30,30,50,0,30,60,100,100,5,0,0,3,"51","Male Boss")
+      p1.team.append(nig)
+      p1.teamS.append(nig.NAME)
+      p1.teamID.append(nig.ID)
+      allfighters.append(nig)
+      nig.genderset()
+    if fightmod == 2:
+      nig = Entity("Trump",500,30,25,50,30,30,45,110,100,5,0,10,3,"50","Male Boss")
+      p1.team.append(nig)
+      p1.teamS.append(nig.NAME)
+      p1.teamID.append(nig.ID)
+      allfighters.append(nig)
+      nig.genderset()
+      nig = Entity("Lincoln",400,30,30,40,30,50,50,120,100,5,10,0,3,"51","Male Boss")
+      p1.team.append(nig)
+      p1.teamS.append(nig.NAME)
+      p1.teamID.append(nig.ID)
+      allfighters.append(nig)
+      nig.genderset()
+    if fightmod == 3:
+      nig = Entity("Sanders",250,30,15,20,50,100,50,100,110,5,0,0,3,"50","Male Boss")
+      p1.team.append(nig)
+      p1.teamS.append(nig.NAME)
+      p1.teamID.append(nig.ID)
+      allfighters.append(nig)
+      nig.genderset()
+      nig = Entity("Musk",350,30,20,40,40,80,55,110,100,5,0,20,3,"51","Male Boss")
+      p1.team.append(nig)
+      p1.teamS.append(nig.NAME)
+      p1.teamID.append(nig.ID)
+      allfighters.append(nig)
+      nig.genderset()
+  if fightid == 10:
+    Ishraq.learnskill("Immortality")
+    Ishraq.immort = 0
+    Ishraq.isomode = True
+    Ishraq.isoLevel = 5
+    Ishraq.isopoints = 500
+  if fightid == 11:
+    Daniel.learnskill("Knight's Vow")
+    Daniel.knightv = 0
+  if fightid == 12:
+    nig = Entity("Donatello",95,100,25,60,20,50,45,120,100,10,0,0,10,"12","Male")
+    p1.team.append(nig)
+    p1.teamS.append(nig.NAME)
+    nig.superscale()
+    p1.teamID.append(nig.ID)
+    allfighters.append(nig)
+    nig.genderset()
+    nig.skills = ["Whirl","Gravity Gauntlet","Shellshock"]
+    nig = Entity("Michelangelo",70,100,20,60,10,40,70,100,130,10,0,0,10,"13","Male")
+    p1.team.append(nig)
+    p1.teamS.append(nig.NAME)
+    nig.superscale()
+    p1.teamID.append(nig.ID)
+    allfighters.append(nig)
+    nig.genderset()
+    nig.skills = ["Skateboard Crash","Kusarigama","Shellshock"]      
+  if fightid == 13:
+    nig = Entity("Geralt",100,100,25,40,25,40,60,120,120,20,20,20,20,"14","Male")
+    p1.team.append(nig)
+    p1.teamS.append(nig.NAME)
+    nig.superscale()
+    p1.teamID.append(nig.ID)
+    allfighters.append(nig)
+    nig.genderset()
+    nig.skills = ["Aard","Igni","Yrden","Quen","Axii"]   
 
 
 def battleevent(p1,p2):
@@ -11968,8 +13291,8 @@ def battleevent(p1,p2):
           text("\nBrandon, standing back: Ishraq...you gotta get back up.","Metin, a little worried: Kelly's out for the count...this is not looking good.","David, hopeful: Julius needs a minute...he'll get better soon.","\n*Ishraq's vision dims and his eyes struggle to stay open*\n","Ishraq, quietly: Shit...","Noah, hyping up: YOU GOT THIS MAN, YOU'RE THE GOAT!")
           if data[16] == 0:
             input("Hassan: WORD! THIS LIGHTWORK FOR YOU!")
-          text("Metin: Ishraq boutta clutch the 1v20! EASY.","Ishraq, trying to raise his back off the floor but failing: Guys...you need to fight.","Metin, ready: I've been waiting for you to say that since the start.","Ishraq, eyes widening: Y-you need...you all need to fight...","David, teaming: TEAM! TEAM! TEAM! LET'S ALL TEAM ON THESE CLOWNS!","Ishraq, slowly losing consciousness: You guys...all can fight. It doesn't matter if they're wired. You guys are all strong...","David, looking at Ishraq shockingly: ISHRAQ! DON'T LET UP NOW! YOU'RE STRONGER THAN THAT!","\n*Some classmates begin to engage in combat with other wired*\n","Ishraq, listening to the battle and thinking to himself: ...This is not going to end well...I need to get up. *Ishraq forces his eyes open to stay awake*","Metin: THEY'RE ALL ON ME, WHAT ARE YA ALL DOING!!!??","Alvaro: They're too strong! I can't do anything!","*Ishraq slowly stands up from the ground*","Ishraq, with some energy: We need...we all need to fight!","\n*As David fights a wired, he notices Ishraq stand up...he makes direct eye contact with him. Ishraq stares into his eyes. David's mouth moves, but Ishraq cannot hear it. But he knew what he said.*","Ishraq, building up: Team. Team. Team. Team! Team! Team! TEAM! TEAM!! TEEAAAM!!! EVERYONE READY?! BULLDOGS ON THREE! ONE, TWO, THREE!!!","Everyone: BULLDOGS!!!!!","Ishraq, vibrating: WE CAN DO THIS!!")
-          input(style.BOLD + fore.RED_1 +"\n~Ishraq has gained a new ability, Valorous Chant! He shouts to rally his teammates, fearing enemies and increasing all allied attack, defense, and speed, each boost in order per ally alive(4 for all effects, 3 for AT&DF&Fear, 2 for AT&Fear, himself for Fear)." + style.RESET)
+          text("Metin: Ishraq boutta clutch the 1v20! EASY.","Ishraq, trying to raise his back off the floor but failing: Guys...you need to fight.","Metin, ready: I've been waiting for you to say that since the start.","Ishraq, eyes widening: Y-you need...you all need to fight...","David, teaming: TEAM! TEAM! TEAM! LET'S ALL TEAM ON THESE CLOWNS!","Ishraq, slowly losing consciousness: You guys...all can fight. It doesn't matter if they're wired. You guys are all strong...","David, looking at Ishraq shockingly: ISHRAQ! DON'T LET UP NOW! YOU'RE STRONGER THAN THAT!","\n*Some classmates begin to engage in combat with other wired*\n","Ishraq, listening to the battle and thinking to himself: (...This is not going to end well...I need to get up.) *Ishraq forces his eyes open to stay awake*","Metin: THEY'RE ALL ON ME, WHAT ARE YA ALL DOING!!!??","Alvaro: They're too strong! I can't do anything!","*Ishraq slowly stands up from the ground*","Ishraq, with some energy: We need...we all need to fight!","\n*As David fights a wired, he notices Ishraq stand up...he makes direct eye contact with him. Ishraq stares into his eyes. David's mouth moves, but Ishraq cannot hear it. But he knew what he said.*","Ishraq, building up energy for his thunderous voice: Team. Team. Team. Team! Team! Team! TEAM! TEAM!! TEEAAAM!!! EVERYONE READY?! BULLDOGS ON THREE! ONE, TWO, THREE!!!","Everyone: BULLDOGS!!!!!","Ishraq, vibrating: WE CAN DO THIS!!")
+          input(style.BOLD + fore.RED_1 +"\n~Ishraq has gained a new ability, Valorous Chant! He shouts to rally his teammates, fearing enemies and increasing all allied attack, defense, and speed for 4 of his turns, each boost in order per ally alive(4 for all effects, 3 for AT&DF&Fear, 2 for AT&Fear, himself for Fear). Ishraq does not gain the speed boost." + style.RESET)
           text("\n*The ground begins to shake...Julius gets up!*","Julius, laughing: HaHAA~! Now I'm pumped...these goons aren't getting passed me.","*Julius plants his fists into the ground, sending a shockwave towards the enemies, knocking nearly all of them over!*")
           input(style.BOLD+fore.GREEN_1+"\n~Julius has gained a new ability, Tremors! He sends shockwaves through the ground towards the enemies, dealing physical damage to all enemies based on his physical and magic attack. It has a chance to make enemies fall, stunning them. If they do not fall, they are slowed."+style.RESET)
           revival(Ishraq)
@@ -12065,25 +13388,23 @@ def battleevent(p1,p2):
   if "Transmission" in quests:
     if fightid == 9 and (fightmod == 1 or fightmod == 2 or fightmod == 3):
       if len(p2.team) == 1:
-        if p2.team[0].cHP <= round(0.3*p2.team[0].HP):
+        if p2.team[0].cHP <= round(0.4*p2.team[0].HP):
           time.sleep(0.5)
-           text("Kelly, totally lost: Okay, seriously, where are we?")
-            if boop == "2":
-              text("Trump, swearing he figured it out: You guys are defintely from China!","Kelly, offended: Umm...","Lincoln, figuring it out: No, they're not from here at all. As in, this universe.","Arwyn: This universe?","Trump, understanding: Ah, they're from a slow universe. How'd they even get here then?","*Another rift opens up!*","Lincoln, guiding: Seems like a tear to your universe is fluctuating here. You should take it now before you're stuck here.")
-            if boop == "3":
-              text("Musk, confirming his suspisions: I knew it. You guys seem foreign.","Kelly, a little offended: Foreign?","Musk, explaining: As in, not from this universe.","Arwyn: Not this universe?","*Another rift opens up!*","Musk, guiding: Seems like a tear to your universe is fluctuating here. You should take it now before you're stuck here.")
-            text("Arwyn, not caring: Does League exist in this universe?","Kelly, grabbing Arwyn and jumping through the rift: Goodbye!","Arwyn, struggling: WAIT!","\n*Arwyn and Kelly land in the Engineering Shop room.*\n","Arwyn, visibly frustrated: Why are you so strong?","Kelly, sticking her tongue out: Cuz' I have an ISO! You do too, but you haven't used it much.","Arwyn, sour: Why is somone like you an ISO.","Kelly, ignoring: The other ISOs aren't here...let's find out where they went.")
           text("\n*A rift opens up on the battlefield*\n","Kelly, alerting Arwyn: HEY! It's looks like the same portal that got us here!")
           if fightmod == 1:
-            text("Obama, understanding: I knew ya'll weren't from our universe.","Arwyn: Not our universe?","Kennedy, figuring it out: Aaah. Their universe isn't technologically advanced yet.","Obama, explaining: Seems like a tear to your universe is fluctuating here. You should take it now before you're stuck here forever.","*Kelly")
+            text("Obama, understanding: I knew ya'll weren't from our universe.","Arwyn: Not our universe?","Kennedy, figuring it out: Aaah. Their universe isn't technologically advanced yet.","Obama, explaining: Seems like a tear to your universe is fluctuating here. You should take it now before you're stuck here forever.")
           if fightmod == 2:
-            text("")
+            text("Trump, swearing he figured it out: You guys are defintely from China!","Kelly, offended: Umm...","Lincoln, figuring it out: No, they're not from here at all. As in, this universe.","Arwyn: This universe?","Trump, understanding: Ah, they're from a slow universe. How'd they even get here then?")
           if fightmod == 3:
-            text("")
-          Kelly.cMP = Kelly.fMP
+            text("Musk, confirming his suspisions: I knew it. You guys seem foreign.","Kelly, a little offended: Foreign?","Musk, explaining: As in, not from this universe.","Arwyn: Not this universe?","Musk, urgently: You have to take that tear now! It's the only way back to your universe! Go!")
+          text("*Kelly grabs Arwyn and makes a break for the portal, but "+p2.teamS[0]+" stands in the way!*","Kelly, trying to materialize her violin in her left hand: I guess I have to finish this quick...","\n*Kelly levitates off the ground as a violin bow slowly materializes in her right hand...*",style.BOLD +fore.MAGENTA_1+"\n~Kelly has gained a new ability, Perfect Requiem! She performs a violin piece in respect to the incoming death of her opponent, playing notes to deal magic damage per successful note. The player is prompted to type 10 keys successively to play notes correctly, all under a short time limit. Landing all her notes perfectly prepares the Finale, which deals special effects based on her weapon, but by default massive penetrating magical damage."+style.RESET)
+          time.sleep(0.5)
+          input(fore.YELLOW_1 + style.BOLD+"\n(Kelly is about to cast Perfect Requiem right now. Be prepared to react to a series of QTE's. The QTE's consist of random letters and numbers.)"+style.RESET)
+          revival(Kelly)
           Kelly.learnskill("Perfect Requiem")
           Kelly.perfectr = 0
           fightmod = 4
+          Kelly.perfectrequiem(p2.team[0],you,bots)
 
               
 
@@ -12286,38 +13607,114 @@ def randomweight(types,enem1,enem1w,enem2="",enem2w=0,enem3="",enem3w=0,enem4=""
       for x in range(enem5w):
         inferno.append(enem5)
 
-def rewards(questorbattle,quest=""):
+def rewards(quest=""):
+  global fightid
+  global fightmod
   tot = 0 
   mon = 0
+  wei = 1
+  cap = 500
   ni = you.money
-  if questorbattle == "Battle":
+  if fightid == 7:
+    revival(Ishraq)
+    revival(Kelly)
+    revival(Julius)
     for x in bots.deadteam:
-      if x.NAME == "Richard":
-        tot = tot + 50
-      if x.NAME == "Amira":
-        tot = tot + 5000
-      if x.NAME == "Ryca":
-        tot = tot + 50
-      if "Nurse" in x.NAME:
-        tot = tot + 50
-      if "Freshman" in x.NAME:
-        tot = tot + 3
-        mon = mon + round((random.randint(1,100)/100),2)
-      if "Sophomore" in x.NAME:
-        tot = tot + 6
-        mon = mon + round((random.randint(5,150)/100),2)
-      if "Junior" in x.NAME:
-        tot = tot + 10
-        mon = mon + round((random.randint(10,200)/100),2)
-      if "Senior" in x.NAME:
-        tot = tot + 15
-        mon = mon + round((random.randint(25,500)/100),2)
-    xpg(tot)
-    you.money = round((you.money + mon),2)
-    ree = round((you.money-ni),2)
-    if mon > 0:
-      print("\nThe group finds "+"${:,.2f}".format(ree)+"! They now have "+"${:,.2f}".format(you.money),"in total!")
-  
+      tot = tot + 30
+  for x in bots.deadteam:
+    if x.NAME == "Richard":
+      tot = tot + 50
+    if x.NAME == "Ryca":
+      tot = tot + 50
+    if "Nurse" in x.NAME:
+      tot = tot + 50
+    if "Freshman" in x.NAME:
+      tot = tot + 3
+      mon = mon + round((random.randint(1,100)/100),2)
+      cap = cap + 1
+    if "Sophomore" in x.NAME:
+      tot = tot + 6
+      mon = mon + round((random.randint(5,150)/100),2)
+      wei = wei + 3
+      cap = cap + 2
+    if "Junior" in x.NAME:
+      tot = tot + 10
+      mon = mon + round((random.randint(10,200)/100),2)
+      wei = wei + 5
+      cap = cap + 3
+    if "Senior" in x.NAME:
+      tot = tot + 15
+      mon = mon + round((random.randint(25,500)/100),2)
+      wei = wei + 10
+      cap = cap + 4
+  xpg(tot)
+  you.money = round((you.money + mon),2)
+  ree = round((you.money-ni),2)
+  if mon > 0:
+    print("\nThe group finds "+"${:,.2f}".format(ree)+"! They now have "+"${:,.2f}".format(you.money),"in total!")
+  loot = random.randint(wei,cap)
+  if loot > 200:
+    if loot <= 300:
+      additem("Water Bottle",1,you.consumeinventory)
+    elif loot <= 308:
+      additem("Lime Gatorade",1,you.consumeinventory)
+    elif loot <= 316:
+      additem("Orange Gatorade",1,you.consumeinventory)
+    elif loot <= 324:
+      additem("Red Gatorade",1,you.consumeinventory)
+    elif loot <= 330:
+      additem("Red Bull",1,you.consumeinventory)
+    elif loot <= 334:
+      additem("Monster Energy",1,you.consumeinventory)
+    elif loot <= 344:
+      additem("Fuze",1,you.consumeinventory)
+    elif loot <= 356:
+      additem("Scooby Snacks",1,you.consumeinventory)
+    elif loot <= 368:
+      additem("Blue Doritos",1,you.consumeinventory)
+    elif loot <= 380:
+      additem("Red Doritos",1,you.consumeinventory)
+    elif loot <= 392:
+      additem("Orange Juice",1,you.consumeinventory)
+    elif loot <= 404:
+      additem("Fruit Punch",1,you.consumeinventory)
+    elif loot <= 416:
+      additem("Apple Juice",1,you.consumeinventory)
+    elif loot <= 428:
+      additem("Grape Juice",1,you.consumeinventory)
+    elif loot <= 440:
+      additem("Whole Milk",1,you.consumeinventory)
+    elif loot <= 452:
+      additem("Chocolate Milk",1,you.consumeinventory)
+    elif loot <= 460:
+      additem("Daisy Cookie",1,you.consumeinventory)
+    elif loot <= 466:
+      additem("Cereal Bar",1,you.consumeinventory)
+    elif loot <= 470:
+      additem("Cupcake",1,you.consumeinventory)
+    elif loot <= 482:
+      additem("Turkey Sandwich",1,you.consumeinventory)
+    elif loot <= 496:
+      additem("Ham Sandwich",1,you.consumeinventory)
+    elif loot <= 500:
+      additem("Tuna Sandwich",1,you.consumeinventory)
+    elif loot <= 503:
+      additem("Salad",1,you.consumeinventory)
+    elif loot <= 506:
+      additem("Coffee",1,you.consumeinventory)
+    elif loot <= 511:
+      additem("Bandages",1,you.consumeinventory)
+    elif loot <= 513:
+      additem("Burn Gel",1,you.consumeinventory)
+    elif loot <= 514:
+      additem("Antidote",1,you.consumeinventory)
+    elif loot <= 515:
+      additem("Edible",1,you.consumeinventory)
+    elif loot <= 516:
+      additem("Marijuana",1,you.consumeinventory)
+    elif loot <= 517:
+      additem("Med-Kit",1,you.consumeinventory)
+    
 
 def xpg(amount):
   ish = Ishraq.XP
@@ -12336,16 +13733,22 @@ def xpg(amount):
   print("")
   if ish != Ishraq.XP:
     Ishraq.Ishraqlevelup(Ishraq.XP-ish)
+    Ishraq.ISOlevelup()
   if kel != Kelly.XP:
     Kelly.Kellylevelup(Kelly.XP-kel)
+    Kelly.ISOlevelup()
   if jul != Julius.XP:
     Julius.Juliuslevelup(Julius.XP-jul)
+    Julius.ISOlevelup()
   if dan != Daniel.XP:
     Daniel.Daniellevelup(Daniel.XP-dan)
+    Daniel.ISOlevelup()
   if tim != Tim.XP:
     Tim.Timlevelup(Tim.XP-tim)
+    Tim.ISOlevelup()
   if arw != Arwyn.XP:
     Arwyn.Arwynlevelup(Arwyn.XP-arw)
+    Arwyn.ISOlevelup()
 
 def save(load,fi):
   global world
@@ -12412,12 +13815,12 @@ def save(load,fi):
           you.deadteam.append(Arwyn)
 
 def autosave():
-  Ishraq.savedstats()
-  Julius.savedstats()
-  Arwyn.savedstats()
-  Tim.savedstats()
-  Daniel.savedstats()
-  Kelly.savedstats()
+  for x in you.team:
+    x.savedstats()
+  for x in you.deadteam:
+    x.savedstats()
+  for x in you.backteam:
+    x.savedstats()
   you.teamC = []
   you.deadteamC = []
   you.backteamC = []
@@ -12439,19 +13842,19 @@ def autosave():
 
 def savereset(Con=""):
   if Con == "Mid":
-    Ishraq.saverest(you,bots,"Mid")
-    Kelly.saverest(you,bots,"Mid")
-    Julius.saverest(you,bots,"Mid")
-    Arwyn.saverest(you,bots,"Mid")
-    Tim.saverest(you,bots,"Mid")
-    Daniel.saverest(you,bots,"Mid")
+    for x in you.team:
+      x.saverest(you,bots,"Mid")
+    for x in you.backteam:
+      x.saverest(you,bots,"Mid")
+    for x in you.deadteam:
+      x.saverest(you,bots,"Mid")
   else:
-    Ishraq.saverest(you,bots)
-    Kelly.saverest(you,bots)
-    Julius.saverest(you,bots)
-    Arwyn.saverest(you,bots)
-    Tim.saverest(you,bots)
-    Daniel.saverest(you,bots)
+    for x in you.team:
+      x.saverest(you,bots)
+    for x in you.backteam:
+      x.saverest(you,bots)
+    for x in you.deadteam:
+      x.saverest(you,bots)
   you.team = []
   you.teamS = []
   you.deadteam = []
@@ -12660,7 +14063,7 @@ def preeventcheck():
       if victory == 1:
         text("\n*Alvaro and Octavio regain their senses*\n","Ishraq: You guys alright?","Alvaro, waking up: What's going on?","Kelly, interceding: I got this Ishraq.","\n*Kelly explains everything*\n","Octavio, crazed out: This really is like an anime!","Julius: Word.","Ishraq, slightly grinning: I guess...and yeah, there's no where to go. We're stuck in Tech it seems.","Kelly, looking out: I can sort of see where the world is missing from here...so now what?","Ishraq: We should go back to shop. Gather as much as people as we can. We need to take this school back.","Alvaro: Agreed. If anyone's gonna lead, it has to be you Ishraq.","Ishraq, intrigued: Why do you say that? Hegheh.","Alvaro, praising: You took down The Fence. You're like the rep of the Engineering shop.","Kelly, jealous: Umm, are you sure about that?","Alvaro, putting aside: Well like...you're Kelly. And Ishraq is Ishraq.","Julius: Yeah, Ishraq is GOAT status Kelly, sorry.","Kelly: Yeah, whatever. I'm clearly the representative though. GPA, NASA Hunch...yeah.","Julius, vibing: Ight, but can you code games like Ishraq?","Ishraq, laughing: Hahaha, Kelly just quit it. I'm more popular with the boys.","Kelly, annoyed: Whatever.","\n*The group travels back to the Automotive Building*\n")
         supu("Alvaro",11)
-        supu("Octavio",11)
+        supu("Octavio",14)
         questsys("Don't Trip","Finish")
         questsys("For the Horde","StartM")
     elif yikes == "2" or yikes.lower() == "no":
@@ -12669,7 +14072,9 @@ def preeventcheck():
   if "Daily Checkup" in quests or "Medical Attention" in quests:
     ro = rd(6)
     if ro.RLV != 3:
-      input("\nKelly, taking a step back: I should really find out if this ISO belongs to anyone in here.")
+      time.sleep(0.5)
+      print("\nKelly, taking a step back: I should really find out if this ISO belongs to anyone in here.")
+      time.sleep(0.5)
       sad = 1
     ro = rd(28)
     if ro.RLV == 2:
@@ -12706,19 +14111,94 @@ def preeventcheck():
 #------------------------------------------------------------------------------------
   if "Transmission" in quests:
     if croom[0].RID == 23 and croom[0].RLV == 1:
-      text("\n*The formerly wired students begin to wake back up!*\n","Kenny, dazed: Ughh..W-where am I? This is the auditorium..","Matvey, in visible disgusted confusion: I was in the bathroom...taking a shit...","Daniel, in shock: No...","Daniel suddenly gets up and charges at Ishraq! Ishraq is shoved, but he catches himself before he falls!*","Ishraq, not expecting that: Hey, what was that for?")
+      text("\n*The formerly wired students begin to slowly wake back up!*\n","Kenny, dazed: Ughh..W-where am I? This is the auditorium..","Matvey, in visible disgusted confusion: I was in the bathroom...taking a shit...","Daniel, in shock: No...","Daniel suddenly gets up and charges at Ishraq! Ishraq is shoved, but he catches himself before he falls!*","Ishraq, not expecting that: Hey, what was that for?")
       if data[24] == 1:
-        text("Daniel, furious: YOU!! YOU HURT HER!!","Ishraq, mad confused: What?","Daniel, spitting all over Ishraq: YOU JUST COULDN'T GIVE HER UP TO THE FEDORA GUY, HUH?! INSTEAD, YOU DECIDE TO BE A WHITE-KNIGHT AND END UP CAUSING HER MORE PAIN!!","Ishraq, astounded: Wait, you remember?!","Daniel, punching a seat: OF COURSE I DO!!","Ishraq, laughing his ass off: HEHAHA!! YOU'RE ACTING LIKE YOU WOULDN'T HAVE DONE THE SAME THING!","Daniel, bloodshot as he grabs Ishraq's shirt: If you ever hurt her ever again...I'm coming for you.","Ishraq, dying: BRUUUUHH, I didn't even hurt Kelly directly! Relax buddy!","Daniel, letting go of him: I'll make sure you don't. I'll stick real close, friend.","Ishraq, shrugging: Okay buddy.","\n~Daniel is a Dominican Peruvian 10th grade engineering student at the highschool of PCTI. He is a VEX competitor, and one of the two students, the only in engineering, to get a 5 on the AP Physics exam. He is infatuated with learning and helping others, but is anything but a saint. He loves to bully people for the sheer entertainment of it, but also finds it funny to get bullied. He has no shame whatsoever, being able to do absolutely wild things.")
+        text("Daniel, furious: YOU!! YOU HURT HER!!","Ishraq, mad confused: What?","Daniel, spitting all over Ishraq: YOU JUST COULDN'T GIVE HER UP TO THE FEDORA GUY, HUH?! INSTEAD, YOU DECIDE TO BE A WHITE-KNIGHT AND END UP CAUSING HER MORE PAIN!!","Ishraq, astounded: Wait, you remember?!","Daniel, punching a seat: OF COURSE I DO!!","Ishraq, laughing his ass off: HEHAHA!! YOU'RE ACTING LIKE YOU WOULDN'T HAVE DONE THE SAME THING!","Daniel, bloodshot as he grabs Ishraq's shirt: If you ever hurt her ever again...I'm coming for you.","Ishraq, dying: BRUUUUHH, I didn't even hurt Kelly directly! Relax buddy!","Daniel, letting go of him: I'll make sure you don't. I'll stick real close, friend.","Ishraq, shrugging: Okay buddy.")
       else:
         if data[23] != "":
-          text("Daniel, furious: YOU!! YOU DIDN'T SAVE HER!!","Ishraq, astounded: Wait, how do you know that?! You were wired!!","Daniel, punching a seat: OF COURSE I REMEMBER!!","Ishraq, laughing his ass off: HEHAHA!! HOW?!","Daniel, visibly disturbed: I will always remember every moment I see my queen...every...every moment.","Ishraq, dying: BRUUUUH, this is crazy! Of course you would be able to do that!","Daniel, looking down: I remember...","Ishraq, concerned: You okay friend?","Daniel, deciding to hide it: It's nothing. Anyways, I'll make sure I save her. I'll do what you couldnt.","Ishraq, shrugging: Okay buddy.","\n~Daniel is a Dominican Peruvian 10th grade engineering student at the highschool of PCTI. He is a VEX competitor, and one of the two students, the only in engineering, to get a 5 on the AP Physics exam. He is infatuated with learning and helping others, but is anything but a saint. He loves to bully people for the sheer entertainment of it, but also finds it funny to get bullied. He has no shame whatsoever, being able to do absolutely wild things.")
+          text("Daniel, furious: YOU!! YOU DIDN'T SAVE HER!!","Ishraq, astounded: Wait, how do you know that?! You were wired!!","Daniel, punching a seat: OF COURSE I REMEMBER!!","Ishraq, laughing his ass off: HEHAHA!! HOW?!","Daniel, visibly disturbed: I will always remember every moment I see my queen...every...every moment.","Ishraq, dying: BRUUUUH, this is crazy! Of course you would be able to do that!","Daniel, looking down: I remember...","Ishraq, concerned: You okay friend?","Daniel, deciding to hide it: It's nothing. Anyways, I'll make sure I save her. I'll do what you couldnt.","Ishraq, shrugging: Okay buddy.")
         else:
-          text("Daniel, furious: YOU!! YOU DIDN'T SAVE HER!!","Ishraq, astounded: Wait, how do you know that?! You were wired!!","Daniel, punching a seat: OF COURSE I REMEMBER!!","Ishraq, laughing his ass off: HEHAHA!! HOW?!","Daniel, like a soldier on duty: I will always remember every moment I see my queen...every word she speaks...everything.","Ishraq, dying: BRUUUUH, this is crazy! Of course you would be able to do that!","Daniel, looking down at Ishraq: I'll make sure I save her. I'll do what you couldn't.","Ishraq, shrugging: Okay buddy.","\n~Daniel is a Dominican Peruvian 10th grade engineering student at the highschool of PCTI. He is a VEX competitor, and one of the two students, the only in engineering, to get a 5 on the AP Physics exam. He is infatuated with learning and helping others, but is anything but a saint. He loves to bully people for the sheer entertainment of it, but also finds it funny to get bullied. He has no shame whatsoever, being able to do absolutely wild things.")
+          text("Daniel, furious: YOU!! YOU DIDN'T SAVE HER!!","Ishraq, astounded: Wait, how do you know that?! You were wired!!","Daniel, punching a seat: OF COURSE I REMEMBER!!","Ishraq, laughing his ass off: HEHAHA!! HOW?!","Daniel, like a soldier on duty: I will always remember every moment I see my queen...every word she speaks...everything.","Ishraq, dying: BRUUUUH, this is crazy! Of course you would be able to do that!","Daniel, looking down at Ishraq: I'll make sure I save her. I'll do what you couldn't.","Ishraq, shrugging: Okay buddy.")
+      text("\n~Daniel is a Dominican Peruvian 10th grade engineering student at the highschool of PCTI. He is a VEX competitor, and one of the two students, the only in engineering, to get a 5 on the AP Physics 1 exam. He is infatuated with learning and helping others, but is anything but a saint. He loves to bully people for the sheer entertainment of it, but also finds it funny to get bullied. He has no shame whatsoever, being able to do absolutely wild things.\n","Ishraq, directing the previously wired students: Alright. You guys spend all the time you need getting back on your feet. We'll clear a path for you guys.","Lascelles, still downed: Yeah...sounds like a plan.")
       croom[0].RLV = 2
       revival(Daniel,o=True)
       Daniel.XP = round(((Kelly.XP + Julius.XP + Ishraq.XP + Tim.XP)/4)-100)
       Daniel.Daniellevelup(Daniel.XP,Colis=True)
       Daniel.learnskill("Taunt")
+    if croom[0].RID == 6 and croom[0].RLV == 6:
+      time.sleep(0.5)
+      print("\nKelly, taking a step back: Let's catch up with someone in here.")
+      time.sleep(0.5)
+      sad = 1
+#------------------------------------------------------------------------------------
+  if "Awakening" in quests:
+    if nextr == "F-Wing Hallway 1st Floor" and data[27] == 2:
+      time.sleep(0.5)
+      print("\nIshraq, not going: Shop first. I ain't almost die for nothing.")
+      time.sleep(0.5)
+      sad = 1
+    if nextr == "H-Wing Complex 1st Floor" and data[27] == 2:
+      time.sleep(0.5)
+      print("\nIshraq, frowning: Ya wanna go back now? Crazy or some shit?")
+      time.sleep(0.5)
+      sad = 1
+    if nextr == "FX-Wing Hallway 2nd Floor" and data[27] == 2:
+      time.sleep(0.5)
+      print("\nIshraq, shaking his head: Shop is on the first floor...")
+      time.sleep(0.5)
+      sad = 1
+    if nextr == "D-Wing Hallway Ground Floor" and (data[27] == 1 or data[27] == 5):
+      time.sleep(0.5)
+      print("\nIshraq, looking forward: The Fence is straight away on the high ground...better to just cross the bridge upstairs.")
+      time.sleep(0.5)
+      sad = 1
+#------------------------------------------------------------------------------------
+  if "Silent Operators" in quests:
+    if nextr == "F-Wing Engineering Shop Room":
+      time.sleep(0.5)
+      print("\nTim, not looking back: We must charge forth!")
+      time.sleep(0.5)
+      sad = 1
+    if nextr == "F-Wing Hallway 1st Floor":
+      time.sleep(0.5)
+      print("\nTim, bringing up: The bridge collapsed...we can't get through from the F-Wing.")
+      time.sleep(0.5)
+      sad = 1
+    if nextr == "FX-Wing Hallway 2nd Floor":
+      time.sleep(0.5)
+      print("\nTim, slapping himself: Dude, no reason to go upstairs.")
+      time.sleep(0.5)
+      sad = 1
+    if nextr == "C-Wing Media Center":
+      time.sleep(0.5)
+      print("\nTim, shaking his head: No reason to go down this hall, or we'll pass our ASL room.")
+      time.sleep(0.5)
+      sad = 1
+    if nextr == "Main Office":
+      time.sleep(0.5)
+      print("\nTim, shaking his head: No reason to go down this hall, or we'll pass our ASL room.")
+      time.sleep(0.5)
+      sad = 1
+    if nextr == "Main Lobby":
+      time.sleep(0.5)
+      print("\nTim, shaking his head: No reason to go down this hall, or we'll pass our ASL room.")
+      time.sleep(0.5)
+      sad = 1
+    if nextr == "Cafe 1":
+      time.sleep(0.5)
+      print("\nTim, looking up: ASL is upstairs.")
+      time.sleep(0.5)
+      sad = 1
+    if nextr == "Cafe 2":
+      time.sleep(0.5)
+      print("\nTim, looking up: ASL is upstairs.")
+      time.sleep(0.5)
+      sad = 1
+    if nextr == "Automotive Building":
+      time.sleep(0.5)
+      print("\nTim, confused: Why am I going here?")
+      time.sleep(0.5)
+      sad = 1
 #------------------------------------------------------------------------------------
   if data[22] == 0 and nextr == "Cafe 1":
     input("\nIshraq, confused: All the doors are locked...")
@@ -12795,7 +14275,7 @@ def eventcheck():
     else:
       print("Ishraq:", speak)
     time.sleep(0.5)
-    text("\n~Ishraq is a Bengali Peruvian 10th grade engineering student at the highschool of PCTI. He is a varsity track mid-distance sprinter, fencer, and VEX competitor. He is very adept at expressing his rage and care towards people, shouting loudly, procrastinating, and making new friends of all kinds. He believes everyone has the potential to do great things, looking beyond faults. His extroversion makes him a popular figure, but also puts off others.","\n???, content: Well, it seems you can.","???, seriously: Listen...we've been in this janitor's closet for an hour now. People all over the school seem to be mind controlled! I don't know if you're gonna believe this, but just listen.", "???, directly: Some guy tried kidnapping me, and he opened some portal doing so. I tried fighting him as he pulled me into it and I somehow managed to get separated from him. I landed here in the F-Wing and out of nowhere...this noise shrieked all over the school! It was so loud...it made me fall. It lasted for a bit, but once it was over, I looked around.", "???, frightened: No one got out of any classroom, except you. You were trying to eat your phone...I tapped your shoulder, and you just died. I looked into your classroom, and everyone was demonically standing straight." "???, expressively: It was so scary...I was gonna run but I heard footsteps coming from across the hall. I quickly dragged you into this closet so they didn't see you, and we've been here ever since.")
+    text("\n~Ishraq is a Bengali 10th grade engineering student at the highschool of PCTI. He is a varsity track mid-distance sprinter, fencer, and VEX competitor. He is very adept at expressing his rage and care towards people, shouting loudly, procrastinating, and making new friends of all kinds. He believes everyone has the potential to do great things, looking beyond faults. His extroversion makes him a popular figure, but also puts off others.","\n???, content: Well, it seems you can.","???, seriously: Listen...we've been in this janitor's closet for an hour now. People all over the school seem to be mind controlled! I don't know if you're gonna believe this, but just listen.", "???, directly: Some guy tried kidnapping me, and he opened some portal doing so. I tried fighting him as he pulled me into it and I somehow managed to get separated from him. I landed here in the F-Wing and out of nowhere...this noise shrieked all over the school! It was so loud...it made me fall. It lasted for a bit, but once it was over, I looked around.", "???, frightened: No one got out of any classroom, except you. You were trying to eat your phone...I tapped your shoulder, and you just died. I looked into your classroom, and everyone was demonically standing straight.","???, expressively: It was so scary...I was gonna run but I heard footsteps coming from across the hall. I quickly dragged you into this closet so they didn't see you, and we've been here ever since.")
     talk = "2"
     while talk == "2":
       meet = input("\n(1) Who are you again?   (2) I'M THE CONDUCTOR OF THE POOP TRAIN!!\n(3) Oh word?\nType the corresponding number to enter a response: ")
@@ -12938,13 +14418,13 @@ def eventcheck():
             start = time.time()        
             elapsed = 0               
             while elapsed < 10:
-              print("\nYou have",round(10-elapsed),"seconds to make a decision")
+              print(fore.YELLOW_1+fore.YELLOW_1+"\nYou have",style.BOLD+str(round(10-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET+style.RESET)
               boop = input("(1) *Go to Kelly's shop class*  (2) *Probe further*\nResponse: ")
               elapsed = time.time() - start
               if boop == "1" or boop == "2":
                 break
             if boop == "2" and elapsed < 10:
-              text("\nIshraq, to himself in his head: Why is she so pissed?","Ishraq, inquiring further: Okay, but how did this guy who tried kidnapping you even look?","Kelly, explaining carefully: He had this...fedora on his head. He was wearing a long black trenchcoat. He didn't attack me immediately...umm..he actually....")
+              text("\nIshraq, to himself in his head: (Why is she so pissed?)","Ishraq, inquiring further: Okay, but how did this guy who tried kidnapping you even look?","Kelly, explaining carefully: He had this...fedora on his head. He was wearing a long black trenchcoat. He didn't attack me immediately...umm..he actually....")
               if data[9] == 1:
                 input("Ishraq, happy to make a connection: Hey, Richard mentioned a guy called The Fedora Man.")
               else:
@@ -12957,7 +14437,7 @@ def eventcheck():
                 text("Kelly, with a defending tone: Why though? Sure, he was acting weird, but it was pretty brave.","Ishraq, slightly jealous: I guess.","Kelly: ...Let's just go to shop already")
               data[15] = 1
             else:
-              text("\nIshraq, to himself in his head: She's pissed for no reason.","Ishraq, trying to ease the awkward tension: Okay, then we'll go to SHOP.","Kelly, content: Yes, we will.")
+              text("\nIshraq, to himself in his head: (She's pissed for no reason.)","Ishraq, trying to ease the awkward tension: Okay, then we'll go to SHOP.","Kelly, content: Yes, we will.")
             talk = "3"
             time.sleep(1)
     Ishraq.Q1B = 0
@@ -13017,9 +14497,9 @@ def eventcheck():
       time.sleep(1)
       if Ishraq.cHP > 0:
         text("\nDavid: Yo, this dude hacking!","Edmond: Word.","Brandon: Turn them shits off!","Ishraq: I'm sorry, the dude playing right now learned how to read this code!","David: Well...act like your getting your ass beat right now.","Ishraq: I'll try I guess.","*Ishraq falls...*")
-      text("\nIshraq, losing consciousness: Kelly...fight..","Kelly, terrified: ISHRAQ!","*Something on Mr. Pudup's desk begins to glow red, Mr.Pudup being Ishraq's and Kelly's 9th grade engineering teacher, but only Ishraq's 10th grade teacher*","Kelly, puzzled: It's projecting an isometric drawing..?","*Julius tries grabbing Kelly to resume dancing, but she bolts for the drawing*","*The piece of metal began to vibrate intensely in her hands, hurting her*","Kelly, thinking to herself: Whooah, ow! What even is this? It's projecting a red holographic isometric drawing...","*Julius jerks Kelly back to him, and she drops the device*","Kelly, desperate: No no no!","*In a last attempt, Kelly kicks the device, and it lands near Ishraq*","\n*The object begins wrapping itself upon Ishraq, completely covering his body in an unknown metal! The metal compresses his body, briefly turning him into a small shining red light! His body reconstructs from red outlined geometric planes! After the reconstruction, the object sends out a final pulse of energy, weakening everyone else in the room!*\n",)
+      text("\nIshraq, losing consciousness: Kelly...fight..","Kelly, terrified: ISHRAQ!","*Something on Mr. Pudup's desk begins to glow red, Mr.Pudup being Ishraq's and Kelly's 9th grade engineering teacher, but only Ishraq's 10th grade teacher*","Kelly, puzzled: It's projecting an isometric drawing..?","*Julius tries grabbing Kelly to resume dancing, but she bolts for the drawing*","*The piece of metal began to vibrate intensely in her hands, hurting her*","Kelly, thinking to herself: (Whooah, ow! What even is this? It's projecting a red holographic isometric drawing...)","*Julius jerks Kelly back to him, and she drops the device*","Kelly, desperate: No no no!","*In a last attempt, Kelly kicks the device, and it lands near Ishraq*","\n*The object begins wrapping itself upon Ishraq, completely covering his body in an unknown metal! The metal compresses his body, briefly turning him into a small shining red light! His body reconstructs from red outlined geometric planes! After the reconstruction, the object sends out a final pulse of energy, weakening everyone else in the room!*\n",)
       input(style.BOLD + fore.RED_1 +"~Ishraq has gained a new ability, Wild Instinct! He triggers his amplified human instincts to increase his attack, speed, evasion, and critical strike chance! However, it reduces his accuracy, magic attack, magic defense, and damages his body!\n" + style.RESET)
-      input(fore.RED_1 + style.BOLD + "Ishraq, looking at his hands: What is this feeling? This feels like pre-track season! OH YEAH, LET'S FIGHT!!" + style.RESET)
+      input(fore.RED_1  + "Ishraq, looking at his hands: What is this feeling? This feels like pre-track season! OH YEAH, LET'S FIGHT!!" + style.RESET)
       revival(Ishraq)
       bots.team = [Entity("Brandon",60,0,10,20,0,0,25,100,50,0,0,0,0,"17","Male"),Entity("David",50,0,12,15,0,0,25,100,50,0,0,0,0,"18","Male"),Entity("Edmond",55,0,11,18,0,0,25,100,50,0,0,0,0,"19","Male")]
       fightid = 2
@@ -13104,12 +14584,12 @@ def eventcheck():
         start = time.time()        
         elapsed = 0               
         while elapsed < 6:
-          print("\nYou have",round(6-elapsed),"seconds to make a decision")
+          print(fore.YELLOW_1+"\nYou have",style.BOLD+str(round(6-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET)
           boop = input("(1) *Pick up the scissors*  (2) *Kick the scissors away*\nResponse: ")
           elapsed = time.time() - start
           if boop == "1" or boop == "2":
             break
-        if boop != "1" and boop != "2":
+        if (boop != "1" and boop != "2") or elapsed >= 6:
           boop = str(random.randint(1,2))
         if boop == "1":
           text("\n*Ishraq picks up the scissors*","Ishraq, wildly charging at the Nurse: mpGH...aRUAAAAH!","*Ishraq stabs the nurse through the neck...The nurse falls to the ground, spewing blood*","Ishraq, vibrating: FUCK!","Julius, at a loss of words: Man...I don't know...","Ishraq, hands trembling: There's blood all over my hands. I just killed someone.","Julius, trying to keep himself and Ishraq calm: Don't worry, don't worry, bro, like...we were in danger. You had to.","Ishraq, enraged at himself: NO! I DIDN'T! I could've knocked her out! Easy!","Julius, making excuses for Ishraq: Bro, you saw that needle. Who knows what's in that injection.","Ishraq, praying: ...I'm not afraid of anything. But killing someone? It doesn't feel right, and I've always had this feeling that I would be afraid to do it.","Julius, poking the Nurse's butt: Stop thinking about it...let's just hide the body. Remove that freaking scissor too.","Ishraq, scared: Hell no.","Julius, dying on the inside: Aight, I'll take care of the body, you go look for stuff for Kelly.")
@@ -13167,12 +14647,12 @@ def eventcheck():
       start = time.time()        
       elapsed = 0               
       while elapsed < 10:
-        print("\nYou have",round(10-elapsed),"seconds to make a decision")
+        print(fore.YELLOW_1+"\nYou have",style.BOLD+str(round(10-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET)
         boop = input("(1) Fight  (2) Watch\nResponse: ")
         elapsed = time.time() - start
         if boop == "1" or boop == "2":
             break
-      if boop != "1" and boop != "2":
+      if (boop != "1" and boop != "2") or elapsed >= 10:
         boop = str(random.randint(1,2))
       if boop == "1":
         bots.team = [Entity("Metin",160,0,15,60,0,0,30,100,80,0,10,0,0,"17","Male"),Entity("Hassan",130,0,12,35,0,0,45,100,100,0,0,0,0,"18","Male"),Entity("Noah",120,0,13,30,0,0,40,100,110,0,0,0,0,"19","Male")]
@@ -13235,7 +14715,7 @@ def eventcheck():
 #---------------------------------------------------------------------------------------------
   if "For the Horde" in quests:
     if nextr == "F-Wing Engineering Shop Room":
-      text("\nKelly, relieved: Aaah, finally back in a room full of non-wired people. I already feel cozy and safe...*Kelly checks her cubby*, hey this is my ASMR mini-mic! I've been looking for this!","\n*Kelly begins to make ASMR noises because she wants to...everyone just stares at her*\n","Kelly, stopping: What?","Everyone: No...keep going.","Everyone: Wait, what??","Kelly, happy: You guys like it that much?? Yay!","Ishraq, relaxed and confused: I don't know about ya'll...but it feels like she's hypnotizing us...","Metin: That's because I think she is...I feel so relaxed now.","Kelly, giddy: What do you guys mean?!","Julius, agreeing: Your mic...it's so soothing...and I'm not an ASMR type of person..I think your ISO is causing it.","Kelly, realizing: Oooh, maybe you're right.","*Kelly's ASMR microphone suddenly mixes with her calligraphy pen, becoming one!*",fore.MAGENTA_1+"\n~Kelly has gained a new ability, ASMR! She can perform ASMR in battle, recovering a percentage of her mana(MP) and increasing everyone's mana regeneration(MRG) at a cost of her health(HP)!\n"+style.RESET,"Ishraq, trying to turn on Mr. Pudup's computer: Shit...there's no electricity.","Julius, not fretting: Don't worry about that, this school has back up generators I heard.","Ishraq: We need them up and running...our chromebooks will run out of charge, ya heard?","Julius, confused: What are we gonna use chromebooks for?","Ishraq, also confused: ...communication maybe??? We still have no internet...DAMN IT!","Julius: Phones aren't working either...something is blocking radio signals.")
+      text("\nKelly, relieved: Aaah, finally back in a room full of non-wired people. I already feel cozy and safe...*Kelly checks her cubby*, hey this is my ASMR mini-mic! I've been looking for this!","\n*Kelly begins to make ASMR noises because she wants to...everyone just stares at her*\n","Kelly, stopping: What?","Everyone: No...keep going.","Everyone: Wait, what??","Kelly, happy: You guys like it that much?? Yay!","Ishraq, relaxed and confused: I don't know about ya'll...but it feels like she's hypnotizing us...","Metin: That's because I think she is...I feel so relaxed now.","Kelly, giddy: What do you guys mean?!","Julius, agreeing: Your mic...it's so soothing...and I'm not an ASMR type of person..I think your ISO is causing it.","Kelly, realizing: Oooh, maybe you're right.","*Kelly's ASMR microphone suddenly mixes with her calligraphy pen, becoming one!*",style.BOLD +fore.MAGENTA_1+"\n~Kelly has gained a new ability, ASMR! She can perform ASMR in battle, recovering a percentage of her mana(MP) and increasing everyone's mana regeneration(MRG) at a cost of her health(HP)!\n"+style.RESET,"Ishraq, trying to turn on Mr. Pudup's computer: Shit...there's no electricity.","Julius, not fretting: Don't worry about that, this school has back up generators I heard.","Ishraq: We need them up and running...our chromebooks will run out of charge, ya heard?","Julius, confused: What are we gonna use chromebooks for?","Ishraq, also confused: ...communication maybe??? We still have no internet...DAMN IT!","Julius: Phones aren't working either...something is blocking radio signals.")
       talk = "1"
       while talk == "1":
         bruh = input("\n(1) *Take a headcount*  (2) *Take a nap*\nResponse: ")
@@ -13349,12 +14829,12 @@ def eventcheck():
           start = time.time()        
           elapsed = 0               
           while elapsed < 6:
-            print("\nYou have",round(6-elapsed),"seconds to make a decision")
+            print(fore.YELLOW_1+"\nYou have",style.BOLD+str(round(6-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET)
             boop = input("(1) Do I kill him?  (2) I have no more questions.\nResponse: ")
             elapsed = time.time() - start
             if boop == "1" or boop == "2":
               break
-          if boop != "1" and boop != "2":
+          if (boop != "1" and boop != "2") or elapsed >= 6:
             boop = "2"
           if boop == "1":
             input("\nIshraq: Do I have to kill him?")
@@ -13383,6 +14863,9 @@ def eventcheck():
             input("\nDr. Graham: I wish you well on this journey. Do not forget to visit my room.")
           talk = "2"
       text("\n*Ishraq wakes up inside his shop room...he looks around to see everyone recovering.*\n","Julius, announcing: Yo! Ishraq is awake~!","*Kelly walks over to Ishraq*","Kelly, lending a hand: You okay?","Ishraq, grabbing her hand to pull himself up: Yeah...I just had some sort of vision, ya heard?","Kelly: Hmm?","\n*Ishraq explains to Kelly and everyone his encounter with Dr. Graham*\n","Julius, excited: YOOO! I ALWAYS KNEW DR. G WAS SOME SORT OF GOD!","Ishraq, laughing: Hahaha! Word. So is everyone alright?","Kelly, looking over at everyone: Yeah...I'm attending to everyone. We're working with the nurse right now. No one is seriously injured.","Ishraq, relieved: Good...do I get to sleep now?","Kelly, laughing: Haha...I don't think so. While you were out, we decided to go check on the medical shop. You're coming with us.","Ishraq, sighing: Haaah...I'm gonna knock out sooner or later. Do you guys REALLY need me? You and Julius are strong enough to deal with some wired, right?","Julius, leniant: Let the man rest. We need him juiced up for the rest of the day.","Ishraq, sitting back down: Thank you Julius...wait a second, what's in my pocket?","\n*Ishraq shuffles into his pocket and pulls out a screwdriver*\n","Ishraq, delirious: Huhawhat? When the hell did I find this?","*The screwdriver emits a Cyan Isometric Drawing from it*","Kelly, excited: Ooooh! Dr. Graham sent another ISO!","Ishraq, glad as he rests his eyes: Yeah...time to find out who for. Here Kelly. I'm finally gonna nap now.","*Ishraq gives Kelly the screwdriver*")
+      questsys("Apprenticeship","StartS")
+      ro = rd(5)
+      ro.paths.append("Dr. Graham's Classroom")
       questsys("For the Horde","Finish")
       you.reset("Team")
       autosave()
@@ -13390,10 +14873,6 @@ def eventcheck():
       revival(Kelly)
       revival(Julius)
       forceswitch(Ishraq)
-      boo = 0
-      for x in bots.deadteam:
-        boo = boo + 30
-      xpg(boo)
       if data[10] == 2:
         questsys("Daily Checkup","StartM")
       else:
@@ -13419,13 +14898,25 @@ def eventcheck():
       if "Hassan" not in you.suppbackS and data[16] == 0:
         supu("Hassan",21,sk=True)
       ro.RLV = 2
+#--------------------------------------------------------------------------------------------------
+  if "Apprenticeship" in quests:
+    ro = rd(32)
+    if nextr == "Dr. Graham's Classroom" and ro.RLV == 1:
+      if you.att(Ishraq) == True:
+        text("\nIshraq, taking a quick look around the room: Oh shit.","*Ishraq approaches the boy standing as if they were deactivated in the middle of the room*","Ishraq, waving his hand in front of him: Shah? You good?","*Shah suddenly turns on*","Shah, possessed: #You have came to visit, Mr. Ahmed.#","Ishraq, confused but assuming: Dr. Graham?","Dr. Graham, speaking through Shah: #Yes, it is I. I am using Mr. Rahman as a host for the time being. He will be the way you and the other ISOs can communicate with me.#","Ishraq, wondering: So, you need anything specific or...?","Dr. Graham, shaking his head: #No, no, no. I am here to assist you and test your fighting ability. I put a tiny fraction of my power in Mr. Rahman's body. You and the ISOs must be able to overcome this power if you even want a chance at overcoming the Fedora Man. If you students are able to take on this struggle, I might even try and push all of your limits with a real test...","Ishraq, no sweat: As long as electrostatics isn't on it, I'm passing.","Dr. Graham, happy: #Hahaha! I trust that you will. Talk to Mr. Rahman when you are ready for the test.#")
+        ro.RLV = 2
+        ro.people = ["Shah"]
+      elif you.att(Kelly) == True:
+        text("\nKelly, taking a quick look around the room: Crap--! Oh wait...","*Kelly approaches the boy standing as if they were deactivated in the middle of the room*","Kelly, waving his hand in front of him: You're that boy that Kathleen is friends with....","*Shah suddenly turns on*","Shah, possessed: #You have came to visit, Ms. Cha.#","Kelly, confused but assuming: Dr. Graham?!","Dr. Graham, speaking through Shah: #Yes, it is I. I am using Mr. Rahman as a host for the time being. He will be the way you and the other ISOs can communicate with me.#","Kelly, wondering: So, you're here to help us out?","Dr. Graham, nodding: #Yes. I am here to assist you and test your fighting ability. I put a tiny fraction of my power in Mr. Rahman's body. You and the ISOs must be able to overcome this power if you even want a chance at overcoming the Fedora Man. If you students are able to take on this struggle, I might even try and push all of your limits with a real test...","Kelly, ready for the challenge: Wooaaw, a real test. You already know that I'm passing~!","Dr. Graham, happy: #Hahaha! I trust that you will. Talk to Mr. Rahman when you are ready for the test.#")
+        ro.RLV = 2
+        ro.people = ["Shah"]
 #---------------------------------------------------------------------------------------------
   if "Feeling Alone" in quests:
     ro = rd(17)
     if nextr == "Cafe 2" and ro.RLV == 1:
-      if "Daily Checkup" not in quests and "Medical Attention" not in quests:
+      if you.att(Ishraq) == True:
         text("\n*Everyone surveys the room*\n","Ishraq, at a loss of words: Holy...","Metin, unsure: What...?","Noah, looking away: I don't think I want food anymore.","Kelly, nauseous: Can we leave please?","Ishraq, alert: There could be something dangerous in here...maybe we should leave.")
-        if "The FX-Wing Nurse" not in quests:
+        if you.att(Kelly) == True:
           text("Kelly, scared: These kids were all massacred! There's blood everywhere!","Ishraq, calming her: Don't worry. If we stay close to each other, we will not die here.")
         else:
           text("Noah, taking another peak: There's blood everywhere...this is crazy.","Ishraq, shocked: I've never seen anything like this before...this is different.")
@@ -13456,7 +14947,7 @@ def eventcheck():
           fightmod = 1
         fightid = 8
       if fightmod == 1:
-        bots.team = [Entity("Alex",200,10,25,50,0,35,45,120,100,5,0,0,2,"18","Male"),Entity("Satya",180,10,28,40,0,0,50,100,120,8,10,0,2,"19","Male"),Entity("Ryca",150,20,18,30,35,70,40,110,110,50,0,0,0,"20","Female Heal"),Entity("Didar",130,10,16,20,50,100,40,100,110,3,0,0,0,"21","Male Heal"),Entity("Taric A.",250,0,26,45,0,35,60,100,100,9,0,0,0,"22","Male")]     
+        bots.team = [Entity("Alex",200,10,25,50,0,35,45,120,100,5,0,0,2,"17","Male"),Entity("Satya",180,10,28,40,0,0,50,100,120,8,10,0,2,"18","Male"),Entity("Ryca",150,20,18,30,35,70,40,110,110,50,0,0,0,"19","Female Heal"),Entity("Didar",130,10,16,20,50,100,40,100,110,3,0,0,0,"20","Male Heal"),Entity("Taric A.",250,0,26,45,0,35,60,100,100,9,0,0,0,"21","Male")]     
         battle(you,bots,Cont=False)
       if fightmod == 2:
         forceswitch(Tim)
@@ -13467,7 +14958,7 @@ def eventcheck():
           text("Tim, flexing: Ooh yeah, nothing can stop the Tim!","Julius, laughing: HaHAA~! You weird weird.")
         elif fightmod == 2:
           text("Julius, slapping Tim's back: YOU! Are craazy! HaHAA~!","Tim, flexing: I had everything under control~")
-        text("Kelly, skipping towards Ryca: Are you okay?","*\nThe medical students regain concsiousness\n*","Ryca, jumping up: Yeah, I'm good...sheeee, I need to stretch out.","Kelly, joining Ryca in her stretching: I'm so happy to see you safe, let me fill everyone in on what's going on.","*Kelly explains everything*","Alex, normally: So we will try to take over this shop.","Kelly, nodding: Yeah, there's a lot of people in medical, almost quadruple the amount in engineering. Stick close and pick off students one by one till you guys can amass an army.","Taric A., stretching his calves: Lightwork.","Kelly, a little worried: You guys have any weapons?","Satya: We've got our anatomy textbooks. They're heavy as fuck. Our shop textbooks are heavy too.","Kelly, intrigued: Anatomy, huh. Let me see your books.","\n*Satya hands over his textbooks to Kelly*\n","Kelly, skimming through it: I just thought of a great tactic for fighting. I can learn about the human body and its weaknesses from this book...",style.BOLD + fore.MAGENTA_1 + "\n~Kelly has gained a new ability, Pinpoint! She targets a vital on the enemy, striking it devastatingly, dealing bonus true damage based on her physical attack, on top of her normal damage. This also causes the enemy to bleed based on Kelly's accuracy.\n"+style.RESET,"Ryca, innovating: Not only that, you can learn about health in general from our shop textbook. It might be useful with all that fighting you're going to do with the other ISOs.","Kelly, really interested with ideas floating in her head: Yeah...I really can. I can't wait to read through all this. We all do need to stay healthy.",style.BOLD + fore.MAGENTA_1 +"\n~Kelly has gained a new ability, Heal! She recovers the health(HP) of an ally or herself by her magic attack(MAT) and a percentage of their maximum health.\n"+style.RESET)
+        text("Kelly, skipping towards Ryca: Are you okay?","*\nThe medical students regain concsiousness\n*","Ryca, jumping up: Yeah, I'm good...sheeee, I need to stretch out.","Kelly, joining Ryca in her stretching: I'm so happy to see you safe, let me fill everyone in on what's going on.","*Kelly explains everything*","Alex, normally: So we will try to take over this shop.","Kelly, nodding: Yeah, there's a lot of people in medical, almost quadruple the amount in engineering. Stick close and pick off students one by one till you guys can amass an army.","Taric A., stretching his calves: Lightwork.","Kelly, a little worried: You guys have any weapons?","Satya: We've got our anatomy textbooks. They're heavy as fuck. Our shop textbooks are heavy too.","Kelly, intrigued: Anatomy, huh. Let me see your books.","\n*Satya hands over his textbooks to Kelly*\n","Kelly, skimming through it: I just thought of a great tactic for fighting. I can learn about the human body and its weaknesses from this book...",style.BOLD + fore.MAGENTA_1 +"\n~Kelly has gained a new ability, Pinpoint! She targets a vital on the enemy, striking it devastatingly, dealing bonus true damage based on her physical attack, on top of her normal damage. This also causes the enemy to bleed based on Kelly's accuracy.\n"+style.RESET,"Ryca, innovating: Not only that, you can learn about health in general from our shop textbook. It might be useful with all that fighting you're going to do with the other ISOs.","Kelly, really interested with ideas floating in her head: Yeah...I really can. I can't wait to read through all this. We all do need to stay healthy.",style.BOLD + fore.MAGENTA_1 +"\n~Kelly has gained a new ability, Heal! She recovers the health(HP) of an ally or herself by her magic attack(MAT) and a percentage of their maximum health.\n"+style.RESET)
         Kelly.learnskill("Pinpoint")
         Kelly.learnskill("Heal")
         text("Ryca, fired up: Let's take back this school guys! *Ryca looks to Kelly* What will you do now?","Kelly, looking up: I dunno...I think we could just invade every shop and free a group of students like we did in here. We can spread the cure to wiring like a disease.","Ryca, in support: That sounds like a great idea.")
@@ -13511,7 +15002,7 @@ def eventcheck():
             talk = "2"
           elif bruh.lower() == "no" or bruh == "2":
             text("\nJulius, relaxed: Naahh, who needs that dude? We got these guys, lightwork.","Tim, waiting for a signal: So when can I go in?","Julius, shrugging: You do you.","\n*Tim reveals himself and sprints down the left aisle*\n","Tim, jumping onto the stage: FIGHT ME STRANGE PEOPLE!! HEY, WAIT!! THESE GUYS ARE FROM OUR SHOP!!","Kelly, slowly following Tim: Yeahh, they are. That's Matvey, Kenny...and?","Julius: This guy is Lacselles, but this other guy?","Tim: Dereck, I have him in shop with Ishraq.","Kelly, puzzled: They aren't hearing us, and we're right next to them. They're like..deactivated or something.","*Tim punches Dereck...all the wired activate!*","Tim, happy: There!","Kelly, tired: Really Tim?","Dereck: #What was that for?#","Kenny: #It's THEM. But how?#","Lascelles: #Well, they're here already, let's just fight!#")
-            bots.team = [Entity("Kenny",300,10,26,50,0,40,45,110,100,5,0,0,2,"18","Male"),Entity("Lascelles",300,10,30,55,0,40,40,100,100,7,0,0,2,"19","Male"),Entity("Matvey",260,10,25,45,0,60,45,120,100,10,0,0,2,"20","Male"),Entity("Dereck",225,10,22,40,0,50,40,100,130,4,0,0,2,"21","Male")]
+            bots.team = [Entity("Kenny",300,10,26,50,0,40,45,110,100,5,0,0,2,"17","Male"),Entity("Lascelles",300,10,30,55,0,40,40,100,100,7,0,0,2,"18","Male"),Entity("Matvey",260,10,25,45,0,60,45,120,100,10,0,0,2,"19","Male"),Entity("Dereck",225,10,22,40,0,50,40,100,130,4,0,0,2,"20","Male")]
             battle(you,bots,Cont=True)
             if victory == 1:
               text("\nKenny, falling: #Y-you weren't suppo---# *Kenny knocks out*","Kelly, kicking his body: What are they on about?","Tim, inferring: I think we were supposed to come here later. This was set up for us.")
@@ -13522,7 +15013,7 @@ def eventcheck():
               input("\n*A portal opens up in the center of the stage!! In walks The Fedora Man with two other wired!!! He walks out and looks at the bodies on the ground...*\n")
             else:
               text("\nKelly, falling backwards: They're tough...","Julius, jumping back: Yeah..looks like we did need our man Ishraq.",bots.team[0].NAME+": #Do not let them escape!#","\n*A portal opens up in the center of the stage!! In walks The Fedora Man with two other wired!!!*\n")
-            text("The Fedora Man, mouth open: Yes...this might be it!!","Kelly, getting up: This might be what? The day you die?! Come on guys, let's kill this loser right now!","Julius, into it: Damn, she's feisty right now, HaHAA~!","The Fedora Man, glaring at Kelly: Kill me you said? You couldn't even do that in ten years of time! *He begins walking towards Kelly menacingly*","Kelly, standing her ground: I'm not scared of you.","*The Fedora Man grasps Kelly's neck with his musty hand*","The Fedora Man, grinning: Ooh, your skin is softer than ever before..","Kelly, getting really creeped out: Let-t go!!","The Fedora Man, lifting her by the neck: Little girl, we're going to have so much fun together! Soon!","Tim, charging at the Fedora Man: I WILL DEFEAT YOOOOUU!!!---","*The Fedora Man lets go of Kelly and rocks Tim, instantly incapacitating him!*","Julius, shook as he's taking a step back: Wooah.","The Fedora Man, grinning: Hughagh~! Go run off Julius, you're good at that!","Kelly, crawling away: No no no, you're not taking me with you!","The Fedora Man, stomping towards Kelly: We'll see, little girl! HUGHAHGAHG!","\n*Ishraq, suddenly waking up*\n","Ishraq, staring deeply: ...They're in trouble.")
+            text("The Fedora Man, mouth open: Yes...this might be it!!","Kelly, getting up: This might be what? The day you die?! Come on guys, let's kill this loser right now!","Julius, into it: Damn, she's feisty right now, HaHAA~!","The Fedora Man, glaring at Kelly: Kill me you said? You couldn't even do that in ten years of time! *He begins walking towards Kelly menacingly*","Kelly, standing her ground: I'm not scared of you.","*The Fedora Man grasps Kelly's neck with his musty hand*","The Fedora Man, grinning: Ooh, your skin is softer than ever before..","Kelly, getting really creeped out: Let-t go!!","The Fedora Man, lifting her by the neck: Little one, we're going to have so much fun together! Soon!","Tim, charging at the Fedora Man: I WILL DEFEAT YOOOOUU!!!---","*The Fedora Man lets go of Kelly and rocks Tim, instantly incapacitating him!*","Julius, shook as he's taking a step back: Wooah.","The Fedora Man, grinning: Hughagh~! Go run off Julius, you're good at that!","Kelly, crawling away: No no no, you're not taking me with you!","The Fedora Man, stomping towards Kelly: We'll see, little one! HUGHAHGAHG!","\n*Ishraq, suddenly waking up*\n","Ishraq, staring deeply: ...They're in trouble.")
             data[23] = "0"
             if "Kenny" in bots.team:
               data[23] = data[23] + "1"
@@ -13545,12 +15036,13 @@ def eventcheck():
             ro = rd(6)
             world.remove(ro)
             croom.append(ro)
+            ro.RLV = 4
             ro.people.remove("Ishraq")
             talk = "2"
             worldfunction()
       else:
         text("\nIshraq, noticing the stage: There's wired waiting for us.","Tim, waiting for a signal: So when can I go in?","Ishraq, resting his arm around Tim's shoulder and pointing: Take a look. These wired are from our shop. That's Daniel in the middle. Matvey and Dereck on the right. Kenny and Lascelles on the left.","Julius, grinning: Yoo~! It's big man Lascell'!","Kelly, careful: They're not moving at all...they seem like--deactivated or something?","Tim, reckless: One way to find out!","\n*Tim sprints down the left aisle*\n","Tim, jumping onto the stage: FIGHT ME PEOPLE FROM SHOP!!","*The wired wake up*","Lascelles: #They have arrived.#","Daniel, instantly noticing in the background: #She is here!#","Tim, praising himself: I, the sexy Timothy Mercurio, am here too.","*The team reaches Tim*","Lascelles: #They are engaging. Prepare for battle.#")
-        bots.team = [Entity("Daniel",375,100,20,90,40,50,35,110,90,4,0,0,2,"18","Male"),Entity("Kenny",300,10,26,50,0,40,45,110,100,5,0,0,2,"19","Male"),Entity("Lascelles",300,10,30,55,0,40,40,100,100,7,0,0,2,"20","Male"),Entity("Matvey",260,10,25,45,0,60,45,120,100,10,0,0,2,"21","Male"),Entity("Dereck",225,10,22,40,0,50,40,100,130,4,0,0,2,"22","Male")]
+        bots.team = [Entity("Daniel",375,100,20,90,40,50,35,110,90,4,0,0,2,"17","Male"),Entity("Kenny",300,10,26,50,0,40,45,110,100,5,0,0,2,"18","Male"),Entity("Lascelles",300,10,30,55,0,40,40,100,100,7,0,0,2,"19","Male"),Entity("Matvey",260,10,25,45,0,60,45,120,100,10,0,0,2,"20","Male"),Entity("Dereck",225,10,22,40,0,50,40,100,130,4,0,0,2,"21","Male")]
         battle(you,bots,Cont=False)
         if victory == 1:
           text("\nDaniel, falling: #D-damn it, we fail---# *Kenny knocks out*","Kelly, kicking his body: Of course you failed. You weren't gonna beat us.")
@@ -13562,12 +15054,12 @@ def eventcheck():
           start = time.time()        
           elapsed = 0               
           while elapsed < 6:
-            print("\nYou have",round(6-elapsed),"seconds to make a decision")
+            print(fore.YELLOW_1+"\nYou have",style.BOLD+str(round(6-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET)
             boop = input("(1) Let him take Kelly  (2) Don't give Kelly up\nResponse: ")
             elapsed = time.time() - start
             if boop == "1" or boop == "2":
               break
-          if boop != "1" and boop != "2":
+          if (boop != "1" and boop != "2") or elapsed >= 6:
             boop = "1"
           if boop == "1":
             text("Ishraq, stunned: ...","The Fedora Man, throwing Ishraq's arm away from him: That's right! Do nothing! Useless as always! HUGHAHHGHA! *The Fedora Man walks over to Kelly, Ishraq standing aside.*","Julius, itching to engage: Hey hey, what are you gonna do to her?!","The Fedora Man, with an awful stare: WHAT ELSE??! HUGHAHHHGH! *The Fedora Man picks up Kelly over his shoulder...Kelly and Ishraq meet eyes as she's being carried away.*","Kelly, muttering: I'll be fine...","The Fedora Man, snarky: Get up Daniel. You have a job to finish.","\n*Daniel gets up!*","Daniel, looking at the other fallen wired: #IT'S DIN DIN TIME!#","*Daniel eats the other wired students and grows in size, gaining tremendous strength!*","The Fedora Man, amused as he opens a portal: I'm not wasting my precious time fighting a vermin like you. This big guy will do that. Anyways, me and Kelly have a date scheduled for later. Bye bye buddy!","\n*The Fedora Man opens a portal and exits with Kelly and one other wired!","Ishraq, noticing: Wait, that was Arwyn...","Tim, focusing: Hey, we gotta fight Daniel, let's go!")
@@ -13580,10 +15072,10 @@ def eventcheck():
             text("\n*Daniel gets up!*","Daniel, rebelling: #UGHH-GHH!! Y-YOU HURT..THE Q-QUEEN!!#","*Daniel charges at The Fedora Man, disobeying him! However, his attack is futile!*","The Fedora Man, admiring: Yes, that's it. Endorse that feeling of consciousness, you wired. You'll soon be fully aware. *The Fedora Man kicks Daniel away, knocking him back a great distance!*","Daniel: #Urghh--I-I am sorry!#","The Fedora Man, smiling as he opens a portal: Don't be. Anyways, I'm not wasting my precious time fighting a vermin like you. This big guy will do that. Also, me and Kelly have a date scheduled for later.","\n*The Fedora Man opens a portal and exits with Kelly and one other wired!\n","Ishraq, noticing: Wait, that was Arwyn...","Daniel, looking at the other fallen wired: #IT'S DIN DIN TIME!#","\n*Daniel eats the other wired students and grows in size, gaining tremendous strength!*","Tim, focusing: Hey, we gotta fight Daniel, let's go!")
           forceswitch(Kelly)
           if fightmod == 1:
-            bots.team = [Entity("Mega Daniel",925,300,30,200,50,50,30,150,50,5,0,0,3,"18","Male")]
+            bots.team = [Entity("Mega Daniel",925,300,30,200,50,50,30,150,50,5,0,0,3,"17","Male Boss")]
             battle(you,bots,Cont=False,Mid=True)
           elif fightmod == 2:
-            bots.team = [Entity("Mega Daniel",740,300,30,200,50,50,30,150,50,5,0,0,3,"18","Male")]
+            bots.team = [Entity("Mega Daniel",740,300,30,200,50,50,30,150,50,5,0,0,3,"17","Male Boss")]
             battle(you,bots,Cont=False,Mid=True)
           if victory == 1:
             text("*Daniel approaches Tim slowly whilst injured*","Tim, closing out: With all this crazy time and space stuff going on, I really wanna be able to do that stuff to. Do you know how I'm gonna do it?","Ishraq: Enlighten me.","Tim, smirking: I'm gonna become the fastest man alive, so fast no one can even see me dabbing.","*A cyan-ish aura appears around Tim's hands and he finishes off Daniel! Daniel visibly falls slowly to the ground. Tim does an incredibly fast dab on him afterwards!*",fore.CYAN_1+style.BOLD+"\n~Tim has gained a new ability, Chronopower! He ignites his weapon with the essence of time, causing his normal attacks to deal bonus magic damage and stealing the enemy's speed for 3 turns for 3 attacks.\n"+style.RESET,"Ishraq, falling on his back: What a...fight.","Tim, kneeling near Ishraq: We'll get Kelly back, no sweat. But then again, who needs her anyways?")
@@ -13597,9 +15089,7 @@ def eventcheck():
           xpg(300)
           Tim.learnskill("Chronopower")
           questsys("Transmission","StartM")
-          ro = rd(6)
-          peep = ["Kenny","Lascelles","Matvey","Dereck"]
-          ro.people.extend(peep)
+          questsys("Pursuits of a Gentleman - I","StartS")
           if "Chronopower" not in Tim.skills:
             Tim.skills.append("Chronopower")
     if nextr == "Auditorium" and "0" in data[23]:
@@ -13610,15 +15100,15 @@ def eventcheck():
       for x in you.ph1:
         you.suppteam.append(x)
         you.suppteamS.append(x.name)
-      bots.team = [Entity("Daniel",375,100,20,90,40,50,35,110,90,4,0,0,2,"18","Male")]
+      bots.team = [Entity("Daniel",375,100,20,90,40,50,35,110,90,4,0,0,2,"17","Male")]
       if "1" in data[23]:
-        bots.team.append(Entity("Kenny",300,10,26,50,0,40,45,110,100,5,0,0,2,"19","Male"))
+        bots.team.append(Entity("Kenny",300,10,26,50,0,40,45,110,100,5,0,0,2,"18","Male"))
       if "2" in data[23]:
-        bots.team.append(Entity("Lascelles",300,10,30,55,0,40,40,100,100,7,0,0,2,"20","Male"))
+        bots.team.append(Entity("Lascelles",300,10,30,55,0,40,40,100,100,7,0,0,2,"19","Male"))
       if "3" in data[23]:
-        bots.team.append(Entity("Matvey",260,10,25,45,0,60,45,120,100,10,0,0,2,"21","Male"))
+        bots.team.append(Entity("Matvey",260,10,25,45,0,60,45,120,100,10,0,0,2,"20","Male"))
       if "4" in data[23]:
-        bots.team.append(Entity("Dereck",225,10,22,40,0,50,40,100,130,4,0,0,2,"22","Male"))
+        bots.team.append(Entity("Dereck",225,10,22,40,0,50,40,100,130,4,0,0,2,"21","Male"))
       battle(you,bots,Cont=False)
       if victory == 1:
         DHP = 475
@@ -13635,7 +15125,7 @@ def eventcheck():
             DHP = DHP + 105
           if "4" in data[23]:
             DHP = DHP + 95
-        bots.team = [Entity("Mega Daniel",DHP,300,30,200,50,50,30,150,50,5,0,0,3,"18","Male")]
+        bots.team = [Entity("Mega Daniel",DHP,300,30,200,50,50,30,150,50,5,0,0,3,"17","Male Boss")]
         battle(you,bots,Cont=False,Mid=True)
         if victory == 1:
           text("*Daniel approaches Tim slowly whilst injured*","Tim, closing out: With all this crazy time and space stuff going on, I really wanna be able to do that stuff to. Do you know how I'm gonna do it?","Ishraq: Enlighten me.","Tim, smirking: I'm gonna become the fastest man alive, so fast no one can even see me dabbing.","*A cyan-ish aura appears around Tim's hands and he finishes off Daniel! Daniel visibly falls slowly to the ground. Tim does an incredibly fast dab on him afterwards!*",fore.CYAN_1+style.BOLD+"\n~Tim has gained a new ability, Chronopower! He ignites his weapon with the essence of time, causing his normal attacks to deal bonus magic damage and stealing the enemy's speed for 3 turns for 3 attacks.\n"+style.RESET,"Ishraq, falling on his back: What a...fight.","Tim, kneeling near Ishraq: We'll get Kelly back, no sweat. But then again, who needs her anyways?","Ishraq, no longer angry: Yeah, I know. I just got caught up in the moment. Especially after I thought you died. I can't believe Kelly got raped. It's crazy.","Tim, shrugging: It happens, even by people who don't have powers that can bend time and space. So not surprised.","Ishraq, not sure how to feel: I guess. I still saw the guy's penis. Straight up.","Julius, dying: Wghh-WHAT!! HaHAA~! That nigga flashed you!","Ishraq, getting up: I know. Well. I guess it's time to head back. Though, let's wait for these guys we knocked out to wake back up.")
@@ -13644,8 +15134,6 @@ def eventcheck():
           Tim.learnskill("Chronopower")
           questsys("Transmission","StartM")
           ro = rd(6)
-          peep = ["Kenny","Lascelles","Matvey","Dereck"]
-          ro.people.extend(peep)
           you.ph1 = []
           if "Chronopower" not in Tim.skills:
             Tim.skills.append("Chronopower")
@@ -13653,7 +15141,7 @@ def eventcheck():
   if "Transmission" in quests:
     if nextr == "F-Wing Engineering Shop Room":
       ro = rd(6)
-      if ro.RLV == 3:
+      if ro.RLV == 4:
         text("\nIshraq, slumping on a chair: Maaaan. What the hell do we do now?","Daniel, already ready to leave: We search.","Julius, ready to chill: Eh. We're not finding that guy. Let him do his business with Kelly.","Daniel, rushing up to Julius and grabbing his neck with his musty hands: Listen here buddy. She's probably out there right now crying for help. Can you truly call yourself a man if you sit here and do nothing?","Julius, grossed out: Getchyo' crusty ass hands off me you weirdo!","Daniel, pulling away: Ridiculous. I'll go out to find her on my own if you lazy faggots won't.","Tim, bidding him farewell: When you die Daniel, you die! Don't forget that on your quest!","Daniel, sneering: I don't need to remember that...cuz' I can't die.","Ishraq, laughing: Hehaha, good luck my friend.")
         if data[24] == 1:
           input("\nDaniel, mockingly: Oh look, he's no longer interested in saving Kelly now that his cock is flacid.")
@@ -13668,7 +15156,7 @@ def eventcheck():
           else:
             text("\nIshraq, angered: I couldn't get to him fast enough, I get it. But I'm not gonna go out of my way to save Kelly. We're trying to save everyone in this school.","Daniel, catching Ishraq off guard: Kelly is apart of everyone, no?")
         text("\n*Daniel walks to the door of the shop room*\n","Daniel, serious: Come with me. We will find her.","Ishraq, wanting to go but trying to act cool: Dude, you're a whole clown.","Daniel, straight-faced: I don't care. Kelly is in danger.","Ishraq, sweating: ...Y-you're right. We shouldn''t be sitting on our asses right now. We need to think of something.","\n*Ishraq gets up from his sit and gathers the team around a table*\n","Ishraq, just trying to make an idea: Soo...we're up against a guy that can teleport. Where to, we have no idea. He has to be in the school campus. So we either search every god damn room in this place, or we could try something different.","Tim, throwing in: Hmm, maybe we can do something at the Technology Room.","Ishraq, intrigued: Whatchu thinkin'?","Tim, taking out his phone: There's no service or internet. We need to set up some form of communication. If we could've communicated in the first place, finding Kelly would be plain simple.","Daniel, excited: Yeah, we can set up a radio broadcast network amongst rooms that we know other students are in, like the medical shop!","Tim: Yeah, this way we can always communicate with each other. It would also be useful to gain access to walkie-talkies and the announcement loudspeakers.","Ishraq, having some knowledge: Loudspeaker controls are in the main office...but I think we should go the H-Wing first to get our hands on some radio-tech in the Technology room.","Daniel, down for it: Agreed. This is going to be fun.")
-        ro.RLV = 4
+        ro.RLV = 5
         ro = rd(11)
         ro.paths.append("Technology Room")
     if nextr == "Technology Room":
@@ -13680,75 +15168,82 @@ def eventcheck():
         ro.people = ["Julius","Tim","Daniel"]
     if croom[0].RID == 31:
       text("\nKelly, slowly opening her eyes: W-where...am I?","*Kelly looks around...it seems she is in a cell...the floor is cold and moist...the air in the room is musty.*","Kelly, touching her face: What is this? Ew! It's slimy.","*Kelly tries to see what it is, but can't in the dark room...she rubs it all off, but now it is on her hands. She rubs her hands on the floor to get rid of the sticky slimy substance.*","Kelly, really grossed out: What was that?","*The Fedora Man hears Kelly, and quickly rolls his chair towards her cell*")
+      fuck = 0
       if data[23] == "":
         if data[24] == 1:
           text("\nThe Fedora Man, regretful: You p-passed out for a moment there. I am so sorry Kelly. I am soo sooo sorry. Please forgive me.","Kelly, head buzzing: Ugghh--you.","The Fedora Man, wide-eyed: Please please PLEASE forgive me for hurting you!","Kelly, bewildered: What the heck is happening right now..?","The Fedora Man, grabbing the cell bars: I wiped the blood off your face! It was Ishraq's fault!","Kelly, astonished: Are you serious right now? YOU did this to me!!","The Fedora Man, bending the cell bars slightly open: WHAT DID YOU SAY YOU FUCKING WHORE?!","Kelly, aghast: I-I didn't mean it--!","The Fedora Man, enraged: I DIDN'T DO ANYTHING!! IT WAS THAT! DISGUSTING! LOSER! ISHRAAAQ!","Kelly, submissively: Okay, okay! It was Ishraq's fault!")
         else:
           text("\nThe Fedora Man, concerned: You p-passed out for a moment there.","Kelly, head buzzing: Ugghh--you.","The Fedora Man, innocently: Why do you sound repulsed?","Kelly, astonished: Are you serious right now? You've been hurting me physically with your stupid ear attacks!","The Fedora Man, regretful: I am so sorry Kelly. I am soo sooo sorry. Please forgive me. There was no other way I could get you and those brutes to where I wanted to.","Kelly, not dealing with it: Oh, there was plenty of other damn ways!","The Fedora Man, grabbing the cell bars: Please. PLEASE! Forgive me!!","Kelly, spitting towards him: You're a maniac if you think you deserve forgiveness!","The Fedora Man, bending the cell bars slightly open: WHAT DID YOU SAY YOU FUCKING WHORE?!","Kelly, aghast: I-I didn't mean it--!","The Fedora Man, enraged: I DIDN'T DO ANYTHING WRONG, YOU HEAR ME!! IT'S ALL ISHRAQ'S FAULT!! OKAY!?","Kelly, submissively: Okay, okay! It's Ishraq's fault!...?")
-        text("The Fedora Man, relieved: Aaaah! You understand now. Great! Well! Did you like the treat I left you?","Kelly, muttering: W-what t-treat?","The Fedora Man, nonchalantly: I nutted on your face. I'm sorry, I just couldn't hold back! Your beauty is just...too striking, I really had to! Forgive me, little girl. But umm..how did it taste?","Kelly, at a loss of words: I...I...","The Fedora Man, eagerly waiting: Yes, yes!","Kelly, pleasing him: I f-forgive you.","The Fedora Man, jumpy: Thank you! Anyways, I just wanna talk to you. Is that okay?","Kelly, trying to get by: Y-yes.")
+        text("The Fedora Man, relieved: Aaaah! You understand now. Great! Well! Did you like the treat I left you?","Kelly, muttering: W-what t-treat?","The Fedora Man, nonchalantly: I nutted on your face. I'm sorry, I just couldn't hold back! Your beauty is just...too striking, I really had to! Forgive me, little one. But umm..how did it taste?","Kelly, at a loss of words: I...I...","The Fedora Man, eagerly waiting: Yes, yes!","Kelly, pleasing him: I f-forgive you.","The Fedora Man, jumpy: Thank you! Anyways, I just wanna talk to you. Is that okay?","Kelly, trying to get by: Y-yes.")
       else:
-        text("\nThe Fedora Man, ecsatic: KELLY~! How are you, little girl?","Kelly, head buzzing: Ugghh--you. I-I can't remember.","The Fedora Man, fear instilling: You don't remember, huh? I remember clearly! @I'm not scared of you!@-you said! HUGHAHGHAH!","Kelly, terrified: Oh...no no no..NO!! W-what..did you..doo---?","The Fedora Man, unzipping his pants: I really wanted to beat you down. I would've of, but you sort of passed out after I hit you once. And then this mean guy right here was hungry~! HGUAHHHG!","Kelly, tears streaming down her face: ...Please don't do it again...","The Fedora Man, teaching her: As long as you don't cross the line, I won't EVER lay a finger on you. But what you said about not being afraid really ticked me off! ","Kelly, not finding the words: I--I...I'm sorry.","The Fedora Man, happy: Good girl! Did you like the treat I left you?","Kelly, muttering: W-what t-treat?","The Fedora Man, nonchalantly: I nutted on your face. I'm sorry, I just couldn't hold back! Your beauty is just...too striking, I really had to! Forgive me, little girl. But umm..how did it taste?","Kelly, lost: I f-forgive you.","The Fedora Man, jumpy: Thank you! Anyways, I just wanna talk to you. Is that okay?","Kelly, submissively: Y-yes.")
+        text("\nThe Fedora Man, ecsatic: KELLY~! How are you, little one?","Kelly, head buzzing: Ugghh--you. I-I can't remember.","The Fedora Man, fear instilling: You don't remember, huh? I remember clearly! @I'm not scared of you!@-you said! HUGHAHGHAH!","Kelly, terrified: Oh...no no no..NO!! W-what..did you..doo---?","The Fedora Man, unzipping his pants: I really wanted to beat you down. I would've of, but you sort of passed out after I hit you once. And then this mean guy right here was hungry~! HGUAHHHG!","Kelly, tears streaming down her face: ...Please don't do it again...","The Fedora Man, teaching her: As long as you don't cross the line, I won't EVER lay a finger on you. But what you said about not being afraid really ticked me off! ","Kelly, not finding the words: I--I...I'm sorry.","The Fedora Man, happy: Good girl! Did you like the treat I left you?","Kelly, muttering: W-what t-treat?","The Fedora Man, nonchalantly: I nutted on your face. I'm sorry, I just couldn't hold back! Your beauty is just...too striking, I really had to! Please forgive me, little one. But umm..how did it taste?","Kelly, lost: I f-forgive you.","The Fedora Man, jumpy: Thank you! Anyways, I just wanna talk to you. Is that okay?","Kelly, submissively: Y-yes.")
       text("\nThe Fedora Man, bragging: Well, I want you to listen to my problems. You see, I could kill all your friends at any time. Ishraq, Julius, Tim, all of them! But without them, I really can't escape this place. You see, I need them to get stronger. A lot stronger. Your teacher, Dr. Graham, knows how powerful I am. I need to convince him into thinking I'm dead. That's where your friends come in. They need to be strong enough to 'kill' me. That way, the second Graham unfreezes time in the present, I can escape with you into the future.","Kelly, carefully: W-what will you do then...what do I have to do with this!?","The Fedora Man, trying to be charming: You, my dear, are destined to be my true love.","Kelly, taken aback disgusted: WHAT?!","\nThe Fedora Man, rambling: I know your future, and it's with me. We once lived happy together in our mansion worth millions of dollars...but one day. One. Day. You, my beloved, we're kidnapped by disgusting sewer rats! They put a price. A PRICE! ON YOU! YOU ARE SOMETHING OF IMMEASURABLE COST! AND THEY HAD THE NERVE!!! AND THAT STUPID UGLY DUMB LOSER ISHRAQ WAS AMONG THEM!","Kelly, trembling: W-what are you..even saying?","The Fedora Man, not even hearing Kelly: Oh, and the money they wanted from me...even though you are worth more than the sun...it left me penniless. I gave them everything. My life. That's what he always wanted from me. My life. And that's what he got. For you, I gave it to that vermin. And so they gave me the address of where they left you...a-and...and...you were there. In a body bag. Dyed crimson from your blood. I opened it up and looked at your beaten face. I kissed it over and over again, but you didn't respond. Kelly, don't you see!? YOU DIED!","Kelly, her heart sinking: Why...","The Fedora Man, angry: WHY? HOW COULD THEY EVER RESIST YOUR BEAUTY? THEY BEAT YOU, RAPED YOU, AND KILLED YOU! ABSOLUTELY NO RESPECT FOR WOMEN!")
       start = time.time()        
       elapsed = 0               
       while elapsed < 8:
-        print("\nYou have",round(8-elapsed),"seconds to make a decision")
+        print(fore.YELLOW_1+"\nYou have",style.BOLD+str(round(8-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET)
         boop = input("(1) How did you not protect me?  (2) Why don't you kill Ishraq right now?\nResponse: ")
         elapsed = time.time() - start
         if boop == "1" or boop == "2":
           break
-      if boop != "1" and boop != "2":
+      if (boop != "1" and boop != "2") or elapsed >= 8:
         boop = str(random.randint(1,2))
       if data[23] == "":
-        text("\nKelly, getting a gold of herself and thinking in her head: Kelly...relax. You will make it out of this. You are strong. And this guy? He's a total nutcase! Come on Kelly, you have to get something out of this guy!")
+        text("\nKelly, getting a gold of herself and thinking in her head: (Kelly...relax. You will make it out of this. You are strong. And this guy? He's a total nutcase! Come on Kelly, you have to get something out of this guy!)")
       else:
-        input("\nKelly, getting a hold of herself and thinking in her head: Kelly...relax. You will make it out of this. You are strong...way stronger than this rapist...but this guy. He's crazy and delusional! Does he not realize he also has beaten and raped me? Come on Kelly, you have to get something out of this guy.")
+        input("\nKelly, getting a hold of herself and thinking in her head: (Kelly...relax. You will make it out of this. You are strong...way stronger than this rapist...but this guy. He's crazy and delusional! Does he not realize he also has beaten and raped me? Come on Kelly, you have to get something out of this guy.)")
       if boop == "1":
-        text("\nKelly, pouting: How did you not protect me?","The Fedora Man, stumbling: Umm...okay. I got involved with Ishraq a long time ago. He eventually joined a gang that targeted Asian beauties like yourself. See, this guy was dirt poor scum. Me on the other hand, I was filthy rich and respected amongst the one percent. Ishraq was so jealous of me that he spent the rest of his days trying to ruin my life. His attempts at doing anything were futile though, as I just bested him in anything and everything. But one day, he found out about you, my dear little girl. He learned that you were my wife. Keep in mind, I had plenty of girlfriends before I married you, but I stayed loyal to only you once we met.","Kelly, weirded out: Okay...","The Fedora Man, continuing: Ishraq targeted my weaknesses and the weak like the pathetic worm he is. He forced me to do whatever he willed using you to threaten me!","Kelly, thinking to herself: He didn't even answer my question...he's just gloating. Something's wrong with his story.")
+        text("\nKelly, pouting: How did you not protect me?","The Fedora Man, stumbling: Umm...okay. I got involved with Ishraq a long time ago. He eventually joined a gang that targeted Asian beauties like yourself. See, this guy was dirt poor scum. Me on the other hand, I was filthy rich and respected amongst the one percent. Ishraq was so jealous of me that he spent the rest of his days trying to ruin my life. His attempts at doing anything were futile though, as I just bested him in anything and everything. But one day, he found out about you, my dear little one. He learned that you were my wife. Keep in mind, I had plenty of girlfriends before I married you, but I stayed loyal to only you once we met.","Kelly, weirded out: Okay...","The Fedora Man, continuing: Ishraq targeted my weaknesses and the weak like the pathetic worm he is. He forced me to do whatever he willed using you to threaten me!","Kelly, thinking to herself: (He didn't even answer my question...he's just gloating. Something's wrong with his story.)")
       if boop == "2":
-        text("\nKelly, doubting The Fedora Man's story: Why don't you kill Ishraq right now? The other ISO's can easily fake your death. You hate him, don't you? Go kill him!","The Fedora Man, nervous: Umm...I can't.","Kelly, figuring out he's lying: Come on big boy. He killed me, right? Do it for me.","The Fedora Man, insisting: I really can't! If I do, I'll be stuck here forever!","Kelly, pouting: Awww~does it really matter though? I'm already dead in your time.","The Fedora Man, attracted: Well...yeah. That's why I'm bringing you, my true love, to my time. I plan to live on with you once again.","Kelly, winking: That's awfully selfish of you. We'll meet in the future some day.","The Fedora Man, growing annoyed: Okay, okay! I can't kill Ishraq yet because it might destroy the future in drastic ways.","Kelly, thinking to herself: He was nervous...and he's sweating. Something's wrong with his story.")
+        text("\nKelly, doubting The Fedora Man's story: Why don't you kill Ishraq right now? The other ISO's can easily fake your death. You hate him, don't you? Go kill him!","The Fedora Man, nervous: Umm...I can't.","Kelly, figuring out he's lying: Come on big boy. He killed me, right? Do it for me.","The Fedora Man, insisting: I really can't! If I do, I'll be stuck here forever!","Kelly, pouting: Awww~does it really matter though? I'm already dead in your time.","The Fedora Man, attracted: Well...yeah. That's why I'm bringing you, my true love, to my time. I plan to live on with you once again.","Kelly, winking: That's awfully selfish of you. We'll meet in the future some day.","The Fedora Man, growing annoyed: Okay, okay! I can't kill Ishraq yet because it might destroy my future in drastic ways.","Kelly, thinking to herself: (He was nervous...and he's sweating. Something's wrong with his story.)")
       text("\nThe Fedora Man, offering his hand: Anyways, my dear, are you willing to help me escape with you back into the future?")
       start = time.time()        
       elapsed = 0               
-      while elapsed < 6:
-        print("\nYou have",round(6-elapsed),"seconds to make a decision")
+      while elapsed < 7:
+        print(fore.YELLOW_1+"\nYou have",style.BOLD+str(round(7-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET)
         boop = input("(1) Of course~!  (2) No.\nResponse: ")
         elapsed = time.time() - start
         if boop == "1" or boop == "2":
           break
-      if boop != "1" and boop != "2":
+      if (boop != "1" and boop != "2") or elapsed >= 6:
         boop = str(random.randint(1,2))
       if boop == "1":
         text("\nKelly, cutely: Of course I will~!","The Fedora Man, getting shy: O-oh, thank you. Just to let you know, all you have to do is help your friends get stronger by any means necessary.")
         start = time.time()        
         elapsed = 0               
         while elapsed < 7:
-          print("\nYou have",round(7-elapsed),"seconds to make a decision")
+          print(fore.YELLOW_1+"\nYou have",style.BOLD+str(round(7-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET)
           boop = input("(1) Tease him.  (2) Leave him be.\nResponse: ")
           elapsed = time.time() - start
           if boop == "1" or boop == "2":
             break
-        if boop != "1" and boop != "2":
+        if (boop != "1" and boop != "2") or elapsed >= 7:
           boop = str(random.randint(1,2))
         if boop == "1":
-          text("\nKelly, egging him on: Yeah, yeah, I know. But what can I do to help you~?","The Fedora Man, face getting red: Wwhah...","Kelly, teasing: Oh come on. Quit acting like you're new to this. We were partners, right?","The Fedora Man, rushing over to her and grasping her shoulders: WEEEEGHHH~! DO YOU WANT TO HAVE SEX RIGHT NOW??!!!","Kelly, immediately regretting her actions: GET AWAY!! YOU'RE HURTING ME!!","The Fedora Man, jerking himself away from her: Oh, oh, oh. I'm so sorry, please don't leave! Please..","Kelly, aghast: What is...wrong with you?!","The Fedora Man, pleading: I'm sorry! I just...thought you wanted-","Kelly, cutting him off: I don't want anything! Especially from--*Kelly cuts herself off*","Kelly, thinking in her head: I need to be really careful not to make fun of this guy.","The Fedora Man, wide-eyed: From what?","Kelly, quickly: Not from..just especially not in here! I hate dark rooms!","The Fedora Man, learning: Oh! I'll remember that!")
+          text("\nKelly, egging him on: Yeah, yeah, I know. But what can I do to help you~?","The Fedora Man, face getting red: Wwhah...","Kelly, teasing: Oh come on. Quit acting like you're new to this. We were partners, right?","The Fedora Man, breaking the cell open and grasping her shoulders: WEEEEGHHH~! DO YOU WANT TO HAVE SEX RIGHT NOW??!!!","Kelly, immediately regretting her actions: GET AWAY!! YOU'RE HURTING ME!!","The Fedora Man, jerking himself away from her: Oh, oh, oh. I'm so sorry, please don't leave! Please..","Kelly, aghast: What is...wrong with you?!","The Fedora Man, pleading: I'm sorry! I just...thought you wanted-","Kelly, cutting him off: I don't want anything! Especially from--*Kelly cuts herself off*","Kelly, thinking in her head: (I need to be really careful not to make fun of this guy.)","The Fedora Man, wide-eyed: From what?","Kelly, quickly: Not from..just especially not in here! I hate dark rooms!","The Fedora Man, learning: Oh! I'll remember that!")
+          fuck = 1
       if boop == "2":
         text("\nKelly, eyes sharpening: No. I will not help you.","The Fedora Man, raising an eyebrow: Hmm? What will you do then?")
         start = time.time()        
         elapsed = 0               
         while elapsed < 7:
-          print("\nYou have",round(7-elapsed),"seconds to make a decision")
+          print(fore.YELLOW_1+"\nYou have",style.BOLD+str(round(7-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET)
           boop = input("(1) I will stop you.  (2) I'm going to kill Ishraq.\nResponse: ")
           elapsed = time.time() - start
           if boop == "1" or boop == "2":
             break
-        if boop != "1" and boop != "2":
+        if (boop != "1" and boop != "2") or elapsed >= 7:
           boop = str(random.randint(1,2))
         if boop == "1":
           text("\nKelly, squinting with hatred: I will stop you.","The Fedora Man, suddenly hurt: W-why?","Kelly, glaring: I don't trust you one bit.","The Fedora Man, getting a hold: No matter...you'll help me regardless. And then I'll show you why you should trust me! I am a good and strong man!")
         if boop == "2":
-          text("\nKelly, deviously smiling: Hmph. I'm going to kill Ishraq. That way I don't die in the future!","The Fedora Man, tilting his head: Umm..what makes you think you could do that?","Kelly, getting annoyed: What do you mean by that?","The Fedora Man, condescendingly: Well, you're worst than me in all ways. And the Ishraq right here and now is already becoming a menace. Soon enough, he'll need an entire army or a genius like me to take him down. And guess what? You're neither of them.","Kelly, feeling down: W-whatever! I'll stop him somehow!","The Fedora Man, shrugging: Good luck, little girl.")
-      text("\nKelly, tired and thinking to herself: Is he finally done? Is he gonna let me go or something? He wants me to help the other ISOs get stronger...","The Fedora Man, predictably: Well, off you go back to your friends. Just exit through this door right here.","*The Fedora Man opens her cell up and points towards the exit...Kelly gets up off the floor and carefully walks towards the door.*","Kelly, glad: Finall---!!","*The Fedora Man flips a lever, opening up a trapdoor below where Kelly is standing! Kelly falls into another extremely cramped cell in a dimly lit room!*","Kelly, panicking: NO! NO! NO! YOU'RE NOT GOING TO KEEP ME IN HERE!","The Fedora Man, horny: Oooh~! This is perfect! From here, I can masturbate on you all I want! Be prepared! Your next meal is in an hour!! HUGGHAHGH!!","Kelly, screaming in terror: AAAAAAAAAAAAAAAEEEEGHH!!!!","The Fedora Man, glee: Yes! I'll make sure you're scared of me until the day you die! That way you will always listen... *The Fedora Man closes the trapdoor, locking Kelly in!*","Kelly, kneeling in defeat: God...please. Help me.\n")
+          text("\nKelly, deviously smiling: Hmph. I'm going to kill Ishraq. That way I don't die in the future!","The Fedora Man, tilting his head: Umm..what makes you think you could do that?","Kelly, getting annoyed: What do you mean by that?","The Fedora Man, condescendingly: Well, you're worst than me in all ways. And the Ishraq right here and now is already becoming a menace. Soon enough, he'll need an entire army or a genius like me to take him down. And guess what? You're neither of them.","Kelly, feeling down: W-whatever! I'll stop him somehow!","The Fedora Man, shrugging: Good luck, little one.")
+      text("\nKelly, tired and thinking to herself: (Is he finally done? Is he gonna let me go or something? He wants me to help the other ISOs get stronger...)","The Fedora Man, predictably: Well, off you go back to your friends. Just exit through this door right here.")
+      if fuck == 0:
+        input("\n*The Fedora Man opens her cell up and points towards the exit...Kelly gets up off the floor and carefully walks towards the door.*")
+      else:
+        input("\n*The Fedora Man exits her cell and points towards the exit...Kelly gets up off the floor and carefully walks towards the door.*")
+      text("Kelly, glad: Finall---!!","*The Fedora Man flips a lever, opening up a trapdoor below where Kelly is standing! Kelly falls into another extremely cramped cell in a dimly lit room!*","Kelly, panicking: NO! NO! NO! YOU'RE NOT GOING TO KEEP ME IN HERE!","The Fedora Man, horny: Oooh~! This is perfect! From here, I can masturbate on you all I want! Be prepared! Your next meal is in an hour!! HUGGHAHGH!!","Kelly, screaming in terror: AAAAAAAAAAAAAAAEEEEGHH!!!!","The Fedora Man, glee: Yes! I'll make sure you're scared of me until the day you die! That way you will always listen... *The Fedora Man closes the trapdoor, locking Kelly in!*","Kelly, kneeling in defeat: God...please. Help me.\n")
       time.sleep(1)
       print("...")
       time.sleep(1)
@@ -13756,12 +15251,14 @@ def eventcheck():
       time.sleep(1)
       print("...")
       time.sleep(1)
-      text("\nDr. Graham, inside of Kelly's head: Don't give up!","Kelly, sobbing but so happy: Dr. Graham! W-what do I even do?","Dr. Graham, giving hope: Ms. Cha. You are one of the most brightest students in this entire school. Just like all my students, you are capable. Capable of doing the impossible! But you! You can go beyond impossible! Don't ever doubt your talent and don't ever let anyone control your life! This Fedora Man? Easier than any of the problems you do in my class.","Kelly, still broken: I don't know Doctor...I don't know if I can deal with this guy.","Dr. Graham, youngly: It's okay if you don't know! That's why we learn! In time, you will learn what a strong lady you are.","Kelly, cheering up: Y-you really think so? You really think I'm strong?","Dr. Graham, wrapping up: I don't think. I know. I cannot stay here with you any longer Ms. Cha. Every word I speak, I use a tiny fraction of my power. I use too much of it, and time can unfreeze for just a femtosecond...and then things will start to get strange. Farewell.","Kelly, to herself: Hmm...maybe God does exist...! Wait a minute, someone is watching me..")
+      text("\nDr. Graham, inside of Kelly's head: Don't give up!","Kelly, sobbing but so happy: Dr. Graham! W-what do I even do?","Dr. Graham, giving hope: Ms. Cha. You are one of the most brightest students in this entire school. Just like all my students, you are capable. Capable of doing the impossible! But you! You can go beyond impossible! Don't ever doubt your talent and don't ever let anyone control your life! This Fedora Man? Easier than any of the problems you do in my class.","Kelly, still broken: I don't know Doctor...I don't know if I can deal with this guy.","Dr. Graham, youngly: It's okay if you don't know! That's why we learn! In time, you will learn what a strong lady you are.","Kelly, cheering up: Y-you really think so? You really think I'm strong?","Dr. Graham, wrapping up: I don't think. I know. I cannot stay here with you any longer Ms. Cha. Every word I speak, I use a tiny fraction of my power. I use too much of it, and time can unfreeze for just a femtosecond...and then things will start to get strange. Farewell.","Kelly, to herself: (Hmm...maybe God does exist...! Wait a minute, someone is watching me..)")
       you.reset("Team")
       revival(Kelly,o=True)
       revival(Arwyn,o=True)
       Arwyn.XP = round(((Tim.XP + Kelly.XP + Julius.XP + Ishraq.XP + Daniel.XP)/5)-100)
       Arwyn.Arwynlevelup(Arwyn.XP,Colis=True)
+      Arwyn.learnskill("Silence")
+      Arwyn.learnskill("Cut Myself")
       for x in you.suppteam:
         you.ph1.append(x)       
       you.suppteam = []
@@ -13770,8 +15267,294 @@ def eventcheck():
       ro.people.append("???")
       worldfunction()
 #--------------------------------------------------------------------------------------------------
-    
-      
+  if "Awakening" in quests:
+    if nextr == "FX-Wing Hallway 1st Floor":
+      if data[27] == 0:
+        text("\n*An infamous figure stands in the way of the H-Wing Bridge...*","Ishraq, realizing the severity of the situation: ...Guys. It's her. The fucking alpaca.","Tim, shivering: Mrs. Wells. Of all the teachers we could've found first...","Julius, underestimating: This is Wells, huh? Doesn't look too tough.","Mrs. Wells, warmly: #Hi sweeties! Now, I won't get mad, but I need whoever stole the ruler from my classroom to step up.#","Ishraq, danger sense going berserk: Oh god, oh fuck. Guys, we are royally fucked right now. I'm serious, we should literally run.","Daniel, cocky: Are you scared or something? Even with powers, you're cowering in fear.","Ishraq, head starting to hurt: You don't understand...I KNOW WE'RE DONE!","Mrs. Wells, getting impatient: #Done chit-chatting with each other? You guys find the culprit?#","Tim, stepping up: Yes, we did. It was I, Timothy Mercurio, who stole the ruler from your classroom.","Mrs. Wells, throwing the act: #That's great honey, but you're all in trouble anyways. You all've better taken notes, because today is a notebook evaluation!#","Ishraq, holding ground: She's out for blood, get ready!")
+        bots.team = [Entity("Mrs. Wells",3750,0,50,30,0,50,100,150,100,10,20,0,0,"17","Female Boss")]
+        battle(you,bots,Cont=False)
+        if victory == 1:
+          text("\nIshraq, falling over: *Huff..Huff..Huff*...I haven't fallen completely on the ground in ages.","Daniel, slumped on the ground: That was...easy.","Tim, dead: Yeah..right.","Julius, managing to stay up: Worked up a...good sweat.","Ishraq, making sure efforts don't go to waste: Alright...let's fucking drop these radios off at shop. We ain't come here and fight this menace for nothing.","*Mrs. Wells begins to regain consciousness.*","Mrs. Wells, buzzed: Wh-where am I..?","Ishraq, getting up and giving her a hand: Hi Mrs. Wells. Come with us. We'll catch you up.","Mrs. Wells, confused but still taking Ishraq's hand: What are you on about honey? What's going on? My head really hurts, ya know?","Tim, insisting: Just come with us Mrs. Wells. You're in for a really big story.","Mrs. Wells, finally up on her feet: Oh, a story, huh? I really wanna hear this one..","Ishraq, leading the way: To our shop we go.")  
+          ro = rd(6)
+          ro.people.append("Mrs. Wells")     
+          data[27] = 2
+          ro = rd(30)
+          ro.people = []
+    if nextr == "Main Office":
+      if data[27] == 0:
+        text("\nIshraq, kicking the door open to the main office: KHALIL?","Khalil, calling out: FRIEEND!","Ishraq, embracing: EID MUBARAK!","Khalil, revealing an important figure: You won't believe who I found in front of me when I woke up..","Ishraq, shocked: Dr. Parent--!","Khalil, widening his eyes: YES! You know what this means, right?!","Ishraq, nodding: It is time.","Khalil: YES.","Ishraq, spinning the chair Dr. Parent is tied to so they come face to face: He's not wired it seems?","Tim, poking at him: Yeah...his eyes are not white, but they're still open...","Ishraq, realizing: Wait a second..","Julius, shaking his head: He's fucking dead.","Ishraq, grabbing Khalil: Ayo, you ain't kill the guy, did you?","Khalil, shrugging: I dunno, I just found him laying here with me when I woke up.","Ishraq, rubbing his chin: Hmm...someone de-wired you. But who?","Daniel, figuring it out: I think I have an idea of what happened. It looks like there was a fight in here. So maybe Khalil got into a fight with Dr. Parent while he was wired.","Khalil, remembering: Yeah, now that you mention it, I kinda do remember something like that happening...I just didn't know if it really happened. Thought I was dreaming to be honest.")
+        if data[24] == 1:
+          text("Daniel, vouching for: Yeah...I remember Kelly was getting hurt in the auditorium when I was wired, but wasn't sure if it actually happened. Turns out I tried to protect her, but it was all very dreamy to me.")
+        else:
+          if data[23] == "":
+            text("Daniel, vouching for: Yeah...I remember Kelly was at the auditorium when I was wired, but wasn't sure if she was actually there. It was very dreamy to me.")
+          else:
+            text("Daniel, vouching for: Yeah...I remember Kelly was at the auditorium when I was wired...and I think I might've nutted on her. But I'm not sure if I actually did though.","Julius, with his revolted laughing expression: You WHAT~!? HaHAA?!","Daniel, really thinking about it: I don't know man, I think I really did.","Ishraq, not even surprised: Get help buddy.","Khalil: Word.")
+        text("Ishraq, admiring: But damn. You were able to kill Parent, Khalil. Really got dumb nigga strength.","Khalil, unknown memories flowing back to him: I think...I think I got into a fight with him over The Fence.","Tim, recalling: The one outside the F-Wing that Ishraq will destroy one day?","Ishraq, with a sense of duty: Yes. I will save the future students of PCTI. No one will ever know the pain of having holes in their sweaters again.","Khalil, supporting: So yeah, when I was wired, I was disposing of shit that was recently ordered to cover The Fence's spikes for some reason. That's when I realized something was wrong. I saw this guy Dr. Parent doing something to The Fence. I went up to him and asked him what he doin'. Right then and there, he tried to maul me to death for speaking out of term.","Ishraq, following along: Sounds like both of you are wired...any idea as to what Parent was doing?","Khalil, shrugging: I dunno, I just remember that afterwards, I beat his ass and dragged his fatass back to his office and tried talking to him. He got the jump on me, and I don't remember the rest. I guess I just killed him. TOO EASY.","Tim, ominously: So we still don't know what he actually did to The Fence...","Ishraq, leading everyone out: Let's go find out.")
+        nig = Support("Khalil",31)
+        forceguest(nig)
+        data[27] = 1
+        ro = rd(30)
+        ro.people = []
+      elif data[27] == 3:
+        text("\nIshraq, kicking the door open to the main office: KHALIL?","Khalil, calling out: FRIEEND!","Ishraq, embracing: EID MUBARAK!","Khalil, revealing an important figure: You won't believe who I found in front of me when I woke up..","Ishraq, shocked: Dr. Parent--!","Khalil, widening his eyes: YES! You know what this means, right?!","Ishraq, nodding: It is time.","Khalil: YES.","Ishraq, spinning the chair Dr. Parent is tied to so they come face to face: He's not wired it seems?","Tim, poking at him: Yeah...his eyes are not white, but they're still open...","Ishraq, realizing: Wait a second..","Julius, shaking his head: He's fucking dead.","Ishraq, grabbing Khalil: Ayo, you ain't kill the guy, did you?","Khalil, shrugging: I dunno, I just found him laying here with me when I woke up. I've been sitting here waiting for him to wake up for awhile now.","Kelly, kind of concerned: How long exactly?","Khalil, estimating: Maybe close to an hour?","Kelly, mortified from his stupidity: And you haven't noticed that Dr. Parent is dead?!","Khalil, making a case: Hey. I'm pretty sure some people sleep with their eyes open.","Kelly, tired: Just shut up. I don't like the way you speak.","Khalil, wide-eyed: WELL, I DON'T LIKE YOU. OKAY?","Ishraq, rubbing his chin: Hmm...someone de-wired you. But who?","Daniel, figuring it out: I think I have an idea of what happened. It looks like there was a fight in here. So maybe Khalil got into a fight with Dr. Parent while he was wired.","Khalil, remembering: OH so that's what happened! I've been trying to remember how I got here, and now that you mention it, I kinda do remember getting into a fight...I just didn't know if it really happened. Thought it was a dream or something.")
+        if data[24] == 1:
+          text("Daniel, vouching for: Yeah...I remember Kelly was getting hurt in the auditorium when I was wired, but wasn't sure if it actually happened. Turns out I tried to protect her, but it was all very dreamy to me.")
+        else:
+          if data[23] == "":
+            text("Daniel, vouching for: Yeah...I remember Kelly was at the auditorium when I was wired, but wasn't sure if she was actually there. It was very dreamy to me.")
+          else:
+            text("Daniel, vouching for: Yeah...I remember Kelly was at the auditorium when I was wired...and I think I might've done something to her...But I'm not sure if I actually did though.","Julius, with his revolted laughing expression: WHAT~!?","Kelly, getting red: Hey! What did you do?!","Daniel, avoiding her: I can't really remember...")
+        text("Ishraq, admiring: But damn. You were able to kill Parent, Khalil. Really got dumb nigga strength.","Khalil, unknown memories flowing back to him: I think I got into a fight with him over The Fence.","Tim, recalling: The one outside the F-Wing that Ishraq will destroy one day?","Arwyn, smiling at the thought: Oh my god, I'm pretty sure everyone has a hole in at least one sweater from that stupid Fence.","Khalil, ecstatic: INDEED ARWYN. I ONCE CUT MY HAND ON IT AS WELL.","Arwyn, curious: How deep?","Khalil, smirking: VERY.","Arwyn, smirking: Good.","Ishraq, with a sense of duty: I will save the future students of PCTI. No one will ever know the pain of having holes in their sweaters again.","Khalil, supporting: So yeah, when I was wired, I was disposing of shit that was recently ordered to cover The Fence's spikes for some reason. That's when I realized something was wrong. I saw this guy Dr. Parent doing something to The Fence. I went up to him and asked him what he doin'. Right then and there, he tried to maul me to death for speaking out of term.","Ishraq, following along: Sounds like both of you are wired...any idea as to what Parent was doing?","Khalil, shrugging: I dunno, I just remember that afterwards, I beat his ass and dragged his fatass back to his office and tried talking to him. He got the jump on me, and I don't remember the rest. I guess I just killed him. TOO EASY.","Tim, ominously: So we still don't know what he actually did to The Fence...","Ishraq, leading everyone out: Let's go find out.")
+        nig = Support("Khalil",31)
+        forceguest(nig)
+        data[27] = 5
+    if nextr == "F-Wing Engineering Shop Room":
+      if data[27] == 4:
+        text("\n*An infamous figure stands in the way of the entrance to the Engineering Shop Room...*","Ishraq, pushing everyone back: SHIT-!","*The teacher's ears dart upwards, hearing Ishraq*","Tim, shivering behind the wall: Mrs. Wells...Of all the teachers we could've found first...","Mrs. Wells, warmly as she turns: #Sweeties! I know where you are. You can come out now, I won't get mad! But I need whoever stole the ruler from my classroom to step up.#","Ishraq, danger sense going berserk: Oh god, oh fuck. Guys, we are royally fucked right now. I'm serious, we should literally run.","Daniel, cocky: Are you scared or something? Even with powers, you're cowering in fear.","Ishraq, head starting to hurt: You don't understand...I KNOW WE'RE DONE!","Kelly, calling out from inside of shop: GUYS! YOU'RE HERE!!","Ishraq, popping his head out surprised and glad: OH, HEY!!","Kelly, transmitting information: SHE'S BEEN HERE QUESTIONING US FOR THE PAST COUPLE OF MINUTES! SHE WAS WAITING FOR YOU GUYS AT THE H-WING BRIDGE!","Mrs. Wells, turning back to Kelly: #Darling, didn't I say to keep it between us? I don't want any more meddling from anyone in here.#","*Mrs. Wells stomps towards Kelly*","Daniel, following through: Oh no you don't!","Mrs. Wells, looming over a Kelly who's standing her ground: You're such a good girl too...such a shame you need to be silenced.","Kelly, materializing her violin as she tries to jump back: I'm not going down without a--WOAH!!","*Mrs. Wells grabs Kelly's leg mid-air, suspending her! Mrs. Wells grabs her neck with her other hand and is about to slam Kelly into the ground---!!!*")
+        text("*Daniel's glasses suddenly glare the entire room and he disappers! Mrs. Wells drops Kelly after being severely blinded!*","Ishraq, looking in a circle: Did anyone see...? Where did Daniel just go?","Tim, pointing to: He's just gone in a flash...wait, are those his glasses on the floor?","*Daniel's glasses start to reconstruct Daniel from yellow outlined geometric planes! Daniel appears in Mrs. Wells's way!*",fore.YELLOW_1+"Daniel, as cool as he can: It is my destiny to protect Kelly. You will not lay one finger on her from here on out!"+style.RESET,fore.YELLOW_1+style.BOLD+"\n~Daniel has gained a new ability, Knight's Vow! Daniel binds himself to an ally, taking a percentage of the damage they take for himself as magic damage and increasing their attack(AT) and magic damage(MAT) based on Daniel's current health(HP). Daniel cannot bond himself to more than one ally.\n"+style.RESET,"Mrs. Wells, scoffing: #That's great honey, but you're all in trouble anyways. You all've better taken notes, because today is a notebook evaluation!#","Ishraq, rushing into the room with the team: She's out for blood, get ready!")
+        revival(Kelly,o=True)
+        revival(Arwyn,o=True)
+        fightid = 11
+        bots.team = [Entity("Mrs. Wells",5000,0,50,30,0,50,65,150,100,10,20,0,0,"17","Female Boss")]
+        battle(you,bots,Cont=False)
+        if victory == 1:
+          text("\nIshraq, falling over: *Huff..Huff..Huff*...I haven't fallen completely on the ground in ages.","Daniel, slumped on the ground: That was...easy.","Tim, dead: Yeah..right.","Julius, managing to stay up: Worked up a...good sweat.","Ishraq, rolling over to face someone: So..you're back already.","Kelly, smiling: Miss me?","Ishraq, smiling: I see you found ma boi' Arwyn.","Kelly, rolling her eyes: Unfortanely. He's an ISO by the way.","Ishraq, excited to hear: Really?! That's fucking awesome! Where'd you guys even come from?","Kelly, whimsically: Me and him had a whole adventure in an entirely different world~! And then we found our way back to Shop class! We sat back for awhile because the Fedora Man was looking for me. But outta nowhere, Mrs. Wells came bursting into the room and asked where were you guys? We stalled her for a bit, and you guys finally came...","Ishraq, shook: Damn. Wells was hunting us, haha. But was the adventure fun?","Kelly, pretty happy about it: It was...pretty exhilarating. I came up with a really deadly technique that could probably kill you, haha!","Ishraq, shivering: Woaw, okay... *Ishraq turns to Arwyn* How you been, sexy?","Arwyn, lightening up: Yoo~. I'm chillin'.","Ishraq, really happy: Of course ma' nigga Arwyn would be an ISO. I expected nothing less of you.","Arwyn, riled up: You already know yo.")
+          text("*Mrs. Wells begins to regain consciousness.*","Mrs. Wells, buzzed: Wh-where am I..?","Ishraq, getting up and giving her a hand: Hi Mrs. Wells. We'll catch you up.","Mrs. Wells, confused but still taking Ishraq's hand: What are you on about honey? What's going on? My head really hurts, ya know?","Tim, insisting: Just stay here and we'll explain. You're in for a really big story.","Mrs. Wells, finally up on her feet: Oh, a story, huh? I really wanna hear this one..","*Ishraq moves Mrs. Wells aside...Daniel spots Kelly alone.*","Daniel, calling out as he rushes to her: MY QUEEN!","Kelly, surprised: Oh-!","*Daniel stops as he enters her personal space*")
+          if data[23] == "":
+            if data[24] == 1:
+              text("Daniel, looking at her ears: Is your ears alright?","Kelly, touching them: Yeah...I'm fine. I healed my ears earlier using my ISO.","Daniel, wanting to touch: May I...see?","Kelly, not knowing how to answer: Sure..?","*Daniel's hand grazes Kelly's hair as he touches her ear.*","Daniel, wanting to nut: Auugghh..yeah. It's fine. If this guy Ishraq ever hurts you again, you know who to call.")
+            else:
+              text("Daniel, looking at her head to toe: Are you okay?","Kelly, touching her hair: Yeah...I'm fine.","Daniel, wanting to touch: Can I...?","Kelly, a little creeped out: Can you what?","Daniel, slowly moving his hands towards her hair: Can I touch your hair?","Kelly, not knowing how to answer: Sure..?","*Daniel's hand grazes Kelly's hair as he slowly nears towards it*","Daniel, wanting to nut: Auugghh..yeah. Thank you, my queen. Unlike Ishraq, I will never give you up to anyone.")
+          else:
+            text("Daniel, extremely nervous: Hey~~...Are you okay?","Kelly, touching her hair: Yeah...I'm fine.","Daniel, trying to keep his hands to himself: Umm..that's great. I'm glad you're back.","Kelly, appreaciative: Had you worried, huh?","Daniel, wanting to nut: Auugghh..yeah. You don't understand how furious I was when I saw the Fedora guy beating you down.","Kely, losing color in her face: Yeah...he was scary..","Daniel, angered: I almost got de-wired just looking at it happen! Don't worry, I'm here now so it won't happen again!")
+          text("Kelly, really wanting to leave: Awesome...","Daniel, as cool as he can: It is my destiny to protect you Kelly. With this newfound power, I swear by this day that I will always be by your side...so please..*Daniel kneels on the ground*...will you knight me?")
+          start = time.time()        
+          elapsed = 0      
+          while elapsed < 7:
+            print(fore.YELLOW_1+"\nYou have",style.BOLD+str(round(7-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET)
+            boop = input("(1) Okay, sure.  (2) *Slap his hand away*  (3) I don't know how to..\nResponse: ")
+            elapsed = time.time() - start
+            if boop == "1" or boop == "2" or boop == "3":
+              break
+          if (boop != "1" and boop != "2" and boop != "3") or elapsed >= 7:
+            boop = "3"
+          if boop == "1":
+            text("Kelly, trying to be nice: Okay, sure.","Daniel, jaw dropping: Really!!?","Kelly, materializing her violin bow and playing along: I dub thee, Sir Daniel Minier of Haledon!","Daniel, about to cry: Oh my god...-~-~...you even remembered where I live-~-~-thank you, my goddess...","Ishraq, in actual disbelief: What the fuck is going on..?","Kelly, deviously grinning at Ishraq: I just got myself a servant~!")
+            data[28] = 2
+          elif boop == "2":
+            text("Kelly, slapping Daniel's hand away: Don't touch me!","Daniel, sorry: Ooh--I'm so sorry my queen! Please forgive me!","Kelly, traumatized by those words: Forgive you...I forgive you.","Daniel, about to cry: Oh my god...-~-~...thank you, my queen...","Ishraq, in actual disbelief: What the fuck is going on..?","Kelly, nudging Ishraq desperately: We really need to talk.") 
+          elif boop == "3":
+            text("Kelly, trying to be nice: I don't know how to..","Daniel, muttering for her: I dub thee..","Kelly, catching on: Oh-..I dub thee, Sir Daniel Minier of...wherever you live.","Daniel, about to cry: Oh my god...-~-~...thank you, my queen...","Ishraq, in actual disbelief: What the fuck is going on..?","Kelly, nudging Ishraq: Just act normal.")
+            data[28] = 1
+          ro = rd(6)
+          if "Knight's Vow" not in Daniel.skills:
+            Daniel.skills.append("Knight's Vow")
+          peep = ["Mrs. Wells","Daniel","Arwyn","Kelly"]
+          ro.people.extend(peep)
+          data[27] = 6
+      if data[27] == 2:
+        text("\nKelly, happily calling out: HIII ISHRAQ!","Ishraq, taken by surprise: Oh! You're back!","Daniel, rushing over to her: MY QUEEN!","Kelly, face dropping immediately: Oh-!","*Daniel stops as he enters her personal space*")       
+        if data[23] == "":
+          if data[24] == 1:
+            text("Daniel, looking at her ears: Is your ears alright?","Kelly, touching them: Yeah...I'm fine. I healed my ears earlier using my ISO.","Daniel, wanting to touch: May I...see?","Kelly, not knowing how to answer: Sure..?","*Daniel's hand grazes Kelly's hair as he touches her ear.*","Daniel, wanting to nut: Auugghh..yeah. It's fine. If this guy Ishraq ever hurts you again, you know who to call.")
+          else:
+            text("Daniel, looking at her head to toe: Are you okay?","Kelly, touching her hair: Yeah...I'm fine.","Daniel, wanting to touch: Can I...?","Kelly, a little creeped out: Can you what?","Daniel, slowly moving his hands towards her hair: Can I touch your hair?","Kelly, not knowing how to answer: Sure..?","*Daniel's hand grazes Kelly's hair as he slowly nears towards it*","Daniel, wanting to nut: Auugghh..yeah. Thank you, my queen. Unlike Ishraq, I will never give you up to anyone.")
+        else:
+          text("Daniel, extremely nervous: Hey~~...Are you okay?","Kelly, touching her hair: Yeah...I'm fine.","Daniel, trying to keep his hands to himself: Umm..that's great. I'm glad you're back.","Kelly, appreaciative: Had you worried, huh?","Daniel, wanting to nut: Auugghh..yeah. You don't understand how furious I was when I saw the Fedora guy beating you down.","Kely, losing color in her face: Yeah...he was scary..","Daniel, angered: I almost got de-wired just looking at it happen! Don't worry, I'm here now so it won't happen again!")
+        text("*Daniel's glasses suddenly glare the entire room and he disappers!*","Ishraq, looking in a circle: Did anyone see...? Where did Daniel just go?","Tim: He's gone in a flash...wait, are those his glasses on the floor?","*Daniel's glasses start to reconstruct Daniel from yellow outlined geometric planes! Daniel appears before the team once again!*",fore.YELLOW_1+"Daniel, as cool as he can: It is my destiny to protect you Kelly. I swear by this day that I will always be by your side."+style.RESET,fore.YELLOW_1+style.BOLD+"\n~Daniel has gained a new ability, Knight's Vow! Daniel binds himself to an ally, taking a percentage of the damage they take for himself as magic damage and increasing their attack(AT) and magic damage(MAT) based on Daniel's current health(HP). Daniel cannot bond himself to more than one ally.\n"+style.RESET,"Kelly, really wanting to leave: That's great...","Daniel, grabbing her hand as he kneels on the ground: Please knight me, my queen!")
+        start = time.time()        
+        elapsed = 0      
+        while elapsed < 7:
+          print(fore.YELLOW_1+"\nYou have",style.BOLD+str(round(7-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET)
+          boop = input("(1) Okay, sure.  (2) *Slap his hand away*  (3) I don't know how to..\nResponse: ")
+          elapsed = time.time() - start
+          if boop == "1" or boop == "2" or boop == "3":
+            break
+        if (boop != "1" and boop != "2" and boop != "3") or elapsed >= 7:
+          boop = "3"
+        if boop == "1":
+          text("Kelly, trying to be nice: Okay, sure.","Daniel, jaw dropping: Really!!?","Kelly, playing along: I dub thee, Sir Daniel Minier of Haledon!","Daniel, about to cry: Oh my god...-~-~...you even remembered where I live-~-~-thank you, my goddess...","Ishraq, in actual disbelief: What the fuck is going on..?","Kelly, deviously grinning at Ishraq: I just got myself a servant~!")
+          data[28] = 2
+        elif boop == "2":
+          text("Kelly, slapping Daniel's hand away: Don't touch me!","Daniel, sorry: Ooh--I'm so sorry my queen! Please forgive me!","Kelly, traumatized by those words: Forgive you...I forgive you.","Daniel, about to cry: Oh my god...-~-~...thank you, my queen...","Ishraq, in actual disbelief: What the fuck is going on..?","Kelly, nudging Ishraq desperately: We really need to talk.") 
+        elif boop == "3":
+          text("Kelly, trying to be nice: I don't know how to..","Daniel, muttering for her: I dub thee..","Kelly, catching on: Oh-..I dub thee, Sir Daniel Minier of...wherever you live.","Daniel, about to cry: Oh my god...-~-~...thank you, my queen...","Ishraq, in actual disbelief: What the fuck is going on..?","Kelly, nudging Ishraq: Just act normal.")
+          data[28] = 1
+        Daniel.learnskill("Knight's Vow")
+        data[27] = 3
+        ro = rd(6)
+        peep = ["Daniel","Arwyn","Kelly"]
+        ro.people.extend(peep)
+    if nextr == "D-Wing Hallway 1st Floor":
+      if data[27] == 1:
+        text("\nIshraq, staring out from the F-Wing Bridge: Oh man...this is unreal.","Tim, in awe: It's MOVING!!","Khalil, remembering: Ah yes. This is what we were doing. We were assigned to unleash the Fence by giving it sentient life...","Ishraq, amazed: SENTIENT LIFE!? WHAT!?","Khalil, confirming: YES. THAT WAS MY JOB WHEN I WAS WIRED! AND DR. PARENT GAVE HIS LIFE UP FOR IT!","Ishraq, staggered but staring at the Fence in amazement: Oh my god! It's really tearing shit up out there!","*The Fence shatters a window on the F-Wing Bridge and grips it with its claws!*","Julius, feeling its strength: HOLY SHIT! It's taking the bridge down! QUICK! Get out of here!","\n*Everyone tries to sprint across the bridge towards the F-Wing to safety---! Julius, Tim, and Khalil make it out! Ishraq slows down for Daniel!*\n","Ishraq, pushing him: Come on, let's GO!","Daniel, trying his best: Yeah--!","Ishraq, feeling the bridge about to collapse: Shit!!","*Ishraq grabs Daniel and launches him across the bridge, planting him to safety!!--The bridge collapses!!! The Fence begins to mangle the bridge like a toy!*","Julius, despaired: Oh nah...","Tim, a little nervous: Is Ishraq good..?","Khalil, not breaking a sweat: ISHRAQ IS A TRUE NIGGER. HE WILL NOT DIE FROM THIS.","Daniel, imagining if it was him: Are you sure..? The whole bridge collapsed on him..and now that monster out there is smashing it to pieces!","Khalil, believing: Just watch.")
+        input("\n...")
+        input("--!")
+        input("!!!")
+        input(style.BOLD+"!!!!!"+style.RESET)
+        text("\n*A bright shining red light explodes from the crushed debris!!! A completely destroyed Ishraq appears alive!*\n",fore.RED_1+style.BOLD+"Ishraq, snapping his arm back in place as his body rejuvinates from being flattened: As long as you stand...I will not fall."+style.RESET,"Khalil, screaming out in excitement: IT IS TIME!",fore.RED_1+style.BOLD+"Ishraq, furious: I will DESTROY you so that no one will ever feel the pain of losing their beloved sweater!"+style.RESET,"Khalil, chanting: YES! YES! YESSS!",fore.RED_1+style.BOLD+"Ishraq, eyes becoming whole and emitting a small red ray: Not ONLY have you killed countless of sweaters, YOU JUST ALMOST KILLED MY FRIEND!!"+style.RESET,"Daniel, shook: Yeah...I would've died for sure.",fore.RED_1+style.BOLD+"Ishraq, exploding with godly energy: AURAAAAAAGGGHH--!!!"+style.RESET)
+        input(style.BOLD + fore.RED_1 +"\n~Ishraq has gained a new ability, Immortality! He becomes too angry to die for 3 turns when activated! While activated, he gains lifesteal on his normal attacks!" + style.RESET)
+        input(style.BOLD + fore.RED_1 +"\n~Ishraq has gained his ISO-Transformation! Transforming with Ishraq causes him to become ENRAGED, instantly increasing his attack and speed according to his current health. The lower health he has, the more attack and speed he gains. Wild Instinct is replaced with the ability to Enrage, which does the same effect as stated above, in case you lose more health and want to gain more attack and speed. All stat boosts from Wild Instinct is made up through transformation base stat boosts. Ishraq also has Immortality as long as he is transformed, and the level of his Counter is increased by 3."+ style.RESET)
+        fightid = 10
+        fightmod = 1
+        bots.team = [Entity("The Fence",3500,100,45,60,0,30,65,120,50,20,12,0,5,"17","Boss")]
+        battle(you,bots,Cont=False)
+        if victory == 1:
+          text("\n*Ishraq grabs the Fence like a snake by its tail, and smashes it rapidly against the ground! The Fence gets destroyed!!*\n","Ishraq, calming down: ...YES. IT IS DONE!","Julius, waving his arms in front of Ishraq: Ayo~! What are you?","Ishraq, laughing: Haha, what do you mean?","Julius, wide-eyed: WHAT DO I MEAN?! How are you not dead?!","Ishraq, smirking: No way in hell I was gonna die there. I wanted to make sure that Fence was gone for good.","Tim, slightly amazed: Well, that was pretty sick. Thanks to Dr. Graham, of course.","Ishraq, a little nervous: Yeah...he must've awakened some latent power in me. That means he's using his power...which is bad.","Tim, thinking it over: Yeah...the more he does stuff in here, the less of a grip he has in stopping time out there.","Ishraq, ready to move on: Alright, now that we got Khalil, I guess we can start setting up comms.","Daniel, getting excited: Yeah, I can't wait to do that.")
+          if "Immortality" not in Ishraq.skills:
+            Ishraq.skills.insert(3,"Immortality")
+          Ishraq.isoLevel = 2
+          Ishraq.isopoints = 200
+          data[27] = 4
+          ro = rd(1)
+          ro.paths.remove("D-Wing Hallway 1st Floor")
+          ro = rd(3)
+          ro.paths.remove("F-Wing Hallway 1st Floor")
+          ro = rd(9)
+          croom.remove(ro)
+          world.append(ro)
+          ro = rd(1)
+          world.remove(ro)
+          croom.append(ro)   
+          worldfunction()
+        else:
+          Ishraq.isomode = False
+    if data[27] == 5:
+      text("\nIshraq, staring out from the F-Wing Bridge: Oh man...this is unreal.","Tim, in awe: It's MOVING!!","Khalil, remembering: Ah yes. This is what we were doing. We were assigned to unleash the Fence by giving it sentient life...","Ishraq, amazed: SENTIENT LIFE!? WHAT!?","Khalil, confirming: YES. THAT WAS MY JOB WHEN I WAS WIRED! AND DR. PARENT GAVE HIS LIFE UP FOR IT!","Ishraq, staggered but staring at the Fence in amazement: Oh my god! It's really tearing shit up out there!","Kelly, observing its movements: GUYS! WATCH OUT!","*The Fence shatters a window on the F-Wing Bridge and grips it with its claws!*","Julius, feeling its strength: HOLY SHIT! It's taking the bridge down! QUICK! Get out of here!","\n*Everyone tries to sprint across the bridge towards the F-Wing to safety---! Julius, Tim, Arwyn, and Khalil make it out! Ishraq slows down for Daniel and Kelly!*\n","Ishraq, pushing him: Come on, let's GO! You gonna let a girl beat you in a race!?","Daniel, trying his best: No--!","Kelly, running for her life: ISHRAAQ!!","Ishraq, feeling the bridge about to collapse: Shit!!")
+      start = time.time()        
+      elapsed = 0      
+      while elapsed < 5:
+        print(fore.YELLOW_1+"\nYou have",style.BOLD+str(round(5-elapsed))+style.RESET+fore.YELLOW_1,"seconds to make a decision"+style.RESET)
+        boop = input("(1) *Save Daniel*  (2) *Save Kelly*\nResponse: ")
+        elapsed = time.time() - start
+        if boop == "1" or boop == "2":
+          break
+      if (boop != "1" and boop != "2") or elapsed >= 5:
+        boop = str(random.randint(1,2))
+      if boop == "1":
+        data[2] = data[2] - 10
+        text("*Ishraq grabs Daniel and launches him across the bridge, planting him to safety!!--The bridge collapses!!! Kelly grips onto the ledge!!! The Fence begins to mangle the bridge like a toy!*","Julius, pulling Kelly up: Close one there, girl.","Tim, looking down nervously: Is Ishraq good..?","Arwyn, nonchalant: Probably. It's Ishraq.","Kelly, really scared: I don't know-~-I DON'T KNOW! The entire bridge fell on him, and now that monster is smashing it to pieces! Oh my god...if I fell too..!","Khalil, not breaking a sweat: ISHRAQ IS A TRUE NIGGER. HE WILL NOT DIE FROM THIS.","Daniel, confused but still agitated: I can't believe he threw me instead of you Kelly...but..if I fell--","Kelly, pushing it aside: It's whatever Daniel. In the end, we're both safe...we should be praying for Ishraq right now.","Khalil, believing: Just watch. He got this.")
+        fightmod = 1
+      elif boop == "2":
+        data[0] = data[0] + 10
+        data[2] = data[2] + 5
+        text("*Ishraq grabs Kelly and launches her across the bridge, planting her to safety!!--The bridge collapses!!! The Fence begins to mangle the bridge like a toy!*","Julius, despaired: Oh nah...","Tim, a little nervous: Is Ishraq good..? Daniel..?","Arwyn, nonchalant: Probably. It's Ishraq. Daniel? Probably dead.","Khalil, not breaking a sweat: ISHRAQ IS A TRUE NIGGER. HE WILL NOT DIE FROM THIS.","Kelly, really scared: I don't know-~-I DON'T KNOW! The entire bridge fell on them, and now that monster is smashing it to pieces!","Khalil, believing: Just watch. He got this.")   
+        fightmod = 2  
+      input("\n...")
+      input("--!")
+      input("!!!")
+      input(style.BOLD+"!!!!!"+style.RESET)
+      if boop == "1":
+        input("\n*A bright shining red light explodes from the crushed debris!!! A completely destroyed Ishraq appears alive! He pulls a slightly damaged Daniel up from the rubble!*")
+      elif boop == "2":
+        input("\n*A bright shining red light explodes from the crushed debris!!! A completely destroyed Ishraq appears alive! He pulls a slightly damaged Daniel up from the rubble!*")
+      text(fore.RED_1+style.BOLD+"Ishraq, snapping his arm back in place as his body rejuvinates from being flattened: As long as you stand...I will not fall."+style.RESET,"Khalil, screaming out in excitement: IT IS TIME!",fore.RED_1+style.BOLD+"Ishraq, furious: I will DESTROY you so that no one will ever feel the pain of losing their beloved sweater!"+style.RESET,"Khalil, chanting: YES! YES! YEEHGSS!",fore.RED_1+style.BOLD+"Ishraq, eyes becoming whole and emitting a small red ray: Not ONLY have you killed countless of sweaters, YOU JUST ALMOST KILLED MY FRIENDS!!"+style.RESET)
+      if boop == "1":
+        text("Daniel, shook: Yeah...I would've died for sure.",fore.RED_1+style.BOLD+"Ishraq, exploding with godly energy: AURAAAAAAGGGHH--!!!"+style.RESET)
+      elif boop == "2":
+        text("Daniel, shook: I'm alive...you took most of the impact..",fore.RED_1+style.BOLD+"Ishraq, exploding with godly energy: AURAAAAAAGGGHH--!!!"+style.RESET)
+      input(style.BOLD + fore.RED_1 +"\n~Ishraq has gained a new ability, Immortality! He becomes too angry to die for 3 turns when activated! While activated, he gains lifesteal on his normal attacks!" + style.RESET)
+      input(style.BOLD + fore.RED_1 +"\n~Ishraq has gained his ISO-Transformation! Transforming with Ishraq causes him to become ENRAGED, instantly increasing his attack and speed according to his current health. The lower health he has, the more attack and speed he gains. Wild Instinct is replaced with the ability to Enrage, which does the same effect as stated above, in case you lose more health and want to gain more attack and speed. All stat boosts from Wild Instinct is made up through transformation base stat boosts. Ishraq also has Immortality as long as he is transformed, and the level of his Counter is increased by 3."+ style.RESET)
+      fightid = 10
+      bots.team = [Entity("The Fence",4200,100,45,60,0,30,65,120,50,20,12,0,5,"17","Boss")]
+      battle(you,bots,Cont=False)
+      if victory == 1:
+        text("\n*Ishraq grabs the Fence like a snake by its tail, and smashes it rapidly against the ground! The Fence gets destroyed!!*\n","Ishraq, calming down: ...YES. IT IS DONE!","Julius, waving his arms in front of Ishraq: Ayo~! What are you?","Ishraq, laughing: Haha, what do you mean?","Julius, wide-eyed: WHAT DO I MEAN?! How are you not dead?!","Ishraq, smirking: No way in hell I was gonna die there. I wanted to make sure that Fence was gone for good.","Tim, slightly amazed: Well, that was pretty sick. Thanks to Dr. Graham, of course.","Kelly, adding to Tim: Indeed. Dr. Graham spoke to me when I was alone. It's his power that's keeping us alive right now...and he just used a dangerous amount on Ishraq, which is bad. He needs it to keep focus out there.","Tim, thinking it over: Yeah...the more he does stuff in here, the less of a grip he has in stopping time out there, right?","Kelly, confirming: Yup.","Ishraq, a little nervous: Damn...he must've awakened some latent power in me. It was wild too...man's doing too much.")
+        if boop == "1":
+          data[31] = 1
+          text("Kelly, blaming Ishraq: Well, that's cuz you basically died! Try not doing that next time so Dr. Graham doesn't interfere anymore than he has to!","Ishraq, glancing at Daniel: This kid over here would've been done though. No way he would survive that.","Kelly, not really caring about Daniel: Okay? You clearly lived, he might've too! He's an ISO, you know?! If Dr. Graham loses focus, I'm done for! The Future will open back up, and he'll take me---!","Daniel, cutting her off: No one is going to take you! Especially if I am her---!","Kelly, harrassing: You aren't even fast enough to get across the bridge in time! What makes you think I'm safe with you?!","Daniel, saddened: I...","Kelly, ranting: Ishraq would've easily made it across if you weren't so fa---!","Ishraq, interjecting: Enough! What's done is done. It didn't go that smoothly...but that's fine. It all happened quickly, and we will not always react perfectly to every situation. So, let's just get back to shop and start setting up comms.","Daniel, a litte sour but lifting up: Yeah...I can't wait to start working on that.")
+          data[29] = 1
+        elif boop == "2":
+          text("Kelly, frustrated: Man! That's because you nearly died Ishraq! Be careful...","Ishraq, scratching his head: Ehhh...it was a tough situation. There was no way we all got out of there safely.","Kelly, understanding: Yeah...it all happened very quick...very stressful. It's awesome that you're safe.","Ishraq, looking at Daniel: You alright?","Daniel, meekly: Yeah...thanks for protecting me back there.","Ishraq, patting his back: No problem...ayo let's get back to shop so you and Tim can start setting up these comms.","Daniel, getting excited: Yeah, I can't wait to do that!")
+        if "Immortality" not in Ishraq.skills:
+          Ishraq.skills.insert(3,"Immortality")
+        Ishraq.isoLevel = 2
+        Ishraq.isopoints = 200
+        data[27] = 7
+        ro = rd(1)
+        ro.paths.remove("D-Wing Hallway 1st Floor")
+        ro = rd(3)
+        ro.paths.remove("F-Wing Hallway 1st Floor")
+        ro = rd(9)
+        croom.remove(ro)
+        world.append(ro)
+        ro = rd(1)
+        world.remove(ro)
+        croom.append(ro)   
+        worldfunction()
+      else:
+        Ishraq.isomode = False
+#--------------------------------------------------------------------------------------------------
+  if "Silent Operators" in quests:
+    ro = rd(29)
+    if nextr == "ASL Room" and ro.RLV == 1:
+      text("Tim, staring at the elephant in the room: Well...the myterious rock is still around..","Matvey, remembering from conversations on the way: This is where you got the ability to do that shield thing, right?","Tim, touching the rock: Yeah...wait a second. This is resonating once again! Hey, Matvey, maybe you can learn the shield thing too! You have to kneel next to it.","Matvey, hyped: Oh damn, let's see...*Matvey slowly kneels near the monument*...I don't feel anything.","Tim, confused: Damn. That's what I did though...whatever.","Matvey, disappointed: Damn. Well...hopefully I find those damn golf clubs, haha.","Tim, drawing power again from the rock by kneeling: Hmm...hey, it still works for me! The light and symbol at the top is gone.","\n*Before Tim and Matvey could react, they are surrounded by ninjas that snuck into the room!...one of them throws a shuriken at Tim, but he had his Quen shield up from drawing power from the monument!*","Tim, jumping back: What the hell!!? We're surrounded Matvey!","Ninja #1, demanding: These two must be allies with the turtles! Capture them at all costs!","Tim, confused: Turtles?","Michelangelo, exploding through the door but collapsing on some ninjas: BOOYAKASH--WOAAW-!!","Ninja #2, changing focus: The turtles are here! They were able to track us!","Donatello, waltzing in without noticing the ninjas: Mikey, the Dimensional Frequency Detector says were in the 72th seed...that's 5 seeds away from where Leo and Raph are.","Michelangelo, signaling: Not now Donny, we found the guys who stole out key!","Ninja, grabbing Matvey and pulling a kunai to his neck: Turtles, look! A hostage!","Tim, cautiously casting Quen on Matvey: YO! There's no way this is happening right now, but let go of him!","Michelangelo, cheering on: Yeah, let go of the guy! I don't even know who he is, but you better not hurt em'!","*Donatello uses his gravity gauntlet on the Ninja, pinning them to the floor! Matvey is released!*","Donatello, taking out his Bo Staff: Alright, let's finish these chumps.")
+      fightid = 12
+      bots.team = [Entity("Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"17","Male"),Entity("Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"18","Male"),Entity("Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"19","Male"),Entity("Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"20","Male"),Entity("Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"21","Male")]
+      bots.backteam = [Entity("Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"22","Male"),Entity("Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"23","Male"),Entity("Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"24","Male"),Entity("Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"25","Male"),Entity("Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"26","Male")]
+      for x in bots.team:
+        x.superscale()
+      for x in bots.backteam:
+        x.superscale()
+      battle(you,bots,Cont=False)
+      if victory == 1:  
+        additem("T2 Cyan Isometric Drawing",1,you.isoinventory)      
+        text("\nTim, jaw slowly dropping: Sooooo, WHAT THE HELL ARE THE TEENAGE MUTANT NINJA TURTLES DOING IN HERE?!","Michelangelo, turning his head back and forth between Donatello and Tim: Do we exist in this universe or somethin'? This dude seems to know us.","Tim, not believing anything: Yo...you guys are in a cartoon in this universe!","Michelangelo, not believing it either: DUDE, NO WAY! DON'T TELL ME WE LIVE IN NEW YORK IN THIS TV SHOW TOO! I WANNA LIVE IN CANADA!","Tim, yelling for fun: YOU DO LIVE IN NEW YORK!!","Michelangelo, dropping to the ground: WHYYYY??! YO DONNY! This is just like a dream I had once. Like in that dream, we all literally existed in the mind of one person that's been sleeping forever! It's not the same, but...it's close enough.","Donatello, rubbing his chin: There's a theory that a copy of you exist in every universe apart of the multiverse...but I never considered we could also virtually exist in them. My hypothesis is that it does indeed count as being a copy. Tell me..umm what's your guys' names?","Tim, pointing to himself smug: I'm Tim. I'm the white guy.","Matvey, laughing: Hahaha! I'm Matvey. I just go to this school.","Donatello, looking around the room: Well, this sure does look like the schools in our universe...so tell me, do we exist in person too?","Tim, touching Michelangelo to feel his reptile skin: Nah. You guys are just on TV.","Michelangelo, gently moving Tim's hand off of him: Bro. It was nice meeting you, but we gotta go. We were supposed to meet up with Raph and Leo awhile ago, but these guys stole the key we needed to keep rifting through the multiverse. Thanks for helping us fight these dudes.","Donatello, picking up the card: Wow, so responsible of you Mikey. Why aren't you always like this?","Michelangelo, maturing: This is a serious mission. I can be serious too, ya know?","Donatello, configuring his Portal Ripper: I know...alright, we gotta use the Portal Ripper where we came from or else we might go to somewhere unexpected.","Tim, saluting: Good luck on your mission, Ninja Turtles.","Michelangelo, saddened: This isn't goodbye dude! You'll come and see us off, right?","Tim, glancing at Matvey: We're going.","Matvey, spotting his golf bag: Sure thing, but hold up...I found my golf bag!","Tim, hyped: NICE!...yo Matvey. You wouldn't mind if I use one of your clubs as a weapon, right?","Matvey, unzipping his bag: Which one do you want?")
+        talk = "1"
+        while talk == "1":
+          bruh = input("\n(1) Putter  (2) Iron  (3) Wedge  (4) Driver\nResponse: ")
+          if bruh == "1":
+            text("\nTim, choosing: The Putter.","Matvey, praising the choice: It's very light, so you should be able to hit or move faster with this.")
+            additem("Putter Club",1,you.weaponinventory) 
+            talk = "2"
+          if bruh == "2":
+            text("\nTim, choosing: The Iron.","Matvey, praising the choice: Well balanced.")
+            additem("Iron Club",1,you.weaponinventory)
+            talk = "2"
+          if bruh == "3":
+            text("\nTim, choosing: The Wedge.","Matvey, praising the choice: It's a very accurate club.")
+            additem("Wedge Club",1,you.weaponinventory)
+            talk = "2"
+          if bruh == "4":
+            text("\nTim, choosing: The Driver.","Matvey, praising the choice: You'll probably deal the most damage with this one.")
+            additem("Driver Club",1,you.weaponinventory)
+            talk = "2"
+        input("\nDonatello, leading on: Alright...and there. Follow me and we'll find our way to the place we need to use the Portal Ripper.")
+        ro.RLV = 2
+    if nextr == "B-Wing Hallway Ground Floor" and ro.RLV == 2:
+      text("")
+      fightid = 13
+      bots.team = [Entity("Elite Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"17","Male"),Entity("Specialist Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"18","Male"),Entity("Support Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"19","Male"),Entity("Kraang",10,100,10,30,15,50,60,120,120,20,0,0,10,"20","Monster"),Entity("Kraang",10,100,10,30,15,50,60,120,120,20,0,0,10,"21","Monster")]
+      for x in bots.team:
+        x.superscale()
+      for x in bots.backteam:
+        x.superscale()
+      battle(you,bots,Cont=False)
+#~--------------------------------------------------------------------------------------------------
+  if "In God We Trust" in quests:
+    if nextr == "Main Lobby":
+      text("\nJulius, seeing in the distance: Yo~! LOOK! It's Lascelles!","Ishraq, disappointed: Damn. He's really getting his ass beat by a bunch of white kids.","Tim, passively racist: Wow...it's not every day you see the roles reversed.","Daniel, bursting out loud: HUGHAHGHA! So...are we going to help him, or nah?")
+      if data[26] == 2:
+        text("Kelly, not caring: Eh. We don't need a preacher in our shop to be honest.","Julius, shocked: GOD DAMN! Wassup' with you?!","Kelly, picking her ears: All that religious gibberish is a waste of energy for my brain to remember.","Arwyn, a believer: Ah. You've strayed away from Jesus. It makes me happy knowing you're going to be in hell.","Daniel, dying: PFFHUGHAHG--! Holy...hey....you can't say that to my queen, but HAHGHAHAAA!!","Ishraq, sprinting to save Lascelles: ALLAHU AKBAR!!")
+      else:
+        input("\nKelly, healing him from afar: Come on guys! Go help him already!")
+      bots.team = [Entity("Elite Ninja",10,100,10,30,15,50,60,120,120,20,0,0,10,"17","Male")]
+      battle(you,bots,Cont=False)
+      if victory == 1:
+        text("Ishraq, picking Lascelles off the floor: Dude. What the hell?","Lascelles, pissed: YO! Come on bruh, Jesus was coming.","Ishraq, dropping him: Nigga, you ain't summoning Jesus by getting your ass beat! And by white people? Come on!")
+        if data[26] == 2:
+          text("Lascelles, admitting: Alright, alright...I was being stupid...I just got a little mad.","Kelly, instantly knowing: God's not coming.")
+        else:
+          text("\nKelly, healing him from afar: Come on guys! Go help him already!")
+        questsys("In God We Trust","Finish")
+        xpg(150)
+        additem("T2 Blue Isometric Drawing",1,you.isoinventory)
+        if data[26] == 2:
+          additem("T2 Cyan Isometric Drawing",1,you.isoinventory)
+        else:
+          additem("T2 Magenta Isometric Drawing",1,you.isoinventory)
+        supu("Lascelles",31)
 #--------------------------------------------------------------------------------------------------
   if nextr == "Auditorium" and "Final Showdown" in quests and croom[0].RID == 16:
     time.sleep(1)
@@ -13856,7 +15639,25 @@ world.append(World("Medical Shop Room","Camp",28,0))
 world.append(World("ASL Room","Camp",29,0))
 world.append(World("Technology Room","Camp",30,0))
 world.append(World("The Fedora Man's Lair","Lair",31,0))
-
+world.append(World("Dr. Graham's Classroom","Camp",32,0))
+world.append(World("Rocco Building 1st Floor","Hall",33,80))
+world.append(World("Rocco Building Ground Floor","Hall",34,80))
+world.append(World("Weight Room","Camp",35,80))
+world.append(World("Rocco Cafe","Camp",36,80))
+world.append(World("Rocco Engineering Shop Room","Camp",37,0))
+world.append(World("Athletic Center Lobby","Hall",38,60))
+world.append(World("Athletic Center Gymnasium","Coliseum",39,0))
+world.append(World("Swimming Pool Center","Hall",38,60))
+world.append(World("DDR Room","Camp",39,60))
+world.append(World("Trainer Room","Camp",40,60))
+world.append(World("Boys Locker Room","Camp",41,60))
+world.append(World("Girls Locker Room","Camp",42,60))
+world.append(World("Athletic Center Boys Bathroom","Camp",43,60))
+world.append(World("Athletic Center Girls Bathroom","Camp",44,60))
+world.append(World("Athletic Center Offices","Camp",45,60))
+world.append(World("Athletic Center Upper Deck","Hall",46,60))
+world.append(World("Multi-Purpose Room","Camp",47,60))
+world.append(World("Indoor Track","Camp",48,60))
 
 for x in world:
   x.initroutes()
@@ -13896,7 +15697,7 @@ Tim.boots = "Sneakers"
 Tim.weap = "Slingshot"
 Tim.access = ""
 Tim.genderset()
-Arwyn = Entity("Arwyn",35,100,10,5,5,15,35,100,100,10,0,0,4,"6","Male")
+Arwyn = Entity("Arwyn",35,100,10,5,5,15,40,100,100,10,0,0,4,"6","Male")
 Arwyn.helm = "Glasses"
 Arwyn.chest = "School Uniform"
 Arwyn.boots = "Vans"
@@ -13905,7 +15706,7 @@ Arwyn.access = ""
 Arwyn.genderset()
 Ishraq.learnskill("Counter")
 Daniel.learnskill("Grubby Hands")
-Daniel.addbattleitem("Chips")
+Daniel.battleinventory.append("Chips")
 ro = rd(0)
 world.remove(ro)
 croom.append(ro)
